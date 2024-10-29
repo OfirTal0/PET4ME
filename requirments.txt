@@ -1,0 +1,20 @@
+# Web Framework
+Flask==2.0.3
+
+# HTTP Requests
+requests==2.26.0
+
+# Data Manipulation
+pandas==1.3.3
+
+# Numerical Operations
+numpy==1.21.2
+
+# Plotting
+matplotlib==3.4.3
+
+# Machine Learning
+scikit-learn==0.24.2
+
+# Database (if using SQLite)
+SQLAlchemy==1.4.23
