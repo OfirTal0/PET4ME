@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block login %}
+
+<div class="login-container">
+    <div class="login-box">
+        <h2 class="login-title">התחבר לחשבונך</h2> <!-- Login to Your Account in Hebrew -->
+        
+        <form action="/login" method="POST">
+            <input type="text" name="username" placeholder="שם משתמש" class="login-input" required> <!-- Username in Hebrew -->
+            <input type="password" name="password" placeholder="סיסמה" class="login-input" required> <!-- Password in Hebrew -->
+            <button type="submit" class="login-button">התחבר</button> <!-- Login button in Hebrew -->
+        </form>
+
+    </div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block catalog %}
+
+<link rel="stylesheet" href="/static/catalog.css">
+
+<div class="catalog-display">
+
+    <div class="sort">
+        <div class="searchclass">
+            <h3>חיפוש</h3>
+            <!-- Search Input Form -->
+            <form action="/search" method="GET">
+                <input type="text" name="text" placeholder="חפש מוצר..." class="search-input">
+                <input type="submit" value="חפש" class="search-button">
+            </form>
+        </div>
+
+        <div class="sortclass">
+        <h3>סינון לפי</h3>
+        <form action="/catalog" method="GET">
+            <!-- Filter by Animal -->
+            <div class="filter-section">
+                <h4>חיה</h4>
+                <label>
+                    <input type="checkbox" name="animal" value="כלב"> כלב
+                </label><br>
+                <label>
+                    <input type="checkbox" name="animal" value="חתול"> חתול
+                </label><br>
+                <label>
+                    <input type="checkbox" name="animal" value="אחר"> אחרים
+                </label>
+            </div>
+
+            <!-- Filter by Category -->
+            <div class="filter-section">
+                <h4>קטגוריה</h4>
+                <label>
+                    <input type="checkbox" name="category" value="מזון"> מזון
+                </label><br>
+                <label>
+                    <input type="checkbox" name="category" value="אביזרים"> אביזרים
+                </label>
+            </div>
+
+            <!-- Filter Button -->
+            <div class="filter-button">
+                <input type="submit" value="סנן">
+            </div>
+        </form>
+    </div>
+</div>
+ 
+    
+    <div class="products-grid">
+         
+        {% for product in products %}
+        
+        <div class="product-card">
+            <div class="product-image">
+                <img src="/static/uploads/{{ product[5] }}" >
+
+            </div>
+    
+            <!-- Product Details -->
+            <div class="product-info">
+                <h3 class="product-name">{{ product[1] }}</h3>
+                <p class="product-weight">משקל: {{ product[7] }} ק"ג</p>
+                {% if product[10] == "כן" %}
+                <!-- Monthly Sale -->
+                <p class="product-price">
+                    <span class="monthly-sale">מוצר במבצע חודשי!</span><br>
+                    <span class="old-price">₪{{ product[3] }}</span>
+                    <span class="product-price">₪{{ (product[3] - (product[3] * product[12] / 100)) }}</span>
+                </p>
+                
+                {% elif product[11] == "כן" %}
+                <!-- General Sale -->
+                <p class="product-price">
+                    <span class="monthly-sale">מבצע!</span><br>
+
+                    <span class="old-price">₪{{ product[3] }}</span>
+                    <span class="new-price">₪{{ (product[3] - (product[3] * product[12] / 100)) }}</span>
+                </p>
+                
+                {% else %}
+                <!-- Regular Price -->
+                <p class="product-price">₪{{ product[3] }}</p>
+                {% endif %}
+
+                <div class="buttons_display">
+                <form action="/show_product" method="POST">
+                    <input  type="hidden" name="product_id" value="{{ product[0] }}">
+                    <input type="submit" class="show-product-button" value="עוד פרטים">
+                 </form>
+                <form action="/add_to_cart" method="POST">
+                    <input  type="hidden" name="product_id" value="{{ product[0] }}">
+                    <input type="submit" class="add-to-cart-button" value="הוסף לעגלה">
+                </form>
+            </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+
+
+{% endblock %}

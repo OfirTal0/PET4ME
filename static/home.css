@@ -1,0 +1,569 @@
+.website-title h1 {
+    font-family: 'Arial', sans-serif; /* Choose a simple, clean font */
+    color: #1a8d98; /* A vibrant color that matches your website theme */
+    font-weight: bold;
+    text-align: center;
+    font-size: 2rem; /* Adjust size as needed */
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f3f8fa; /* Light background to make it stand out */
+    border: 2px solid #1a8d98; /* Border to frame the title */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional shadow for depth */
+}
+
+
+.delivery-info {
+    background-color: #f9e4b7; /* Light yellow background */
+    color: #333; /* Dark text for contrast */
+    font-weight: bold;
+    text-align: center;
+    padding: 15px;
+    font-size: 1.2rem;
+    border: 2px solid #ffc107; /* Border to emphasize the box */
+    margin-bottom: 20px; /* Space below the banner */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Shadow for emphasis */
+    border-radius: 8px; /* Optional: Rounded corners */
+}
+
+
+.squres-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5vw;
+}
+
+
+.squres-about {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 2 items per row */
+    grid-gap: 15px;
+    justify-items: center;
+    align-items: center;
+}
+
+.squres-about div {
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 150px; /* Smaller width and height */
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    text-align: center;
+}
+
+.squres-about img {
+    width: 40px; /* Adjust size of the icon */
+    height: auto;
+    margin-bottom: 8px;
+}
+
+.squres-about h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+}
+
+.dog-cat-image{
+    width: 35%;
+    height: auto;
+}
+
+.section2 {
+    display: flex;
+    flex-direction: column;
+    text-align: center; /* Center align text */
+    margin-bottom: 20px; /* Space below the section */
+    
+}
+
+
+
+.animal-links {
+    display: flex; /* Use flexbox for layout */
+    justify-content: center; /* Center the items */
+    gap: 8vw;; /* Space between the items */
+}
+
+.animal-link {
+    background: none; /* Remove background */
+    border: none; /* Remove border */
+    text-decoration: none; /* Remove underline from links */
+    color: inherit; /* Inherit the color from parent */
+    display: flex; /* Use flexbox to stack image and title */
+    flex-direction: column; /* Stack vertically */
+    align-items: center; /* Center align items */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.animal-link:hover {
+    transform: translateY(-5px); /* Subtle hover effect */
+    border-radius: 100px; /* Rounded corners */
+}
+
+
+.featured-image {
+    width: 250px; /* Fixed width for images */
+    height: 250px; /* Fixed height for images */
+    object-fit: cover; /* Maintain aspect ratio while covering the area */
+    border-radius: 100px; /* Rounded corners */
+    margin-bottom: 10px; /* Space below the image */
+}
+
+
+
+/* General Promo Box Styles */
+.section2, .section3, .section4, .section5, .section6 {
+    margin: 4vh auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.section3{
+    gap:3vw;
+}
+
+
+.adopt-section {
+    margin-top: 5vh;
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+
+
+
+.promo-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: #b0aeae49;
+    border: 1px solid #e0e0e0;
+    border-radius: 15px;
+    padding: 2vw;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    width: 35vw;
+    height: 30vh;
+}
+
+
+
+.promo-box h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 1vw;
+}
+
+.promo-box .text {
+    font-family: 'Arial', sans-serif;
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 2vw;
+}
+
+/* Promo Box - Hover Effect */
+.promo-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Promo Button */
+.promo-button {
+    background-color: #ff7f50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.2rem;
+    border-radius: 25px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.promo-button:hover {
+    background-color: #e67348;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Custom Styles for מועדון לקוחות */
+.promo-box:nth-child(1) {
+    background-color: #f9f9f9; /* Slightly lighter background */
+    border: 1px solid #b3e5fc; /* Light blue border */
+}
+
+.promo-box:nth-child(1) h2 {
+    color: #0288d1; /* Blue text for the title */
+}
+
+.promo-box:nth-child(1) .text {
+    color: #01579b; /* Darker blue for text */
+}
+
+/* Custom Styles for מבצע חודשי */
+.promo-box:nth-child(3) {
+    background-color: #fff3e0; /* Light orange background */
+    border: 1px solid #ffe0b2; /* Orange border */
+}
+
+.promo-box:nth-child(3) h2 {
+    color: #f57c00; /* Orange text for the title */
+}
+
+.promo-box:nth-child(3) .text {
+    color: #ef6c00; /* Darker orange for text */
+}
+
+.section4 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 5vh 0;
+    background-color: #f9f9f9;
+    border-radius: 15px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.section4 h2 {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 2vh;
+    font-family: 'Lucida Sans', 'Lucida Grande', sans-serif;
+}
+
+
+
+.customer-club-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8f8f8;
+    border: 2px solid #e1e1e1;
+    border-radius: 10px;
+    padding: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    margin: 0 auto;
+    max-height: 30vh;
+}
+
+
+.customer-input {
+    width: 100%;
+    padding: 4px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #fff;
+}
+
+.customer-input:focus {
+    border-color: #f8b03c;
+    outline: none;
+}
+
+
+.customer-submit {
+    width: 100%;
+    padding: 4px;
+    background-color: #f8b03c;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.customer-submit:hover {
+    background-color: #e09d2e;
+}
+
+.monthly-sale {
+    color: red;
+    font-weight: bold;
+}
+
+
+.monthly-sale-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 2vw;
+}
+
+.sale-product-img {
+    max-width: 150px;
+    margin: 10px 0;
+    background-color: white;
+    border-radius: 20px;
+}
+
+.sale-product-info h3 {
+    color: #333;
+    font-size: 22px;
+    margin: 10px 0;
+}
+
+
+.old-price {
+    text-decoration: line-through;
+    color: grey;
+}
+
+/* New discounted price */
+.new-price {
+    color: green;
+    font-weight: bold;
+    font-size: large;
+}
+
+
+.show-product-button {
+    background-color: #4c10f1;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 1rem;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.show-product-button:hover {
+    background-color: #470fe1;
+    transform: translateY(-2px);
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Three columns */
+    gap: 20px; /* Space between items */
+    margin: 20px; /* Margin around the grid */
+}
+
+
+.popular-product-card {
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2vh;
+    text-align: center;
+    height: 40vh;
+    justify-content: center;
+}
+
+.product-weight {
+    font-size: 0.9rem;
+    color: #999;
+    margin: 1vh 0;
+}
+
+.productimg {
+    width: 130px; /* Set the desired width */
+    height: 100px; /* Maintain aspect ratio */
+
+}
+
+
+
+.adopt-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #ff4500;
+    margin-bottom: 4vh;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Soft shadow for emphasis */
+}
+
+.adopt {
+    display: flex;
+    flex-direction: row;
+    gap: 3vw;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: #f5f5f5; /* Subtle background for the whole adoption section */
+    padding: 3vw;
+    border-radius: 15px;
+    margin-top: 4vh;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1); /* Larger shadow for more depth */
+}
+
+.adopt-image {
+    width: 320px;
+    height: 320px;
+    object-fit: fill;
+    border-radius: 20px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15); /* Soft shadow around the image */
+    transition: transform 0.3s ease; /* Smooth zoom effect on hover */
+}
+
+.adopt-image:hover {
+    transform: scale(1.05); /* Slight zoom on hover */
+}
+
+.adoption-info {
+    background-color: #fff;
+    background-image: url("https://4.bp.blogspot.com/-Fu8K2cRCkoM/UUbNR4xM40I/AAAAAAAAFAQ/O1-1vAvZXHw/s1600/animal-tracks-background-pattern.jpg");
+    background-size: cover;
+    background-position: center;
+    height: 50vh;
+    width: 40vw;
+    text-align: center;
+    border-radius: 15px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5vh;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    color: #333;
+    position: relative;
+}
+
+.adoption-info h2 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #ff4500;
+    margin-bottom: 1vh;
+}
+
+.adoption-info p {
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: #555;
+}
+
+.adopt-button {
+    margin-top: 2vh;
+    padding: 10px 20px;
+    background-color: #ff7f50;
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 50px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.adopt-button:hover {
+    background-color: #ff4500;
+}
+
+.adopt-button:active {
+    transform: scale(0.95); /* Slight press effect on click */
+}
+
+
+.contact {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: rgba(255, 255, 255, 0.85);
+    padding: 3vw;
+    border-radius: 15px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.contact h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 1vw;
+}
+
+.contactform {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5vh;
+}
+
+.contactInput {
+    height: 5vh;
+    width: 20vw;
+    background-color: #f3f3f3;
+    color: #333;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.contactSubmit {
+    height: 5vh;
+    width: 20vw;
+    background-color: #ff7f50;
+    color: white;
+    cursor: pointer;
+    border: none;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.2rem;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.contactSubmit:hover {
+    background-color: #e67348;
+}
+
+
+
+.visit-us {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2vh;
+    color: white;
+}
+
+.visit-us h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 2rem;
+    color: #fff;
+    margin-bottom: 1vw;
+}
+
+.social-links {
+    display: flex;
+    gap: 1.5vw;
+}
+
+.social-links a {
+    text-decoration: none;
+}
+
+.social-links img {
+    width: 60px;
+    height: 60px;
+    transition: transform 0.3s;
+}
+
+.social-links img:hover {
+    transform: scale(1.1);
+}

@@ -1,0 +1,205 @@
+
+.cart-card-show {
+
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    align-items: center;
+    justify-content: space-evenly;
+    text-align: center;
+}
+
+.cart-image img {
+    max-width: 100%;
+    height: 150px;
+    object-fit: contain;
+    border-radius: 10px;
+}
+
+
+/* Product name */
+.product-name {
+    font-size: 1.5rem;
+    margin: 1vh 0;
+    color: #333;
+}
+
+/* Product description */
+.product-description {
+    font-size: 1rem;
+    color: #666;
+    margin: 1vh 0;
+}
+
+/* Product weight */
+.product-weight {
+    font-size: 0.9rem;
+    color: #999;
+    margin: 1vh 0;
+}
+
+
+
+
+
+/* Product price */
+.product-price {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #ff7f50;
+    margin-bottom: 2vh;
+}
+
+/* Add to cart button */
+.add-to-cart-button {
+    background-color: #ff7f50;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 1rem;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.add-to-cart-button:hover {
+    background-color: #ff6347;
+    transform: translateY(-2px);
+}
+
+.show-product-button {
+    background-color: #4c10f1;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 1rem;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.show-product-button:hover {
+    background-color: #470fe1;
+    transform: translateY(-2px);
+}
+
+.old-price {
+    text-decoration: line-through;
+    color: grey;
+}
+
+/* New discounted price */
+.new-price {
+    color: green;
+    font-weight: bold;
+    font-size: large;
+}
+
+
+.quantity-input {
+    width: 60px;
+    padding: 5px;
+}
+
+.remove-button, .submit-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.remove-button:hover, .submit-button:hover {
+    background-color: #0056b3;
+}
+
+.order-section {
+    padding: 10px; /* Add some padding */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    margin-top: 20px; /* Space above the order section */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #b0aeae49;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+
+}
+
+.order-section h2 {
+    font-size: 24px; /* Increase font size for total price */
+    color: #333; /* Dark text color */
+    margin-bottom: 20px; /* Space below the heading */
+}
+
+.order-section .form-group {
+    display: flex; /* Use flexbox for better alignment */
+    flex-direction: column; /* Stack items vertically */
+    margin-bottom: 15px; /* Space between form items */
+}
+
+.order-section label {
+    font-weight: bold; /* Bold label text */
+    margin-bottom: 5px; /* Space below labels */
+}
+
+.order-section input[type="text"],
+.order-section input[type="tel"] {
+    padding: 10px; /* Inner padding for inputs */
+    border: 1px solid #ccc; /* Border around inputs */
+    border-radius: 4px; /* Slightly rounded corners for inputs */
+    font-size: 16px; /* Font size for input text */
+}
+
+.order-section input[type="text"]:focus,
+.order-section input[type="tel"]:focus {
+    border-color: #007BFF; /* Change border color on focus */
+    outline: none; /* Remove default outline */
+}
+
+.order-section .submit-button {
+    background-color: #007BFF; /* Button background color */
+    color: white; /* Button text color */
+    padding: 10px 15px; /* Padding inside button */
+    border: none; /* No border */
+    border-radius: 4px; /* Rounded corners */
+    font-size: 16px; /* Font size for button text */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+.order-section .submit-button:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+}
+
+.cart-form {
+    margin-top: 15px;
+}
+
+.cart-card-show {
+    display: flex;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.cart-image {
+    margin-right: 20px;
+}
+
+.cart-info {
+    flex: 1;
+}
+
+.form-group-order {
+    display: flex;
+    flex-direction: column;
+    gap:1vw;
+    justify-content: center;
+}

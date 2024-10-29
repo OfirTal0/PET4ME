@@ -1,0 +1,199 @@
+{% extends "base.html" %}
+
+{% block home %}
+
+<link rel="stylesheet" href="/static/home.css">
+
+<div class="container">
+    <div class="website-title">
+        <h1>Pet4me - מזון ואביזרים לכלבים וחתולים - רק בערבה התיכונה</h1>
+    </div>
+    <div class="delivery-info">
+        <p>!!הזמנה שנכנסת עד 16:00 מסופקת באותו היום , ועד בית הלקוח</p>
+    </div>
+    <div class="squres-section">
+        <div class="squres-about">
+            <div style="background-color: #f8b03cc3;">
+                <img src="static/images/badge.png" alt="Badge">
+                <h3>זכייני מזון סקנדינבי</h3>
+                <h3> בריא ואיכותי </h3> 
+                <h3>של חברת husse</h3>
+            </div>
+            <div style="background-color: #e1e1e1;">
+                <img src="static/images/versatility.png" alt="Versatility">
+                <h3>מגוון סוגי מזון</h3>
+                <h3>מובחרים</h3>
+            </div>
+            <div style="background-color: #f8b03cc3;">
+                <img src="static/images/phone-call.png" alt="Phone">
+                <h3>תמיד זמינים עבורך</h3>
+            </div>
+            <div style="background-color: #e1e1e1;">
+                <img src="static/images/user.png" alt="User">
+                <h3>יחס אישי</h3>
+            </div>
+            <div style="background-color: #f8b03cc3;">
+                <img src="static/images/location.png" alt="Location">
+                <h3>מגיעים לכל אזור בערבה</h3>
+            </div>
+            <div style="background-color: #e1e1e1;">
+                <img src="static/images/user.png" alt="User">
+                <h3>יחס אישי</h3>
+            </div>
+        </div>
+        <img src="static/images/home-img.png" class="dog-cat-image">
+    </div>
+
+    <div class="section2">
+        <h2>איזו חיה יש לך?</h2>
+        <form action="/catalog" method="GET" class="animal-form">
+            <div class="animal-links">
+                <button type="submit" name="animal" value="כלב" class="animal-link">
+                    <img src="static/images/home-dog.png" class="featured-image" alt="Dog">
+                    <h3>כלב</h3>
+                </button>
+                <button type="submit" name="animal" value="חתול" class="animal-link">
+                    <img src="static/images/home-cat.png" class="featured-image" alt="Cat">
+                    <h3>חתול</h3>
+                </button>
+                <button type="submit" name="animal" value="אחר" class="animal-link">
+                    <img src="static/images/home-parrot.png" class="featured-image" alt="Other animals">
+                    <h3>חיה אחרת</h3>
+                </button>
+            </div>
+        </form>
+    </div>
+
+
+    <div class="section3">
+        <div class="promo-box" id="promo-box">
+            {% with messages = get_flashed_messages(with_categories=True) %}
+                {% if messages %}
+                    <div class="flash-message">
+                        {% for category, message in messages %}
+                            {% if category == 'promo' %}  <!-- Check for 'promo' category -->
+                                <p>{{ message }}</p> 
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <h2>מועדון לקוחות</h2>
+                    <div class="text">הצטרפו למועדון הלקוחות שלנו וקבלו הנחות בלעדיות ועדכונים שוטפים על מבצעים מיוחדים!</div>
+                    <a class="promo-button" id="join-now-btn" href="javascript:void(0);">הצטרפו עכשיו</a>
+                {% endif %}
+            {% endwith %}
+        </div>
+        
+        <div class="promo-box" id="customer-club-form" style="display: none;">
+            <form action="/customer-club-signup" method="POST" class="customer-club-form">
+                <input type="text" name="name" placeholder="שם מלא" class="customer-input" required>
+                <input type="tel" name="phone" placeholder="טלפון" class="customer-input" required>
+                <input type="email" name="email" placeholder="אימייל" class="customer-input" required>
+                
+                <label class="checkbox-label">
+                    <input type="checkbox" name="agree_updates" value="yes" required>
+                    <span>אני מסכים/ה לקבל עדכונים שוטפים</span>
+                </label>
+        
+                <input type="submit" value="הצטרפו למועדון" class="customer-submit">
+            </form>
+        </div>
+
+        
+        <div class="promo-box">
+                    <h2 style="margin:0px;">מבצע חודשי</h2>
+                    <div class="monthly-sale-content">
+                            <div class="sale-product-info">
+                                <h3>{{ first_product_on_sale[12] }}% על  {{ first_product_on_sale[1] }}</h3>
+                                <p class="old-price">₪{{ first_product_on_sale [3] | int }}</p>
+                                <p class="new-price">₪{{ (first_product_on_sale [3] - (first_product_on_sale [3] * first_product_on_sale [12] / 100)) }}</p>
+                                <form action="/show_product" method="POST">
+                                    <input type="hidden" name="product_id" value="{{ first_product_on_sale [0] }}">
+                                    <input type="submit" class="show-product-button" value="עוד פרטים">
+                                </form>
+                            </div>
+                            <img src="/static/uploads/{{ first_product_on_sale [5] }}" class="sale-product-img" alt="{{ first_product_on_sale [1] }}">
+
+
+                    </div>
+        </div>
+    </div>
+
+    <div class="section4">
+        <h2>מוצרים פופלאריים</h2>
+        <div class="products-grid">
+            {% for product in popular_products %}
+            <div class="popular-product-card">
+                <img src="/static/uploads/{{ product[5] }}" class="productimg" alt="{{ product.product_name }}">
+                <h3>{{ product[1] }}</h3>
+                <p class="product-weight">Weight: {{ product[7] }} kg</p>
+                <form action="/show_product" method="POST">
+                    <input  type="hidden" name="product_id" value="{{ product[0] }}">
+                    <input type="submit" class="show-product-button" value="עוד פרטים">
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="adopt-section">
+        <h2 class="adopt-title">פינת האימוץ</h2> <!-- Title for the adoption spot -->
+        
+        <div class="adopt">
+            {% for adopt in adopt %}
+                <div class="adoption-info">
+                    <h2>{{ adopt[1] }} מחפש בית!</h2> <!-- Title dynamically using the animal's name -->
+                    <p>גיל: {{ adopt[3] }} שנים</p> <!-- Animal Age in Hebrew -->
+                    <p>{{  adopt[4] }}</p> <!-- Animal Description -->
+                    <a href="#contact" class="adopt-button">קח אותי הביתה</a>
+                </div>
+                <img src="/static/uploads/{{ adopt[5] }}" class="adopt-image">
+            {% endfor %}
+        </div>
+    </div>
+    <!-- Contact Form Section -->
+    <div class="section5">
+        <section id="contactForm" class="contact">
+            <h2>צור קשר</h2>
+            {% with messages = get_flashed_messages(with_categories=True) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        {% if category == 'contact' %}
+                            <div class="flash-message">
+                                <p>{{ message }}</p>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <form action="/contact" method="POST" id="leadForm" class="contactform">
+                        <input class="contactInput" type="text" id="name" name="name" placeholder="שם מלא" required>
+                        <input class="contactInput" type="phone" id="phone" name="phone" required placeholder="טלפון">
+                        <input class="contactSubmit" type="submit" value="קדימה!">
+                    </form>
+                {% endif %}
+            {% endwith %}
+        </section>
+
+        <div class="visit-us" id="contact">
+            <h2>טלפון להזמנות</h2>
+            <h3>050-9936660</h3>
+            <h2>פנו ישירות בוואטספ</h2>
+            <div class="social-links">
+                <a href="https://wa.me/pet4me">
+                    <img class="linkimg" src="/static/images/whatsapp.png" alt="WhatsApp">
+                </a>
+            </div>
+        </div>
+    
+    </div>
+</div>
+
+<script>
+    document.getElementById('join-now-btn').addEventListener('click', function() {
+        // Hide the original promo content
+        document.getElementById('promo-box').style.display = 'none';
+
+        // Show the form
+        document.getElementById('customer-club-form').style.display = 'block';
+    });
+</script>
+{% endblock %}

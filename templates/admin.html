@@ -1,0 +1,286 @@
+{% extends "base.html" %}
+
+{% block admin %}
+
+<link rel="stylesheet" href="/static/admin.css">
+
+<div class="admin-container">
+    <h1>לוח ניהול</h1> <!-- Admin Dashboard in Hebrew -->
+    
+    <!-- Navigation for Admin Sections -->
+    <div class="admin-nav">
+        <button onclick="showSection('leads')">לידים</button>
+        <button onclick="showSection('products-order')">הזמנות</button>
+        <button onclick="showSection('costumer-club')">מועדון לקוחות</button>
+        <button onclick="showSection('stock')">מלאי</button>
+        <button onclick="showSection('adopt')">אימוץ</button>
+    
+        <!-- Button to download all data as Excel -->
+        <button onclick="window.location.href='/download-data'">הורד נתונים (Excel)</button>
+    </div>
+
+    <!-- Section: Leads -->
+    <div id="leads" class="admin-section">
+        <h2>לידים</h2>
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>שם</th>
+                    <th>טלפון</th>
+                    <th>תאריך</th>
+                    <th>סטטוס</th>
+                    <th>שנה סטטוס</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for lead in leads %}
+                <tr>
+                    <td>{{ lead[0] }}</td>
+                    <td>{{ lead[1] }}</td>
+                    <td>{{ lead[2] }}</td>
+                    <td>{{ lead[3] }}</td>
+                    <td>{{ lead[4] }}</td>
+                    <td>
+                        <!-- Create a form to update the lead status -->
+                        <form action="/update_lead_status" method="POST">
+                            <input type="hidden" name="lead_id" value="{{ lead[0] }}">
+                            <select name="status" onchange="this.form.submit()">
+                                <option value="new" {% if lead[4] == 'new' %} selected {% endif %}>חדש</option>
+                                <option value="contacted" {% if lead[4] == 'contacted' %} selected {% endif %}>נוצר קשר</option>
+                            </select>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div id="costumer-club" class="admin-section">
+        <h2>מועדון לקוחות</h2>
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>שם</th>
+                    <th>טלפון</th>
+                    <th>אימייל</th>
+                    <th>תאריך</th>
+                    <th>אישור התראות</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for costumer in costumers %}
+                    <td>{{ costumer[0] }}</td>
+                    <td>{{ costumer[1] }}</td>
+                    <td>{{ costumer[2] }}</td>
+                    <td>{{ costumer[3] }}</td>
+                    <td>{{ costumer[4] }}</td>
+                    <td>{{ costumer[5] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Section: Product Orders -->
+    <div id="products-order" class="admin-section">
+        <h2>הזמנות</h2>
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>תאריך</th>
+                    <th>שם</th>
+                    <th>טלפון</th>
+                    <th>הזמנות</th>
+                    <th>סטטוס</th>
+                    <th>שנה סטטוס</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in product_orders %}
+                <tr>
+                    <td>{{ order[0] }}</td>
+                    <td>{{ order[1] }}</td>
+                    <td>{{ order[2] }}</td>
+                    <td>{{ order[3] }}</td>
+                    <td>{{ order[4] }}</td>
+                    <td>{{ order[5] }}</td>
+                    <td>
+                        <!-- Create a form to update the order status -->
+                        <form action="/update_order_status" method="POST">
+                            <input type="hidden" name="order_id" value="{{ order[0] }}">
+                            <select name="status" onchange="this.form.submit()">
+                                <option value="pending" {% if order[5] == 'pending' %} selected {% endif %}>ממתין</option>
+                                <option value="shipped" {% if order[5] == 'shipped' %} selected {% endif %}>נשלח</option>
+                                <option value="delivered" {% if order[5] == 'delivered' %} selected {% endif %}>נמסר</option>
+                                <option value="cancelled" {% if order[5] == 'cancelled' %} selected {% endif %}>בוטל</option>
+                            </select>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Section: Stock Management -->
+    <div id="stock" class="admin-section">
+        <h2>ניהול מלאי</h2>
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>שם המוצר</th>
+                    <th>קטגוריה</th>
+                    <th>מחיר</th>
+                    <th>תיאור</th>
+                    <th>פופולרי</th>
+                    <th>סוג חיה</th>
+                    <th>כמות במלאי</th>
+                    <th>משקל</th>
+                    <th>מבצע חודשי?</th>
+                    <th>מבצע</th>
+                    <th>%הנחה</th>
+                    <th>שנה פרטים</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                <tr>
+                    <form action="/update_stock" method="POST">
+                        <input type="hidden" name="product_id" value="{{ product[0] }}">
+                        <td><input type="text" name="name" value="{{ product[1] }}" required></td>
+                        <td>
+                            <select name="category" required>
+                                <option value="מזון" {% if product[2] == 'מזון' %} selected {% endif %}>מזון</option>
+                                <option value="אביזרים" {% if product[2] == 'אביזרים' %} selected {% endif %}>אביזרים</option>
+                            </select>
+                        </td>
+                        <td><input type="number" name="price" value="{{ product[3] }}" style="width: 50px;" required></td>
+                        <td><input type="text" name="description" value="{{ product[4] }}" required></td>
+                        <td>
+                            <select name="popular" required>
+                                <option value="כן" {% if product[8] == 'כן' %} selected {% endif %}>כן</option>
+                                <option value="לא" {% if product[8] == 'לא' %} selected {% endif %}>לא</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select name="animal" required>
+                                <option value="כלב" {% if product[9] == 'כלב' %} selected {% endif %}>כלב</option>
+                                <option value="חתול" {% if product[9] == 'חתול' %} selected {% endif %}>חתול</option>
+                                <option value="אחר" {% if product[9] == 'אחר' %} selected {% endif %}>אחר</option>
+                            </select>
+                        </td>
+                        <td><input type="number" name="stock" value="{{ product[6] }}" style="width: 50px;" required></td>
+                        <td><input type="number" name="weight" value="{{ product[7] }}" style="width: 50px;" ></td>
+                        <td>
+                            <select name="monthly_sale" required>
+                                <option value="כן" {% if product[10] == 'כן' %} selected {% endif %}>כן</option>
+                                <option value="לא" {% if product[10] == 'לא' %} selected {% endif %}>לא</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select name="sale" required>
+                                <option value="כן" {% if product[11] == 'כן' %} selected {% endif %}>כן</option>
+                                <option value="לא" {% if product[11] == 'לא' %} selected {% endif %}>לא</option>
+                            </select>
+                        </td>
+                        <td><input type="number" name="discount" value="{{ product[12] }}" style="width: 50px;" required></td>
+
+                        <td><button type="submit">עדכן</button></td>
+                    </form>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h3>הוספת מוצר חדש</h3>
+        <form action="/add_product" method="POST" enctype="multipart/form-data">
+            <label for="name">שם מוצר:</label>
+            <input type="text" name="name" id="name" required class="input-admin"><br>
+          
+            <label for="animal">סוג חיה:</label>
+            <select name="animal" id="animal" required class="input-admin"> 
+              <option value="כלב">כלב</option>
+              <option value="חתול">חתול</option>
+              <option value="אחר">אחר</option>
+            </select><br>
+
+            <label for="description">תיאור כללי:</label>
+            <textarea name="description" id="description" required></textarea><br>
+          
+    
+            <label for="category">קטגוריה:</label>
+            <select name="category" id="category" required class="input-admin">
+              <option value="מזון">מזון</option>
+              <option value="אביזרים">אביזרים</option>
+            </select><br>
+          
+            <label for="price">מחיר:</label>
+            <input type="number" name="price" id="price" required class="input-admin"><br>
+          
+            <label for="popular">האם מוצר פופלארי?</label>
+            <select name="popular" id="popular" required class="input-admin">
+              <option value="כן">כן</option>
+              <option value="לא">לא</option>
+            </select><br>
+
+
+            <label for="stock">כמות במלאי:</label>
+            <input type="number" name="stock" id="stock" required class="input-admin"><br>
+          
+            <label for="weight">משקל:</label>
+            <input type="number" name="weight" id="weight" placeholder="None" class="input-admin"><br>
+          
+            <label for="image">Image URL:</label>
+            <input type="file" name="image" accept="image/*" required>
+
+            
+            <button class="admin-button" type="submit">הוסף מוצר</button>
+          </form>
+    </div>
+
+    <!-- Section: Adopt Post -->
+    <div id="adopt" class="admin-section">
+        <h2>אימוץ</h2>
+        <h3>הוספת פוסט חדש</h3>
+        <form action="/add_adopt" method="POST" enctype="multipart/form-data">
+            <label for="name">שם החיה:</label>
+            <input type="text" name="name" id="name" required class="input-admin"><br>
+          
+            <label for="type">סוג חיה:</label>
+            <select name="type" id="type" required class="input-admin">
+              <option value="כלב">כלב</option>
+              <option value="חתול">חתול</option>
+              <option value="אחר">אחר</option>
+            </select><br>
+          
+
+            <label for="description">תיאור כללי:</label>
+            <textarea name="description" id="description" required></textarea><br>
+          
+            <label for="age">גיל:</label>
+            <input type="number" name="age" id="age" required class="input-admin"><br>
+          
+            <label for="image">Image URL:</label>
+            <input type="file" name="image" accept="image/*" required>
+          
+
+            <button class="admin-button" type="submit">הוסף</button>
+          </form>
+    </div>
+
+</div>
+
+<script>
+    function showSection(sectionId) {
+        document.querySelectorAll('.admin-section').forEach(function(section) {
+            section.style.display = 'none';
+        });
+        document.getElementById(sectionId).style.display = 'block';
+    }
+</script>
+
+{% endblock %}

@@ -1,0 +1,65 @@
+.admin-container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+
+.admin-nav {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.admin-nav button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.admin-nav button:hover {
+    background-color: #0056b3;
+}
+
+.admin-section {
+    display: none;
+}
+
+table.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 5vh;
+}
+
+table.admin-table th, table.admin-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+table.admin-table th {
+    background-color: #f2f2f2;
+}
+
+.input-admin, form textarea {
+    display: block;
+    width: 80%;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+.admin-button {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.admin-button:hover {
+    background-color: #218838;
+}
+

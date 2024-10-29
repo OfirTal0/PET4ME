@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block show_product %}
+<link rel="stylesheet" href="/static/show.css">
+
+<div class="product-card-show">    
+    <div class="product-image">
+        <img src="/static/uploads/{{ product[5] }}" alt="{{ product[1] }}">
+    </div>
+    <div class="product-info">
+        <h2>{{ product[1] }}</h2> 
+        <p class="product-weight">משקל: {{ product[7] }} גרם</p> <!-- Product Weight -->
+
+        {% if product[12] > 0 %} <!-- Check if there is a discount -->
+            <p class="old-price">₪{{ product[3] }}</p> <!-- Original Price -->
+            <p class="product-price">מחיר לאחר הנחה: ₪{{ product[3] - (product[3] * product[12] / 100 )  }}</p> <!-- Discounted Price -->
+        {% else %}
+            <p class="product-price">₪{{ product[3] }}</p> <!-- No discount, show original price -->
+        {% endif %}
+
+        <h3>תיאור נוסף:</h3>
+        <p class="product-description">{{ product[4] }}</p> <!-- Product Description -->
+    </div>
+
+    <form action="/add_to_cart" method="POST">
+        <input type="hidden" name="product_id" value="{{ product[0] }}">
+        <input type="submit" class="add-to-cart-button" value="הוסף לעגלה">
+    </form>
+</div>
+{% endblock %}

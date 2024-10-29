@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block cart %}
+<link rel="stylesheet" href="/static/cart.css">
+
+    {% for product in products %}
+    <div >
+    <div class="cart-card-show">    
+        <div class="cart-image">
+            <img src="/static/uploads/{{ product[5] }}" alt="{{ product[1] }}">
+        </div>
+        <div class="product-info">
+            <h3>{{ product[1] }}</h3> 
+            <p class="product-weight">משקל: {{ product[7] }} גרם</p> <!-- Product Weight -->
+
+            {% if product[12] > 0 %} <!-- Check if there is a discount -->
+                <p class="old-price">₪{{ product[3] }}</p> <!-- Original Price -->
+                <p class="product-price">מחיר לאחר הנחה: ₪{{ product[3] - (product[3] * product[12] / 100) }}</p> <!-- Discounted Price -->
+            {% else %}
+                <p class="product-price">₪{{ product[3] }}</p> <!-- No discount, show original price -->
+            {% endif %}
+        </div>
+
+        <!-- Quantity update form -->
+        <form action="/update_cart" method="POST" class="form-group">
+            <label for="quantity-{{ product[0] }}">כמות:</label>
+            <input type="number" name="quantity" id="quantity-{{ product[0] }}" value="{{ product[13] }}" min="1">
+            <input type="hidden" name="product_id" value="{{ product[0] }}">
+            <button type="submit" class="update-button">עדכן</button> <!-- Update button -->
+        </form>
+
+        <!-- Remove from cart button -->
+        <form action="/remove_cart" method="POST" class="form-group">
+            <button type="submit" name="remove" value="{{ product[0] }}" class="remove-button">הסר מהעגלה</button>
+        </form>
+    </div>
+    {% endfor %}
+
+    <div class="order-section">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="flash-message">
+                {% for message in messages %}
+                    <p>{{ message }}</p> <!-- Display flashed messages -->
+                {% endfor %}
+            </div>
+            {%else%}
+            <h2>סכום כולל: ₪{{ total_price }}</h2> <!-- Display total price -->
+
+            <form action="/submit_order" method="POST" class="form-group-order">
+                <!-- Input for Name -->
+                <label for="name">שם:</label>
+                <input type="text" name="name" id="name" required placeholder="הכנס את שמך">
+        
+                <!-- Input for Phone -->
+                <label for="phone">טלפון:</label>
+                <input type="tel" name="phone" id="phone" required placeholder="הכנס את מספר הטלפון שלך">
+        
+                <button type="submit" class="submit-button">שלח בקשת הזמנה</button> <!-- Submit order button -->
+            </form>
+        {% endif %}
+        {% endwith %}
+        
+    </div>
+</div>
+{% endblock %}
