@@ -14,6 +14,8 @@
 
 2. **Product Catalog**
    - Search and filter capabilities
+   - View products and a catalog
+   - Add items to a shopping cart.
 
 3. **Shopping Cart**
    - Quantity updates, item removal, and total amount calculation
@@ -25,12 +27,19 @@
    - Update adoption posts on the homepage
    - Export leads, orders, Customer Club members, and manual inventory entries to Excel
 
+5. **Database Interaction**
+    - using SQLite for data storage, with various SQL queries to fetch, insert, and update data.
+
+6. **User Interaction**
+   - utilize sessions to maintain cart data and provide flash messages for user feedback.
+
 ## Getting Started
 
-**Local Setup**:
-1. Clone the repository:
-   ```bash
-   git clone <repository-url>
+Locally:
+1.Clone the repository: git clone https://github.com/OfirTal0/PET4ME.git 
+2.Navigate to the project directory: cd PET4ME 
+3.python -m pip install -r requirements.txt 
+4.python ./manage.py runserver
 
 ## Changes and Fixes for Future
 
