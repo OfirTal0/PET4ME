@@ -18,68 +18,76 @@
     color: #333; /* Dark text for contrast */
     font-weight: bold;
     text-align: center;
-    padding: 15px;
+    padding: 10px;
     font-size: 1.2rem;
     border: 2px solid #ffc107; /* Border to emphasize the box */
     margin-bottom: 20px; /* Space below the banner */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Shadow for emphasis */
-    border-radius: 8px; /* Optional: Rounded corners */
+    border-radius: 10px; /* Optional: Rounded corners */
 }
 
 
 .squres-section {
     display: flex;
-    align-items: center;
+    flex-direction: column;
     justify-content: center;
-    gap: 5vw;
+    align-items: center;
+    background-size: 90% auto; /* Set width to 90% and adjust the height automatically */
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100%; 
+    height: auto;
 }
 
 
 .squres-about {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 2 items per row */
-    grid-gap: 15px;
-    justify-items: center;
+    grid-template-columns: repeat(6, 1fr);
+    grid-gap: 20px;
+    justify-content: center;
+    padding: 20px;
     align-items: center;
 }
 
-.squres-about div {
-    background-color: #f0f0f0;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 150px; /* Smaller width and height */
-    height: 150px;
+.grid-item {
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 10px;
-    text-align: center;
+    flex-direction: column;   
 }
 
-.squres-about img {
-    width: 40px; /* Adjust size of the icon */
-    height: auto;
-    margin-bottom: 8px;
+.grid-item .icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative; /* To position the text over the image */
+    overflow: hidden; /* Hide anything outside the boundaries of the image */
 }
 
-.squres-about h3 {
-    font-size: 14px;
-    font-weight: 600;
-    color: #333;
+.grid-item .icon:hover {
+    transform: scale(1.1);
 }
 
-.dog-cat-image{
-    width: 35%;
-    height: auto;
+
+.grid-item .icon img {
+    max-width: 60%;
+    max-height: 60%;
 }
 
 .section2 {
-    display: flex;
     flex-direction: column;
     text-align: center; /* Center align text */
     margin-bottom: 20px; /* Space below the section */
-    
+    margin: 4vh auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 
@@ -89,7 +97,6 @@
     justify-content: center; /* Center the items */
     gap: 8vw;; /* Space between the items */
 }
-
 .animal-link {
     background: none; /* Remove background */
     border: none; /* Remove border */
@@ -99,14 +106,13 @@
     flex-direction: column; /* Stack vertically */
     align-items: center; /* Center align items */
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative; /* To position the text over the image */
+    overflow: hidden; /* Hide anything outside the boundaries of the image */
 }
-
 .animal-link:hover {
-    transform: translateY(-5px); /* Subtle hover effect */
-    border-radius: 100px; /* Rounded corners */
+    transform: scale(1.1);
 }
-
 
 .featured-image {
     width: 250px; /* Fixed width for images */
@@ -114,35 +120,110 @@
     object-fit: cover; /* Maintain aspect ratio while covering the area */
     border-radius: 100px; /* Rounded corners */
     margin-bottom: 10px; /* Space below the image */
+    transition: filter 0.3s ease; /* Smooth transition for the blur effect */
+}
+.animal-link:hover .featured-image {
+    filter: blur(5px);
+}
+
+.animal-link h3 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    
+    font-size: 1.5rem;
+    font-weight: bold;
+    opacity: 0; /* Initially hidden */
+    transition: opacity 0.3s ease; /* Smooth fade-in effect */
+    text-shadow:
+    2px 2px 0px black, /* Shadow on the right and bottom */
+    -2px -2px 0px black, /* Shadow on the left and top */
+    2px -2px 0px black, /* Shadow on the top right */
+    -2px 2px 0px black; /* Shadow on the bottom left */
+}
+
+.animal-link:hover h3 {
+    opacity: 1;
 }
 
 
-
-/* General Promo Box Styles */
-.section2, .section3, .section4, .section5, .section6 {
+.section4, .section5, .section6 {
     margin: 4vh auto;
     display: flex;
     justify-content: center;
     align-items: center;
+    transform: translateY(20px);
+
 }
 
-
-.section3{
-    gap:3vw;
-}
-
-
-.adopt-section {
-    margin-top: 5vh;
-    text-align: center;
-    justify-content: center;
+.section3 {
     display: flex;
-    align-items: center;
-    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px 10%;
+    background-color: white;
+    margin-top: 10vh;
+    gap: 2vh;
+
 }
 
 
+.box {
+    width: 30vw;
+    height: 65vh;
+    border-radius: 10px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
 
+.box img {
+    width: 100%;
+    height: 200px;
+    border-radius: 10px;
+}
+
+.box h3 {
+    color: black;
+    text-decoration: underline;
+    margin-top: 20px;
+}
+
+.box p {
+    color: gray;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.box a {
+    display: block;
+    margin-top: 15px;
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.box a:hover {
+    text-decoration: underline;
+}
+
+/* Adjust for small screens */
+@media (max-width: 768px) {
+    .section3 {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .box {
+        width: 80%;
+        margin-bottom: 20px;
+    }
+}
 
 .promo-box {
     display: flex;
@@ -181,6 +262,11 @@
     transform: translateY(-5px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
+.promo-box-sale:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
 
 /* Promo Button */
 .promo-button {
@@ -234,11 +320,12 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 5vh 0;
     background-color: #f9f9f9;
     border-radius: 15px;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+
 }
+
 
 .section4 h2 {
     font-size: 2.5rem;
@@ -248,6 +335,56 @@
 }
 
 
+.show-product-button {
+    background-color: #4c10f1;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 1rem;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.show-product-button:hover {
+    background-color: #470fe1;
+    transform: translateY(-2px);
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Three columns */
+    gap: 20px; /* Space between items */
+    margin: 20px; /* Margin around the grid */
+}
+
+.popular-product-card {
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2vh;
+    text-align: center;
+    height: 40vh;   
+    justify-content: center;
+    gap:2vh;
+}
+
+.product-weight {
+    font-size: 0.9rem;
+    color: #999;
+    margin: 1vh 0;
+}
+
+.productimg {
+    width: 50%;
+    height: 50% /* Maintain aspect ratio */
+
+}
 
 .customer-club-form {
     display: flex;
@@ -297,98 +434,6 @@
     background-color: #e09d2e;
 }
 
-.monthly-sale {
-    color: red;
-    font-weight: bold;
-}
-
-
-.monthly-sale-content {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 2vw;
-}
-
-.sale-product-img {
-    max-width: 150px;
-    margin: 10px 0;
-    background-color: white;
-    border-radius: 20px;
-}
-
-.sale-product-info h3 {
-    color: #333;
-    font-size: 22px;
-    margin: 10px 0;
-}
-
-
-.old-price {
-    text-decoration: line-through;
-    color: grey;
-}
-
-/* New discounted price */
-.new-price {
-    color: green;
-    font-weight: bold;
-    font-size: large;
-}
-
-
-.show-product-button {
-    background-color: #4c10f1;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 25px;
-    font-size: 1rem;
-    text-decoration: none;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
-}
-
-.show-product-button:hover {
-    background-color: #470fe1;
-    transform: translateY(-2px);
-}
-
-.products-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* Three columns */
-    gap: 20px; /* Space between items */
-    margin: 20px; /* Margin around the grid */
-}
-
-
-.popular-product-card {
-    background-color: #fff;
-    border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s, box-shadow 0.3s;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 2vh;
-    text-align: center;
-    height: 40vh;
-    justify-content: center;
-}
-
-.product-weight {
-    font-size: 0.9rem;
-    color: #999;
-    margin: 1vh 0;
-}
-
-.productimg {
-    width: 130px; /* Set the desired width */
-    height: 100px; /* Maintain aspect ratio */
-
-}
-
-
 
 .adopt-title {
     font-size: 2.5rem;
@@ -396,6 +441,15 @@
     color: #ff4500;
     margin-bottom: 4vh;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Soft shadow for emphasis */
+}
+
+.adopt-section {
+    margin-top: 5vh;
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 }
 
 .adopt {
@@ -438,7 +492,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 1.5vh;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
     color: #333;
     position: relative;
@@ -484,7 +537,6 @@
     display: flex;
     justify-content: center;
     flex-direction: column;
-    align-items: flex-start;
     background-color: rgba(255, 255, 255, 0.85);
     padding: 3vw;
     border-radius: 15px;
@@ -502,6 +554,7 @@
     display: flex;
     flex-direction: column;
     gap: 1.5vh;
+    align-items: center;
 }
 
 .contactInput {
@@ -566,4 +619,94 @@
 
 .social-links img:hover {
     transform: scale(1.1);
+}
+
+.visit-us .phone-number {
+    font-family: 'Poppins', sans-serif;
+    font-size: 2rem;
+    color: #ff7f50; /* Bright color for emphasis */
+    font-weight: bold;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Adding shadow for better visibility */
+    margin: 0.5vw 0;
+    transition: transform 0.3s, color 0.3s;
+}
+
+.visit-us .phone-number:hover {
+    color: #ff6347; /* Slightly different color when hovered */
+    transform: scale(1.1); /* Enlarging on hover for effect */
+}
+
+
+
+.modal {
+    display: none; 
+    position: fixed; 
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); 
+    z-index: 1000;
+}
+
+/* Modal content */
+.modal-content {
+    background-color: white;
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 500px;
+    position: relative;
+    text-align: center;
+
+}
+
+
+.customerClubForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5vh;
+    align-items: center;
+}
+
+.customerClubFormInput {
+    height: 2vh;
+    width: 20vw;
+    background-color: #f3f3f3;
+    color: #333;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.customerClubFormSelect {
+    height: 7vh;
+    width: 20vw;
+    background-color: #f3f3f3;
+    color: #333;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+
+.customerClubFormSubmit {
+    height: 5vh;
+    width: 20vw;
+    background-color: #ff7f50;
+    color: white;
+    cursor: pointer;
+    border: none;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.2rem;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.customerClubFormSubmit:hover {
+    background-color: #e67348;
+}
+
+/* Close button */
+.close {
+    position: absolute;
+    top: 10px; right: 10px;
+    font-size: 24px; cursor: pointer;
 }

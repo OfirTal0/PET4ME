@@ -1,6 +1,5 @@
 .admin-container {
-    width: 80%;
-    margin: 0 auto;
+    margin: 0;
     padding: 20px;
 }
 
@@ -10,6 +9,7 @@
     justify-content: space-around;
     margin-bottom: 20px;
 }
+
 
 .admin-nav button {
     padding: 10px 20px;

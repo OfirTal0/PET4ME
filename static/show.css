@@ -1,3 +1,8 @@
+.product-info {
+    display: flex;
+    flex-direction: column;
+    gap:5px;
+}
 
 .product-card-show {
     display: flex;
@@ -10,18 +15,13 @@
     justify-content: center;
     padding: 2vh;
     text-align: center;
-    gap: 15vw;
+    gap: 10vw;
 }
 
-
-.product-card-show:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-}
 
 .product-image img {
     max-width: 100%;
-    height: 150px;
+    height: 250px;
     object-fit: contain;
     border-radius: 10px;
 }
@@ -34,13 +34,6 @@
     color: #333;
 }
 
-/* Product description */
-.product-description {
-    font-size: 1rem;
-    color: #666;
-    margin: 1vh 0;
-}
-
 /* Product weight */
 .product-weight {
     font-size: 0.9rem;
@@ -49,11 +42,12 @@
 }
 
 .product-price {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #ff7f50;
-    margin-bottom: 2vh;
+    font-size: 1.5rem;
+    color: black;
+    margin: 0; /* Ensure no margin */
+    padding: 5px 0; /* Optional: control spacing around price */
 }
+
 
 .monthly-sale {
     color: red;
@@ -67,24 +61,46 @@
 }
 
 .new-price {
-    color: green;
-    font-weight: bold;
-    font-size: large;
+    color: red;
 }
 
-.add-to-cart-button {
-    background-color: #ff7f50;
+
+.show-product-button, .add-to-cart-button {
+    background-color:black;
     color: white;
-    padding: 10px 20px;
-    border-radius: 25px;
-    font-size: 1rem;
-    text-decoration: none;
-    border: none;
+    padding: 8px 15px;
+    border-radius: 3px;
+    font-size: 0.9rem;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
+    transition: background-color 0.3s;
 }
+
 
 .add-to-cart-button:hover {
-    background-color: #ff6347;
-    transform: translateY(-2px);
+    background-color:white;
+    border-color: black;
+    color: black;
+}
+
+.info {
+    margin-top: 3vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.info h2 {
+    font-size: 2rem;
+    color: #333;
+    font-family: 'Lucida Sans', 'Lucida Grande', sans-serif;
+}
+
+.monthly-sale, .sale-label {
+    position: absolute;
+    top: 35vh;
+    right: 18vw;
+    background-color: red;
+    color: white;
+    padding: 5px;
+    font-size: 0.8rem;
+    border-radius: 3px; /* Square corners */
 }

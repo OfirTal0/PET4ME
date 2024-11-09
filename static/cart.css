@@ -1,20 +1,20 @@
 
 .cart-card-show {
-
-    background-color: #fff;
-    border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s, box-shadow 0.3s;
-    align-items: center;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
     justify-content: space-evenly;
-    text-align: center;
+    align-items:stretch;
 }
 
 .cart-image img {
-    max-width: 100%;
-    height: 150px;
+    max-width: 100px;
+    height: auto;
     object-fit: contain;
-    border-radius: 10px;
+    border-radius: 5px;
 }
 
 
@@ -91,44 +91,55 @@
     color: grey;
 }
 
-/* New discounted price */
 .new-price {
-    color: green;
-    font-weight: bold;
-    font-size: large;
+    color: red;
 }
-
 
 .quantity-input {
     width: 60px;
     padding: 5px;
 }
 
-.remove-button, .submit-button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 5px 10px;
-    cursor: pointer;
+.remove-icon {
+    width: 24px;
+    height: 24px;
 }
 
-.remove-button:hover, .submit-button:hover {
-    background-color: #0056b3;
-}
-
-.order-section {
-    padding: 10px; /* Add some padding */
-    border-radius: 8px; /* Rounded corners */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    margin-top: 20px; /* Space above the order section */
+.forms {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    background-color: #b0aeae49;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s, box-shadow 0.3s;
+    gap: 2vh;
+}
 
+.remove-button, .submit-button {
+        background: none; /* Remove background */
+        border: none; /* Remove border */
+        padding: 0; /* Remove padding */
+        margin: 0; /* Remove margin if any */
+        color: inherit; /* Inherit text color */
+        font: inherit; /* Inherit font style */
+        cursor: pointer; /* Show pointer cursor */
+        text-decoration: none; /* Remove any text underline */
+    
+}
+
+
+.order-section {
+    width: 30%; /* Fixed width of 30% */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 10px; /* Slightly increase padding */
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+}
+
+.no-products {
+    text-align: center;
+    font-size: 1.5em;
+    color: #555;
 }
 
 .order-section h2 {
@@ -187,19 +198,94 @@
     border: 1px solid #ddd;
     padding: 10px;
     border-radius: 5px;
+    justify-content: space-evenly;
 }
 
+.cart-container {
+    width: 65%; /* Take up 65% of the page width */
+    max-height: 80vh; /* Limit height to 80% of viewport */
+    overflow-y: auto; /* Enable vertical scrolling */
+    float: right; /* Align to the right side */
+    display: flex;
+    flex-direction: column;
+    padding-right: 10px;
+}
+
+.cart-container::-webkit-scrollbar {
+    width: 8px; /* Width of the scrollbar */
+}
+
+.cart-container::-webkit-scrollbar-thumb {
+    background-color: #ccc; /* Color of scrollbar */
+    border-radius: 4px;
+}
+
+.cart-container::-webkit-scrollbar-thumb:hover {
+    background-color: #999; /* Darker on hover */
+}
+
+
 .cart-image {
-    margin-right: 20px;
+    max-width: 100%;
+    height: 150px;
 }
 
 .cart-info {
     flex: 1;
 }
 
+.cart-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+.cart-table th, .cart-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+.cart-table th {
+    background-color: #f3f3f3;
+    font-weight: bold;
+}
+
+
 .form-group-order {
     display: flex;
     flex-direction: column;
     gap:1vw;
     justify-content: center;
+}
+
+.flash-m.flash-messages {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 90%;
+    text-align: center;
+    z-index: 999;
+}
+
+.flash-message {
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.flash-message.error {
+    background-color: #f8d7da;  /* Light red background */
+    color: #721c24;  /* Dark red text */
+}
+
+.flash-message.success {
+    background-color: #d4edda;  /* Light green background */
+    color: #155724;  /* Dark green text */
+}
+
+.flash-message p {
+    margin: 0;
 }

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block blog %}
+<link rel="stylesheet" href="/static/blog.css">
+<div style="display:flex; flex-direction:column; align-items:center">
+    <h2 style="margin:10px;">הבלוג שלנו</h2>
+
+    <div class="blog-section">
+        {% for article in articles %}
+        <div class="box">
+            <img src="/static/uploads/blog/{{ article[3] }}" alt="{{ article[1] }}">
+            <h3>{{ article[1] }}</h3>
+            <p>{{ article[2] }}</p>
+            <a href="{{ url_for('article', id=article[0]) }}">קרא עוד &gt;&gt;</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

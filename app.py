@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session, flash, send_file
+from flask import Flask, render_template, request, redirect, session, flash, send_file, jsonify
 import sqlite3
 from werkzeug.utils import secure_filename
 from datetime import datetime
@@ -7,6 +7,8 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from openpyxl import Workbook
 from io import BytesIO
+import json
+
 
 app = Flask(__name__, static_folder='static')
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
@@ -40,19 +42,19 @@ def download_data():
 
     # Customer Club sheet
     customer_ws = wb.create_sheet(title="Customer Club")
-    customer_ws.append(["ID", "שם", "טלפון", "אימייל", "תאריך", "אישור התראות"])
+    customer_ws.append(["ID", "שם", "טלפון", "אימייל", "תאריך", "אישור התראות", "סוג חיה"])
     for customer in costumers:  # Assuming `customers` is fetched from the database
         customer_ws.append(customer)
 
     # Product Orders sheet
     orders_ws = wb.create_sheet(title="Product Orders")
-    orders_ws.append(["ID", "תאריך", "שם", "טלפון", "הזמנות", "סטטוס"])
+    orders_ws.append(["ID", "תאריך", "שם", "טלפון", "הזמנות", "סטטוס", "כתובת"])
     for order in product_orders:  # Assuming `product_orders` is fetched from the database
         orders_ws.append(order)
 
     # Stock sheet
     stock_ws = wb.create_sheet(title="Stock")
-    stock_ws.append(["ID","שם המוצר","קטגוריה","מחיר","תיאור","תמונה","כמות במלאי", "משקל מוצר", "האם מוגדר פופולארי","סוג חיה"])
+    stock_ws.append(["ID","שם המוצר","קטגוריה","מחיר","תיאור","תמונה","כמות במלאי", "משקל מוצר", "האם מוגדר פופולארי","סוג חיה","מבצע חודשי","מבצע","אחוז הנחה"])
     for product in products:  # Assuming `products` is fetched from the database
         stock_ws.append(product)
 
@@ -141,20 +143,22 @@ def search():
     else:
         return redirect('/catalog')
 
-@app.route('/contact', methods=['GET', 'POST'])
+@app.route('/contact', methods=['POST'])
 def contact():
-    if request.method == 'POST':
-        name = request.form.get('name')
-        phone = request.form.get('phone')
-        date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        status = "new"  # Default status
+    data = request.get_json()
+    name = data.get('name')
+    phone = data.get('phone')
+    date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    status = "new"  # Default status
 
-        # Insert into leads table using raw SQL
-        insert_sql = f"INSERT INTO leads (name, phone, date, status) VALUES ('{name}', '{phone}', '{date}', '{status}')"
-        query(insert_sql)  # Call existing query function for execution
-        send_contact_email(name, phone, date)
-        flash("תודה שיצרת קשר! נחזור אלייך בהקדם האפשרי", 'contact')  # Add category here
-    return redirect('/')  # Redirect to the cart page
+    # Insert into leads table using raw SQL
+    insert_sql = f"INSERT INTO leads (name, phone, date, status) VALUES ('{name}', '{phone}', '{date}', '{status}')"
+    query(insert_sql)  # Call existing query function for execution
+    send_contact_email(name, phone, date)
+
+    # Respond with a success message
+    return jsonify(success=True)
+
 @app.route('/cart', methods=['GET', 'POST'])
 def cart():
     products_in_cart = session.get('products_in_cart', {})  # This is a dictionary {product_id: quantity}
@@ -179,12 +183,19 @@ def cart():
                 # No discount, use the original price
                 discounted_price = price
 
+            # Round the prices to 1 decimal point
+            discounted_price = round(discounted_price, 1)
+            price = round(price, 1)
+
             # Add the discounted price and quantity to the product info
             product_info.append(quantity * discounted_price)  # Calculate total price for this product
             product_details_in_cart.append(product_info)  # Collect product info with quantity and discount
 
-            # Accumulate total price including discount
+            # Accumulate total price including discount and round to 1 decimal point
             total_price += quantity * discounted_price
+
+    # Round the total price to 1 decimal point
+    total_price = round(total_price, 1)
 
     return render_template('cart.html', products=product_details_in_cart, total_price=total_price)
 
@@ -232,15 +243,21 @@ def submit_order():
         products_in_cart = session.get('products_in_cart', {})  # Make sure to get the cart as a dictionary
         date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         status = "new"
+        address = request.form.get('address')
 
         products_in_cart_str = ', '.join(f"{product_id}:{quantity}" for product_id, quantity in products_in_cart.items())
 
-        query(f"INSERT INTO products_order (date, name, phone, products_order, status) VALUES ('{date}', '{name}', '{phone}', '{products_in_cart_str}', '{status}')"),
+        if not products_in_cart:
+            flash("העגלה ריקה, לא ניתן לשלוח הזמנה", category="error")
+            return redirect('/cart')  # Redirect back to the cart page
 
-        send_order_email(name, phone, products_in_cart_str, date)
+
+        query(f"INSERT INTO products_order (date, name, phone, products_order, status, address) VALUES ('{date}', '{name}', '{phone}', '{products_in_cart_str}', '{status}', '{address}')"),
+
+        send_order_email(name, phone, products_in_cart_str, date, address)
 
         session.pop('products_in_cart', None)  # Clear cart after submission
-        flash("קיבלנו את ההזמנה!  נחזור אלייך בהקדם האפשרי")
+        flash("קיבלנו את ההזמנה! נחזור אלייך בהקדם האפשרי", category="success")
         return redirect('/cart')  # Redirect to the cart page
 
     except Exception as e:
@@ -251,6 +268,17 @@ def submit_order():
 
     if __name__ == '__main__':
         app.run(debug=True)
+
+@app.route('/blog', methods=['GET', 'POST'])
+def blog():
+    articles = query(f"SELECT * FROM blog")
+    return render_template('blog.html', articles= articles)
+
+@app.route('/article/<int:id>', methods=['GET'])
+def article(id):
+    # You should query for the article by the given id and pass the data to the template
+    article = query(f"SELECT * FROM blog WHERE id = {id}")
+    return render_template('article.html', article= article[0])
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -271,7 +299,9 @@ def admin():
     product_orders = query("SELECT * FROM products_order")
     products = query("SELECT * FROM products")
     costumers = query("SELECT * FROM costumer_club")
-    return render_template('admin.html', leads=leads, product_orders=product_orders, products=products, costumers=costumers)
+    articles = query("SELECT * FROM blog")    
+  
+    return render_template('admin.html', leads=leads, product_orders=product_orders, products=products, costumers=costumers,articles=articles)
 
 @app.route('/update_lead_status', methods=['POST'])
 def update_lead_status():
@@ -301,11 +331,12 @@ def update_stock():
     product_id = request.form.get('product_id')
     name = request.form.get('name')
     category = request.form.get('category')
-    price = float(request.form.get('price'))  # Ensure price is a float
+    float_price = int(request.form.get('price'))  
+    price = round(float_price, 1)  
     description = request.form.get('description')
     popular = request.form.get('popular')
     animal = request.form.get('animal')
-    stock = int(request.form.get('stock'))  # Ensure stock is an integer
+    stock = int(request.form.get('stock')) 
     weight = request.form.get('weight')
     monthly_sale = request.form.get('monthly_sale')
     sale = request.form.get('sale')
@@ -329,7 +360,7 @@ def add_product():
     description = request.form['description']
     category = request.form['category']
     popular = request.form['popular']
-    price = float(request.form['price'])  # Ensure price is a float
+    price = round(price, 1)  # Round the price to one decimal place
     stock = int(request.form['stock'])  # Ensure stock is an integer
     animal = request.form['animal']
     weight = request.form.get('weight')
@@ -344,6 +375,12 @@ def add_product():
         image.save(os.path.join(app.config['UPLOAD_FOLDER'], image_filename))
 
     query(f"INSERT INTO products (product_name, category, price, description, image, stock, weight, popular, animal, monthly_sale, sale, discount)  VALUES ('{name}', '{category}', '{price}', '{description}', '{image_filename}', '{stock}', '{weight}', '{popular}', '{animal}', '{monthly_sale}', '{sale}', '{discount}')")
+    return redirect('/admin')
+
+@app.route('/remove_product', methods=['POST'])
+def remove_product():
+    product_id = request.form.get('product_id')
+    query(f"DELETE FROM products WHERE id = {product_id}")
     return redirect('/admin')
 
 @app.route('/add_adopt', methods=['POST'])
@@ -361,17 +398,60 @@ def add_adopt():
     query(f"INSERT INTO adopt (name, type, age, description, image) VALUES ('{name}', '{type}', '{age}', '{description}', '{image_filename}')")   
     return redirect('/admin')
 
+
+@app.route('/update_article', methods=['POST'])
+def update_article():
+    article_id = request.form['article_id']
+    name = request.form['name']
+    summary = request.form['summary']
+    text = request.form['text']
+    
+    query(f"""
+    UPDATE blog
+    SET name = ?, summary = ?, text = ?
+    WHERE id = ?
+    """, (name, summary, text, article_id))
+
+    return redirect('/admin')
+
+
+@app.route('/add_article', methods=['POST'])
+def add_article():
+    name = request.form['name']
+    summary = request.form['summary']
+    text = request.form['text']
+    image = request.files['image']
+    image_filename = 'none'
+    if image and allowed_file(image.filename):
+        image_filename = secure_filename(image.filename)
+        image.save(os.path.join(app.config['UPLOAD_FOLDER'], 'blog', image_filename))
+    
+    query(f"INSERT INTO blog (name, summary, image, text) VALUES ('{name}', '{summary}', '{image_filename}', '{text}')")   
+    return redirect('/admin')
+
+
+@app.route('/remove_article', methods=['POST'])
+def remove_article():
+    article_id = request.form['article_id']
+    query(f"DELETE FROM blog WHERE id = ?", (article_id))
+    return redirect('/admin')
+
 @app.route('/customer-club-signup', methods=['POST'])
 def customer_club_signup():
-    name = request.form.get('name')
-    phone = request.form.get('phone')
-    email = request.form.get('email')
+    data = json.loads(request.data)
+    name = data.get('name')
+    phone = data.get('phone')
+    email = data.get('email')
+    animal_type = data.get('animal_type')  # New field
     date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    confirmation = request.form.get('agree_updates')
-    query(f"INSERT INTO costumer-club (name, phone, email, date, confirmation) VALUES ('{name}', '{phone}', '{email}', '{date}', '{confirmation}')")   
-    send_costumer_club_email(name, phone, email, date, confirmation)
-    flash("תודה שהצטרפתם למועדון הלקוחות שלנו!", "promo")
-    return redirect('/')
+    confirmation = data.get('agree_updates')
+    try:
+        query(f"INSERT INTO costumer_club (name, phone, email, date, confirmation, animal) VALUES ('{name}', '{phone}', '{email}', '{date}', '{confirmation}', '{animal_type}')")
+        send_costumer_club_email(name, phone, email, date, confirmation, animal_type)
+        return jsonify(success=True)
+    except Exception as e:
+        print("Error:", e)  
+        return jsonify(success=False)
 
 #db
 
@@ -399,7 +479,7 @@ import os
 sender_email = os.environ.get("SENDER_EMAIL")
 sender_password = os.environ.get("SENDER_PASSWORD")
 
-def send_order_email(name, phone, products, order_date):
+def send_order_email(name, phone, products, order_date, address):
     # Email configuration
     sender_email = "ofirital0@gmail.com"
     sender_password = "asfl tyti jmdi ukfw"
@@ -442,6 +522,8 @@ def send_order_email(name, phone, products, order_date):
         <p>תאריך: {order_date}</p>
         <p>שם המזמין: {name}</p>
         <p>טלפון: {phone}</p>
+        <p>כתובת: {address}</p>
+
         <table style="border-collapse: collapse; width: 100%;">
             <thead>
                 <tr>
@@ -477,7 +559,7 @@ def send_order_email(name, phone, products, order_date):
     except Exception as e:
         print(f"Failed to send email: {e}")
 
-def send_costumer_club_email(name, phone, email, date, confirmation):
+def send_costumer_club_email(name, phone, email, date, confirmation, animal_type):
     # Email configuration
     sender_email = "ofirital0@gmail.com"
     sender_password = "asfl tyti jmdi ukfw"
@@ -492,6 +574,7 @@ def send_costumer_club_email(name, phone, email, date, confirmation):
         <p>שם מלא: {name}</p>
         <p>טלפון: {phone}</p>
         <p>אימייל: {email}</p>
+        <p>סוג החיה ברשותי:  {animal_type}</p>
         <p>אישר קבלת פרטים {confirmation}</p>
     </body>
     </html>

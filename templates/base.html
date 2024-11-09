@@ -18,7 +18,7 @@
                     <a class="linknavbar" href="/">ראשי</a>
                     <a class="linknavbar" href="/about">אודותינו</a>
                     <a class="linknavbar" href="/catalog">קטלוג מוצרים</a>
-                    <a class="linknavbar" href="/">בלוג</a>
+                    <a class="linknavbar" href="/blog">בלוג</a>
                     <a class="linknavbar" href="/#contact">צור קשר</a>
                     <img class="logo" src="/static/images/logo.png" alt="Logo">
                 </nav>
@@ -39,15 +39,25 @@
             {% block show_product %}{% endblock %}
             {% block cart %}{% endblock %}
             {% block about %}{% endblock %}
+            {% block blog %}{% endblock %}
+            {% block article %}{% endblock %}
             {% block login %}{% endblock %}
             {% block admin %}{% endblock %}
+
         </main>
 
         <footer class="footer">
-            <p><a style="color:white" href="/login">ניהול</a></p>
-            <p>ערבה | עין יהב | pets4me2024@gmail.com | 050-9936660</p>
+            <p><a style="color:white" href="/login" target="_blank">ניהול</a></p>
+            <p>ערבה | עין יהב | <a href="mailto:pets4me2024@gmail.com" style="color:white">pets4me2024@gmail.com</a> | 050-9936660</p>
             <p>&copy; 2024 כל הזכויות שמורות</p>
         </footer>
     </div>
 </body>
+
+<!-- <script>
+    document.querySelectorAll('a').forEach(function(link) {
+        link.setAttribute('target', '_blank');
+    });
+</script> -->
+
 </html>

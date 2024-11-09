@@ -8,23 +8,30 @@
         <img src="/static/uploads/{{ product[5] }}" alt="{{ product[1] }}">
     </div>
     <div class="product-info">
-        <h2>{{ product[1] }}</h2> 
-        <p class="product-weight">משקל: {{ product[7] }} גרם</p> <!-- Product Weight -->
-
-        {% if product[12] > 0 %} <!-- Check if there is a discount -->
-            <p class="old-price">₪{{ product[3] }}</p> <!-- Original Price -->
-            <p class="product-price">מחיר לאחר הנחה: ₪{{ product[3] - (product[3] * product[12] / 100 )  }}</p> <!-- Discounted Price -->
-        {% else %}
-            <p class="product-price">₪{{ product[3] }}</p> <!-- No discount, show original price -->
-        {% endif %}
-
-        <h3>תיאור נוסף:</h3>
-        <p class="product-description">{{ product[4] }}</p> <!-- Product Description -->
+        <h2 style="color:black;">{{ product[1] }}</h2> 
+        <p class="product-weight">משקל שק: {{ product[7] }} גרם</p> <!-- Product Weight -->
+        <p class="product-price">
+            {% if product[10] == "כן" or product[11] == "כן" %}
+                <span class="monthly-sale">מבצע!</span> 
+                <span class="old-price">₪{{ product[3] }}</span>
+                <span class="new-price">₪{{ (product[3] - (product[3] * product[12] / 100)) }}</span>
+            {% else %}
+                ₪{{ product[3] }}
+            {% endif %}
+            <div class="">המחיר כולל מע"מ</div>
+        </p>
+        <form action="/add_to_cart" method="POST">
+            <input type="hidden" name="product_id" value="{{ product[0] }}">
+            <input type="submit" class="add-to-cart-button" value="הוסף לעגלה">
+        </form>
     </div>
 
-    <form action="/add_to_cart" method="POST">
-        <input type="hidden" name="product_id" value="{{ product[0] }}">
-        <input type="submit" class="add-to-cart-button" value="הוסף לעגלה">
-    </form>
 </div>
+
+<div class="info">
+    <h2>מידע</h2>
+    <p><strong>תיאור נוסף: </strong> {{ product[4] }}</p> 
+    <p><strong>רכיבים: </strong>  {{ product[13] }}</p>
+</div>
+
 {% endblock %}

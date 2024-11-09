@@ -14,6 +14,8 @@
         <button onclick="showSection('costumer-club')">מועדון לקוחות</button>
         <button onclick="showSection('stock')">מלאי</button>
         <button onclick="showSection('adopt')">אימוץ</button>
+        <button onclick="showSection('articles-section')">הוספת מאמר</button>
+
     
         <!-- Button to download all data as Excel -->
         <button onclick="window.location.href='/download-data'">הורד נתונים (Excel)</button>
@@ -67,6 +69,7 @@
                     <th>טלפון</th>
                     <th>אימייל</th>
                     <th>תאריך</th>
+                    <th>סוג החיה ברשותו</th>
                     <th>אישור התראות</th>
                 </tr>
             </thead>
@@ -77,6 +80,7 @@
                     <td>{{ costumer[2] }}</td>
                     <td>{{ costumer[3] }}</td>
                     <td>{{ costumer[4] }}</td>
+                    <td>{{ costumer[6] }}</td>
                     <td>{{ costumer[5] }}</td>
                 </tr>
                 {% endfor %}
@@ -95,6 +99,7 @@
                     <th>שם</th>
                     <th>טלפון</th>
                     <th>הזמנות</th>
+                    <th>כתובת</th>
                     <th>סטטוס</th>
                     <th>שנה סטטוס</th>
                 </tr>
@@ -107,6 +112,7 @@
                     <td>{{ order[2] }}</td>
                     <td>{{ order[3] }}</td>
                     <td>{{ order[4] }}</td>
+                    <td>{{ order[6] }}</td>
                     <td>{{ order[5] }}</td>
                     <td>
                         <!-- Create a form to update the order status -->
@@ -144,6 +150,8 @@
                     <th>מבצע</th>
                     <th>%הנחה</th>
                     <th>שנה פרטים</th>
+                    <th>הסר</th>
+
                 </tr>
             </thead>
             <tbody>
@@ -191,7 +199,12 @@
 
                         <td><button type="submit">עדכן</button></td>
                     </form>
+                    <form action="/remove_product" method="POST">
+                        <input type="hidden" name="product_id" value="{{ product[0] }}">
+                        <td><button type="submit" class="remove-btn">הסר</button></td>
+                    </form>
                 </tr>
+
                 {% endfor %}
             </tbody>
         </table>
@@ -270,6 +283,62 @@
 
             <button class="admin-button" type="submit">הוסף</button>
           </form>
+    </div>
+
+
+    <div id="articles-section" class="admin-section">
+        <h2>מאמרים</h2>
+        <!-- List of Articles -->
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>שם מאמר</th>
+                    <th>תקציר</th>
+                    <th>טקסט</th>
+                    <th>עדכון</th>
+                    <th>הסרה</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for article in articles %}
+                    <tr>
+                        <form action="/update_article" method="POST">
+                            <input type="hidden" name="article_id" value="{{ article[0] }}">
+                            <td><input type="text" name="name" value="{{ article[1] }}" required></td>
+                            <td><input type="text" name="summary" value="{{ article[2] }}" required></td>
+                            <td><input type="text" name="text" value="{{ article[4]}}" required></td>
+                            <td><button type="submit">עדכן</button></td>
+                        </form>
+                        <!-- Remove Button -->
+                        <form action="/remove_article" method="POST">
+                            <input type="hidden" name="article_id" value="{{ article[0] }}">
+                            <td><button type="submit" class="remove-btn">הסר</button></td>
+                        </form>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Add Article Form -->
+        <div id="add-article-form">
+            <h4>הוסף מאמר חדש</h4>
+            <form action="/add_article" method="POST" enctype="multipart/form-data">
+                <label for="name">שם המאמר:</label>
+                <input type="text" id="name" name="name" required><br><br>
+
+                <label for="summary">תקציר:</label>
+                <textarea id="summary" name="summary" required></textarea><br><br>
+
+                <label for="text">טקסט:</label>
+                <textarea id="text" name="text" required></textarea><br><br>
+
+                <label for="image">תמונה:</label>
+                <input type="file" name="image" accept="image/*" required>
+
+                
+                <input class="admin-button" type="submit" value="הוסף מאמר">
+            </form>
+        </div>
     </div>
 
 </div>

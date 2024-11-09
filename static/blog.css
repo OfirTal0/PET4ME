@@ -1,0 +1,83 @@
+.blog-section {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);  /* 3 columns by default */
+    gap: 2vh;
+    padding: 30px 5%;
+    background-color: #f4f4f4;
+}
+
+.box {
+    display: flex;
+    flex-direction: column;  /* Stack items vertically */
+    justify-content: space-evenly;
+    border-radius: 15px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    background-color: white;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.box img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 15px;  /* Adds spacing between the image and other elements */
+}
+
+.box h3 {
+    color: #333;
+    font-size: 22px;
+    font-weight: bold;
+    margin-top: 15px;
+    text-decoration: underline;
+}
+
+.box p {
+    color: #555;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.box a {
+    display: inline-block;
+    margin-top: 15px;
+    color: #007BFF;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.box a:hover {
+    text-decoration: underline;
+}
+
+/* Hover effect for boxes */
+.box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Adjust for medium screens */
+@media (max-width: 1024px) {
+    .blog-section {
+        grid-template-columns: repeat(2, 1fr);  /* 2 columns for medium screens */
+    }
+    .box {
+        width: 100%;  /* Ensure boxes take up full width in their column */
+    }
+}
+
+/* Adjust for small screens */
+@media (max-width: 768px) {
+    .blog-section {
+        grid-template-columns: 1fr;  /* 1 column for small screens */
+    }
+
+    .box {
+        width: 100%;  /* Ensure boxes take up full width in their column */
+        height: auto;  /* Let the height adjust according to content */
+    }
+}

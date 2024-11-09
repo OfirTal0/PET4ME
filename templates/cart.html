@@ -3,64 +3,96 @@
 {% block cart %}
 <link rel="stylesheet" href="/static/cart.css">
 
-    {% for product in products %}
-    <div >
-    <div class="cart-card-show">    
-        <div class="cart-image">
-            <img src="/static/uploads/{{ product[5] }}" alt="{{ product[1] }}">
-        </div>
-        <div class="product-info">
-            <h3>{{ product[1] }}</h3> 
-            <p class="product-weight">משקל: {{ product[7] }} גרם</p> <!-- Product Weight -->
+<div style="display:flex; justify-content:space-evenly;">
 
-            {% if product[12] > 0 %} <!-- Check if there is a discount -->
-                <p class="old-price">₪{{ product[3] }}</p> <!-- Original Price -->
-                <p class="product-price">מחיר לאחר הנחה: ₪{{ product[3] - (product[3] * product[12] / 100) }}</p> <!-- Discounted Price -->
+    
+<div class="cart-container">
+    <table class="cart-table">
+        <thead>
+            <tr>
+                <th>תמונה</th>
+                <th>תיאור</th>
+                <th>עדכון</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if products %}
+
+            {% for product in products %}
+            <tr>
+                <td>
+                    <div class="cart-image">
+                        <img src="/static/uploads/{{ product[5] }}" alt="{{ product[1] }}">
+                    </div>
+                </td>
+                <td>
+                    <div class="product-info">
+                        <h3>{{ product[1] }}</h3>
+                        <p class="product-weight">משקל: {{ product[7] }} ק"ג</p>
+                        {% if product[12] > 0 %}
+                            <p class="old-price">₪{{ product[3] | round(1) }}</p>  <!-- Round price to 1 decimal place -->
+                            <p class="new-price">מחיר לאחר הנחה: ₪{{ (product[3] - (product[3] * product[12] / 100)) | round(1) }}</p>  <!-- Round price after discount to 1 decimal place -->
+                        {% else %}
+                            <p class="new-price">₪{{ product[3] | round(1) }}</p>  <!-- Round price to 1 decimal place -->
+                        {% endif %}
+                    </div>
+                </td>
+                <td>
+                    <div class="forms">
+                    <form action="/update_cart" method="POST">
+                        <label for="quantity-{{ product[0] }}">כמות:</label>
+                        <input class="quantity-input" type="number" name="quantity" id="quantity-{{ product[0] }}" value="{{ product[13] }}" min="1">
+                        <input type="hidden" name="product_id" value="{{ product[0] }}">
+                        <button type="submit" class="update-button">עדכן</button>
+                    </form>
+                    <form action="/remove_cart" method="POST">
+                        <button type="submit" name="remove" value="{{ product[0] }}" class="remove-button">
+                            <img src="/static/images/remove.png" alt="הסר" class="remove-icon">
+                        </button>
+                    </form>
+                </div>
+                </td>
+
+            </tr>
+            {% endfor %}
             {% else %}
-                <p class="product-price">₪{{ product[3] }}</p> <!-- No discount, show original price -->
+            <tr>
+                <td colspan="3" class="no-products">אין פריטים להצגה</td>
+            </tr>
             {% endif %}
+
+        </tbody>
+
+    </table>
+</div>
+
+<div class="order-section">
+
+    <h2>סכום כולל: ₪{{ total_price | round(1) }}</h2>
+    <div class="">המחיר כולל מע"מ</div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="flash-messages">
+            {% for category, message in messages %}
+                <div class="flash-message {{ category }}">
+                    <p>{{ message }}</p>
+                </div>
+            {% endfor %}
         </div>
-
-        <!-- Quantity update form -->
-        <form action="/update_cart" method="POST" class="form-group">
-            <label for="quantity-{{ product[0] }}">כמות:</label>
-            <input type="number" name="quantity" id="quantity-{{ product[0] }}" value="{{ product[13] }}" min="1">
-            <input type="hidden" name="product_id" value="{{ product[0] }}">
-            <button type="submit" class="update-button">עדכן</button> <!-- Update button -->
+        {%else%}
+        <form action="/submit_order" method="POST" class="form-group-order">
+            <label for="name">שם:</label>
+            <input type="text" name="name" id="name" required placeholder="הכנס את שמך">
+            <label for="phone">טלפון:</label>
+            <input type="tel" name="phone" id="phone" required placeholder="הכנס את מספר הטלפון שלך" pattern="\d*" title="אנא הכנס מספרים בלבד" >
+            <label for="address">כתובת:</label>
+            <div>אנא שים לב שמשלוחים מתבצעים לאזור הערבה בלבד</div>
+            <input type="text" name="address" id="address" required placeholder="הכנס את הכתובת שלך" >
+            <button type="submit" class="submit-button">שלח בקשת הזמנה</button>
         </form>
-
-        <!-- Remove from cart button -->
-        <form action="/remove_cart" method="POST" class="form-group">
-            <button type="submit" name="remove" value="{{ product[0] }}" class="remove-button">הסר מהעגלה</button>
-        </form>
-    </div>
-    {% endfor %}
-
-    <div class="order-section">
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <div class="flash-message">
-                {% for message in messages %}
-                    <p>{{ message }}</p> <!-- Display flashed messages -->
-                {% endfor %}
-            </div>
-            {%else%}
-            <h2>סכום כולל: ₪{{ total_price }}</h2> <!-- Display total price -->
-
-            <form action="/submit_order" method="POST" class="form-group-order">
-                <!-- Input for Name -->
-                <label for="name">שם:</label>
-                <input type="text" name="name" id="name" required placeholder="הכנס את שמך">
-        
-                <!-- Input for Phone -->
-                <label for="phone">טלפון:</label>
-                <input type="tel" name="phone" id="phone" required placeholder="הכנס את מספר הטלפון שלך">
-        
-                <button type="submit" class="submit-button">שלח בקשת הזמנה</button> <!-- Submit order button -->
-            </form>
-        {% endif %}
-        {% endwith %}
-        
-    </div>
+    {% endif %}
+    {% endwith %}
+    
+</div>
 </div>
 {% endblock %}
