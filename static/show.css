@@ -1,7 +1,8 @@
+/* Base styles for desktop */
 .product-info {
     display: flex;
     flex-direction: column;
-    gap:5px;
+    gap: 5px;
 }
 
 .product-card-show {
@@ -18,7 +19,6 @@
     gap: 10vw;
 }
 
-
 .product-image img {
     max-width: 100%;
     height: 250px;
@@ -26,15 +26,12 @@
     border-radius: 10px;
 }
 
-
-/* Product name */
 .product-name {
     font-size: 1.5rem;
     margin: 1vh 0;
     color: #333;
 }
 
-/* Product weight */
 .product-weight {
     font-size: 0.9rem;
     color: #999;
@@ -44,16 +41,14 @@
 .product-price {
     font-size: 1.5rem;
     color: black;
-    margin: 0; /* Ensure no margin */
-    padding: 5px 0; /* Optional: control spacing around price */
+    margin: 0;
+    padding: 5px 0;
 }
-
 
 .monthly-sale {
     color: red;
     font-weight: bold;
 }
-
 
 .old-price {
     text-decoration: line-through;
@@ -64,9 +59,8 @@
     color: red;
 }
 
-
 .show-product-button, .add-to-cart-button {
-    background-color:black;
+    background-color: black;
     color: white;
     padding: 8px 15px;
     border-radius: 3px;
@@ -75,9 +69,8 @@
     transition: background-color 0.3s;
 }
 
-
 .add-to-cart-button:hover {
-    background-color:white;
+    background-color: white;
     border-color: black;
     color: black;
 }
@@ -102,5 +95,103 @@
     color: white;
     padding: 5px;
     font-size: 0.8rem;
-    border-radius: 3px; /* Square corners */
+    border-radius: 3px;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+    .product-card-show {
+        flex-direction: column; /* Stack the product info and image vertically */
+        gap: 5vw;
+        padding: 5vh;
+    }
+
+    .product-image img {
+        height: auto; /* Adjust height for mobile to maintain aspect ratio */
+        max-height: 200px;
+        width: 100%;
+    }
+
+    .product-info {
+        align-items: center; /* Center-align the product info */
+    }
+
+    .product-name {
+        font-size: 1.3rem; /* Adjust font size for better readability */
+    }
+
+    .product-weight,
+    .product-price {
+        font-size: 1rem; /* Adjust font size */
+    }
+
+    .product-price {
+        display: block;
+        margin-top: 10px;
+    }
+
+    .show-product-button, .add-to-cart-button {
+        padding: 10px 20px; /* Increase button size for easier tap on mobile */
+        font-size: 1rem;
+    }
+
+    .info h2 {
+        font-size: 1.5rem; /* Adjust title size for mobile */
+    }
+
+    .info p {
+        font-size: 0.9rem; /* Adjust paragraph text size */
+    }
+
+    .monthly-sale, .sale-label {
+        top: 25vh; /* Adjust position of sale label */
+        right: 10vw;
+        font-size: 0.9rem;
+        padding: 7px;
+    }
+}
+
+/* Extra small screen adjustments (phones in portrait mode) */
+@media (max-width: 480px) {
+    .product-card-show {
+        padding: 1vh; /* Reduce padding on very small screens */
+    }
+
+    .product-name {
+        font-size: 1.1rem; /* Further reduce font size on very small screens */
+    }
+
+    .product-weight,
+    .product-price {
+        font-size: 0.9rem;
+    }
+
+    .product-price {
+        margin-top: 8px;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+
+    }
+
+    .show-product-button, .add-to-cart-button {
+        padding: 8px 16px; /* Adjust button padding for very small screens */
+        font-size: 0.9rem;
+    }
+
+    .info h2 {
+        font-size: 1.2rem; /* Smaller header size */
+    }
+
+    .info p {
+        font-size: 0.8rem; /* Adjust description text */
+    }
+
+    .monthly-sale, .sale-label {
+        font-size: 0.8rem; /* Adjust sale label size for small screens */
+        padding: 5px;
+        top: 20vh;
+        right: 8vw;
+    }
 }

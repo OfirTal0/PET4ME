@@ -1,5 +1,6 @@
 # Web Framework
-Flask==2.0.3
+Flask==2.3.3
+Werkzeug==2.3.3
 
 # HTTP Requests
 requests==2.26.0
@@ -16,5 +17,14 @@ matplotlib==3.4.3
 # Machine Learning
 scikit-learn==0.24.2
 
-# Database (if using SQLite)
-SQLAlchemy==1.4.23
+# Excel File Handling
+openpyxl==3.1.2
+
+# Environment Variables
+python-dotenv==1.0.0
+
+# Email
+smtplib
+
+# Cross-Origin Resource Sharing
+flask-cors==3.0.10

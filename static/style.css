@@ -9,6 +9,10 @@ a {
     text-decoration: none;
 }
 
+.popup-menu {
+    display: none;
+}
+
 input::placeholder {
     text-align: right;
     direction: rtl;
@@ -351,3 +355,96 @@ footer p {
 .checkbox-label input {
     margin-right: 8px;
 }
+
+
+@media (max-width: 768px) {
+    .header {
+        height: 15vh;  /* Reduced height on mobile */
+    }
+
+    .icon-left {
+        top: 15%;
+        left: 5%;
+    }
+
+    .icon-right-item h1 {
+        font-size: 1.5rem;
+    }
+
+    .navbar {
+        display: none; /* Hide navbar in mobile view */
+    }
+
+    .hamburger {
+        display: block;
+        cursor: pointer;
+        width: 30px;
+        height: 25px;
+        background-color: #333;
+        position: absolute;
+        top: 20%;
+        right: 10%;
+    }
+
+    .hamburger div {
+        background-color: #fff;
+        height: 4px;
+        width: 100%;
+        margin: 5px 0;
+    }
+
+    .popup-menu {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 100%;
+        height: 100%;
+        background-color: #ffffff;
+        box-shadow: -4px 0 6px rgba(0, 0, 0, 0.2);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition: right 0.3s ease;
+        z-index: 1001;
+    }
+
+    .popup-menu.active {
+        right: 0;
+    }
+
+    .popup-menu a {
+        font-size: 1.5rem;
+        color: #333;
+        padding: 15px;
+        text-align: center;
+        display: block;
+        text-decoration: none;
+    }
+
+    .popup-menu a:hover {
+        background-color: #f0f0f0;
+    }
+
+    .popup-menu button {
+        background-color: #ff7f50;
+        color: white;
+        padding: 10px 20px;
+        font-size: 1.2rem;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+    }
+
+    .footer {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: center;
+        padding: 2vh 0;
+        background-color: #333;
+        color: white;
+        font-size: 0.9rem;
+    }
+}
+

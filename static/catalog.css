@@ -187,3 +187,112 @@
     font-size: 0.8rem;
     border-radius: 3px; /* Square corners */
 }
+
+#filterForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#filterFormMobile {
+    display: none;
+}
+
+
+/* Make the filter form visible when toggled */
+#filterFormMobile.show {
+    display: block;
+    align-items: center;
+}
+
+/* Button to open filter options (visible only on mobile) */
+.toggle-filter-button {
+    display: none;
+    padding: 10px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+/* Show the toggle button on mobile */
+@media (max-width: 768px) {
+    .toggle-filter-button {
+        display: block;
+    }
+
+    .filter-button input[type="submit"] {
+        width: 100%;
+    }
+}
+
+/* Button to close filter options */
+.close-filter-button {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.close-filter-button:hover {
+    background-color: #d32f2f;
+}
+
+@media (max-width: 768px) {
+
+    .searchclass {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 3vw;
+    }
+
+    .search-input {
+        padding: 5px; /* Smaller search box */
+        font-size: 0.9rem;
+        width: 50%; /* Full width */
+    }
+    
+    
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Four columns */
+
+}
+
+.product-card {
+    border: 1px solid #ddd;
+    border-radius: 5px; /* Square corners */
+    overflow: hidden; /* Ensures content doesn't overflow */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: relative;
+    height: 300px;
+    display: flex;
+    flex-direction: column; /* Stack children vertically */
+    justify-content: space-between; /* Space out children evenly */
+}
+
+.catalog-display {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+
+#filterForm {
+    display: none;
+}
+
+.sortclass {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 1vh;
+}
+
+}

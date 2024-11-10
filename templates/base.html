@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="/static/style.css">
-    <link rel="stylesheet" href="/static/style_res.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto:wght@300;500&display=swap" rel="stylesheet">
     <title>Pet4me</title>
 </head>
@@ -14,6 +13,12 @@
             <div class="icon-right-item ">
                 <h1>Pet4me</h1>
                 <h1 style="font-size:1.5rem">אהבה בכל ביס</h1>
+                <div class="hamburger" id="hamburger-icon">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            
                 <nav class="navbar">
                     <a class="linknavbar" href="/">ראשי</a>
                     <a class="linknavbar" href="/about">אודותינו</a>
@@ -22,6 +27,16 @@
                     <a class="linknavbar" href="/#contact">צור קשר</a>
                     <img class="logo" src="/static/images/logo.png" alt="Logo">
                 </nav>
+                
+                <div class="popup-menu" id="popup-menu">
+                    <a href="/">ראשי</a>
+                    <a href="/about">אודותינו</a>
+                    <a href="/catalog">קטלוג מוצרים</a>
+                    <a href="/blog">בלוג</a>
+                    <a href="/#contact">צור קשר</a>
+                    <button id="close-popup">סגור</button>
+                </div>
+
             </div>
             <div class="icon-left">
                 <a href="/cart">
@@ -47,17 +62,22 @@
         </main>
 
         <footer class="footer">
-            <p><a style="color:white" href="/login" target="_blank">ניהול</a></p>
             <p>ערבה | עין יהב | <a href="mailto:pets4me2024@gmail.com" style="color:white">pets4me2024@gmail.com</a> | 050-9936660</p>
             <p>&copy; 2024 כל הזכויות שמורות</p>
+            <p><a style="color:white" href="/login" target="_blank">ניהול</a></p>
+
         </footer>
     </div>
 </body>
 
-<!-- <script>
-    document.querySelectorAll('a').forEach(function(link) {
-        link.setAttribute('target', '_blank');
+<script>
+    document.getElementById('hamburger-icon').addEventListener('click', function() {
+        document.getElementById('popup-menu').classList.toggle('active'); // Toggle popup visibility
     });
-</script> -->
+
+    document.getElementById('close-popup').addEventListener('click', function() {
+        document.getElementById('popup-menu').classList.remove('active'); // Close popup
+    });
+</script>
 
 </html>

@@ -15,7 +15,11 @@
     <div class="sort">
         <div class="sortclass">
             <h3 style="font-size:large">סינון לפי</h3>
-            <form action="/catalog" method="GET">
+            <!-- Button to show filter form on mobile -->
+            <button id="toggleFilter" class="toggle-filter-button">פתח אופציות סינון</button>
+    
+            <!-- Filter form (hidden on mobile by default) -->
+            <form action="/catalog" method="GET" id="filterForm">
                 <div class="filter-section">
                     <h4>חיה</h4>
                     <label>
@@ -28,7 +32,7 @@
                         <input type="checkbox" name="animal" value="אחר"> אחרים
                     </label>
                 </div>
-
+    
                 <div class="filter-section">
                     <h4>קטגוריה</h4>
                     <label>
@@ -50,9 +54,49 @@
                         <input type="checkbox" name="breed" value="גזע גדול"> גזע גדול
                     </label>
                 </div>
-
-                <div class="filter-button">
-                    <input type="submit" value="סנן">
+    
+                <div>
+                    <input class="search-button" type="submit" value="סנן">
+                </div>
+            </form>
+            <form action="/catalog" method="GET" id="filterFormMobile" class="filterformmobile">
+                <div class="filter-section">
+                    <h4>חיה</h4>
+                    <label>
+                        <input type="checkbox" name="animal" value="כלב"> כלב
+                    </label><br>
+                    <label>
+                        <input type="checkbox" name="animal" value="חתול"> חתול
+                    </label><br>
+                    <label>
+                        <input type="checkbox" name="animal" value="אחר"> אחרים
+                    </label>
+                </div>
+    
+                <div class="filter-section">
+                    <h4>קטגוריה</h4>
+                    <label>
+                        <input type="checkbox" name="category" value="מזון"> מזון
+                    </label><br>
+                    <label>
+                        <input type="checkbox" name="category" value="אביזרים"> אביזרים
+                    </label>
+                </div>
+                <div class="filter-section">
+                    <h4>גזע</h4>
+                    <label>
+                        <input type="checkbox" name="breed" value="גזע קטן"> גזע קטן
+                    </label><br>
+                    <label>
+                        <input type="checkbox" name="breed" value="גזע בינוני"> גזע בינוני
+                    </label><br>
+                    <label>
+                        <input type="checkbox" name="breed" value="גזע גדול"> גזע גדול
+                    </label>
+                </div>
+    
+                <div>
+                    <input class="search-button" type="submit" value="סנן">
                 </div>
             </form>
         </div>
@@ -98,4 +142,20 @@
 
 </div>
 
+<script>
+        document.getElementById("toggleFilter").addEventListener("click", function() {
+            var filterForm = document.getElementById("filterFormMobile");
+            var button = document.getElementById("toggleFilter");
+          
+            // Toggle the visibility of the filter form
+            filterForm.classList.toggle("show");
+          
+            // Change the button text based on whether the form is visible or not
+            if (filterForm.classList.contains("show")) {
+              button.textContent = "סגור אופציות סינון";  // Change to "Close Filter Options" when opened
+            } else {
+              button.textContent = "פתח אופציות סינון";  // Change to "Open Filter Options" when closed
+            }
+          });
+</script>
 {% endblock %}

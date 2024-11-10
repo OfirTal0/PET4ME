@@ -454,7 +454,6 @@ def customer_club_signup():
         return jsonify(success=False)
 
 #db
-
 def query(sql: str = "", params: tuple = (), db_name="petforme.db"):
     try:
         with sqlite3.connect(db_name) as conn:
@@ -641,3 +640,25 @@ def send_contact_email(name, phone, date):
         print(f"Failed to send email: {e}")
 
 
+def create_products_table():
+    sql = '''
+        CREATE TABLE IF NOT EXISTS products_new (
+            id INTEGER PRIMARY KEY,
+            מוצר TEXT,
+            ברקוד TEXT,
+            כמות INTEGER,
+            קבוצה TEXT,
+            תיאור TEXT,
+            מחיר_רכישה REAL,
+            מחיר_מכירה REAL,
+            Tags TEXT,
+            נתונים TEXT,
+            כמות_מינימלית INTEGER,
+            תמונה TEXT,
+            משקל_שק REAL,
+            דף_בית TEXT,
+            מבצע TEXT,
+            אחוז_מבצע REAL
+        );
+    '''
+    query(sql)

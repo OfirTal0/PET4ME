@@ -1,6 +1,7 @@
 .admin-container {
     margin: 0;
     padding: 20px;
+    
 }
 
 
@@ -63,3 +64,34 @@ table.admin-table th {
     background-color: #218838;
 }
 
+@media (max-width: 768px) {
+
+    .admin-nav {
+
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-gap: 20px;
+
+    } 
+
+
+
+    
+      /* Additional table styling */
+      .admin-table th,
+      .admin-table td {
+        padding: 8px 12px;
+        text-align: left;
+        font-size: 14px; /* Smaller font for mobile */
+        white-space: nowrap; /* Prevent wrapping inside cells */
+      }
+
+      .admin-section {
+            width: 100%;
+            height: 600px;
+            overflow-x: auto;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch; /* Smooth scrolling for iOS */
+      }
+
+} 

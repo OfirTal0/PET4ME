@@ -3,9 +3,9 @@
 {% block cart %}
 <link rel="stylesheet" href="/static/cart.css">
 
-<div style="display:flex; justify-content:space-evenly;">
+<div class="cart-base">
 
-    
+
 <div class="cart-container">
     <table class="cart-table">
         <thead>
@@ -39,12 +39,12 @@
                 </td>
                 <td>
                     <div class="forms">
-                    <form action="/update_cart" method="POST">
-                        <label for="quantity-{{ product[0] }}">כמות:</label>
-                        <input class="quantity-input" type="number" name="quantity" id="quantity-{{ product[0] }}" value="{{ product[13] }}" min="1">
-                        <input type="hidden" name="product_id" value="{{ product[0] }}">
-                        <button type="submit" class="update-button">עדכן</button>
-                    </form>
+                        <form action="/update_cart" method="POST" class="forms-mobile">
+                            <label for="quantity-{{ product[0] }}">כמות:</label>
+                            <input class="quantity-input" type="number" name="quantity" id="quantity-{{ product[0] }}" value="{{ product[14] }}" min="1">
+                            <input type="hidden" name="product_id" value="{{ product[0] }}">
+                            <button type="submit" class="update-button">עדכן</button>
+                        </form>
                     <form action="/remove_cart" method="POST">
                         <button type="submit" name="remove" value="{{ product[0] }}" class="remove-button">
                             <img src="/static/images/remove.png" alt="הסר" class="remove-icon">

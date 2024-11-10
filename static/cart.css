@@ -40,9 +40,6 @@
 }
 
 
-
-
-
 /* Product price */
 .product-price {
     font-size: 1.2rem;
@@ -288,4 +285,62 @@
 
 .flash-message p {
     margin: 0;
+}
+
+@media (max-width: 768px) {
+
+    .cart-base {
+        display:flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 3vh;
+    }
+
+
+    .cart-image img {
+        max-width: 70px;
+        height: auto;
+        object-fit: contain;
+        border-radius: 5px;
+    }
+    
+    .forms {
+        display: flex;
+        flex-direction: column;
+        gap: 2vh;
+    }
+
+    .quantity-input {
+        width: 20px;
+        padding: 5px;
+    }
+    
+    .cart-table {
+        width: 100%;
+        border-collapse:separate;
+        text-align: center;
+    }
+
+    .order-section {
+        width: 90%; /* Fixed width of 30% */
+
+    }
+
+    .cart-container {
+        width: 90%; /* Take up 65% of the page width */
+        max-height: 50vh; /* Limit height to 80% of viewport */
+        overflow-y: auto; /* Enable vertical scrolling */
+        float: right; /* Align to the right side */
+        display: flex;
+        flex-direction: column;
+        padding-right: 10px;
+    }
+
+    .forms-mobile {
+        display: flex;
+        flex-direction: column;
+        gap: 1vh;
+        align-items: center;
+    }
 }
