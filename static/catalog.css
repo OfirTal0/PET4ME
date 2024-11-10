@@ -176,3 +176,14 @@
     border-color: black;
     color: black;
 }
+
+.out-of-stock {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: rgb(122, 123, 124);
+    color: white;
+    padding: 5px;
+    font-size: 0.8rem;
+    border-radius: 3px; /* Square corners */
+}

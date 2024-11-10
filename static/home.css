@@ -1,31 +1,32 @@
-.website-title h1 {
-    font-family: 'Arial', sans-serif; /* Choose a simple, clean font */
-    color: #1a8d98; /* A vibrant color that matches your website theme */
-    font-weight: bold;
+.headerHome {
     text-align: center;
-    font-size: 2rem; /* Adjust size as needed */
-    margin-top: 20px;
-    padding: 10px;
-    background-color: #f3f8fa; /* Light background to make it stand out */
-    border: 2px solid #1a8d98; /* Border to frame the title */
-    border-radius: 10px; /* Rounded corners */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional shadow for depth */
+    padding: 20px;
+    background-color: #eeebeb98;
+    border-bottom: 2px solid #ccc;
+    direction: ltr;
+
 }
 
+/* Website Title */
+.site-title {
+    font-family: "Georgia", serif;
+    font-size: 2.5rem;
+    color: #333;
+    margin: 0;
+    padding: 5px 0;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
 
+/* Delivery Info */
 .delivery-info {
-    background-color: #f9e4b7; /* Light yellow background */
-    color: #333; /* Dark text for contrast */
-    font-weight: bold;
-    text-align: center;
-    padding: 10px;
+    font-family: "Arial", sans-serif;
     font-size: 1.2rem;
-    border: 2px solid #ffc107; /* Border to emphasize the box */
-    margin-bottom: 20px; /* Space below the banner */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Shadow for emphasis */
-    border-radius: 10px; /* Optional: Rounded corners */
+    color: #555;
+    margin-top: 5px;
+    font-style: italic;
 }
-
 
 .squres-section {
     display: flex;

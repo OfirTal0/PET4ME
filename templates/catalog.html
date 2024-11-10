@@ -68,10 +68,8 @@
                 <h3 class="product-name">{{ product[1] }}</h3>
                 <p class="product-weight">משקל: {{ product[7] }} ק"ג</p>
                 <p class="product-price">
-                    {% if product[10] == "כן" %}
-                        <span class="monthly-sale">מוצר במבצע חודשי!</span>
-                        <span class="old-price">₪{{ product[3] | round(1) }}</span>  <!-- Round to 1 decimal place -->
-                        <span class="new-price">₪{{ (product[3] - (product[3] * product[12] / 100)) | round(1) }}</span> <!-- Round to 1 decimal place -->
+                    {% if product[6] == 0 %}
+                    <span class="out-of-stock">אזל מהמלאי</span>
                     {% elif product[11] == "כן" %}
                         <span class="monthly-sale">מבצע!</span>
                         <span class="old-price">₪{{ product[3] | round(1) }}</span>  <!-- Round to 1 decimal place -->
@@ -82,10 +80,12 @@
                 </p>
 
                 <div class="buttons_display">
+                    {% if not product[6] == 0 %}
                     <form action="/add_to_cart" method="POST">
                         <input type="hidden" name="product_id" value="{{ product[0] }}">
                         <input type="submit" class="add-to-cart-button" value="הוסף לעגלה">
                     </form>
+                    {% endif %}
                     <form action="/show_product" method="POST">
                         <input type="hidden" name="product_id" value="{{ product[0] }}">
                         <input type="submit" class="show-product-button" value="...">
