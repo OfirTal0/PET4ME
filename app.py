@@ -21,23 +21,6 @@ DATABASE_PATH = os.path.join(BASE_DIR, 'petforme.db')  # Make sure 'petforme.db'
 
 app.secret_key = 'hamasisisis'
 
-@app.route('/')
-def home():
-    if 'products_in_cart' not in session:
-        session['products_in_cart'] = {}
-    adopt = query(f"SELECT * FROM adopt ORDER BY id DESC LIMIT 1")
-    products = query(f"SELECT * FROM products")
-    products_on_sale = [product for product in products if product[10] == "כן"]
-    first_product_on_sale = products_on_sale[0] if products_on_sale else None
-    popular_products = []
-    for product in products:
-        if product[8] == "כן":
-            popular_products.append(product)    
-    return render_template('home.html', popular_products=popular_products, adopt=adopt,first_product_on_sale=first_product_on_sale )
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=int(os.getenv("PORT", 5000)))
-
 
 def query(sql: str = "", params: tuple = (), db_name=DATABASE_PATH):
     try:
@@ -53,7 +36,23 @@ def query(sql: str = "", params: tuple = (), db_name=DATABASE_PATH):
     except Exception as e:
         print(f"Error: {e}")
         return None
-    
+
+@app.route('/')
+def home():
+    if 'products_in_cart' not in session:
+        session['products_in_cart'] = {}
+    adopt = query(f"SELECT * FROM adopt ORDER BY id DESC LIMIT 1")
+    products = query(f"SELECT * FROM products")
+    products_on_sale = [product for product in products if product[10] == "כן"]
+    first_product_on_sale = products_on_sale[0] if products_on_sale else None
+    popular_products = []
+    for product in products:
+        if product[8] == "כן":
+            popular_products.append(product)    
+    return render_template('home.html', popular_products=popular_products, adopt=adopt,first_product_on_sale=first_product_on_sale )
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=int(os.getenv("PORT", 5000)))    
 
 @app.route('/about')
 def about():  
