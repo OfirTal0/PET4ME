@@ -9,63 +9,17 @@ from openpyxl import Workbook
 from io import BytesIO
 import json
 
+import os
 
 app = Flask(__name__, static_folder='static')
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # Limit image size to 16 MB
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # Get the directory where app.py is located
+DATABASE_PATH = os.path.join(BASE_DIR, 'petforme.db')  # Make sure 'petforme.db' matches your SQLite database file name
+
 app.secret_key = 'hamasisisis'
-
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-
-@app.route('/download-data', methods=['GET'])
-def download_data():
-
-    leads = query("SELECT * FROM leads")
-    product_orders = query("SELECT * FROM products_order")
-    products = query("SELECT * FROM products")
-    costumers = query("SELECT * FROM costumer_club")
-
-    # Create a new Excel workbook
-    wb = Workbook()
-
-    # Add a sheet for each section
-    # Leads sheet
-    leads_ws = wb.active
-    leads_ws.title = "Leads"
-    leads_ws.append(["ID", "שם", "טלפון", "תאריך", "סטטוס"])
-    for lead in leads:  # Assuming `leads` is fetched from the database
-        leads_ws.append(lead)
-
-    # Customer Club sheet
-    customer_ws = wb.create_sheet(title="Customer Club")
-    customer_ws.append(["ID", "שם", "טלפון", "אימייל", "תאריך", "אישור התראות", "סוג חיה"])
-    for customer in costumers:  # Assuming `customers` is fetched from the database
-        customer_ws.append(customer)
-
-    # Product Orders sheet
-    orders_ws = wb.create_sheet(title="Product Orders")
-    orders_ws.append(["ID", "תאריך", "שם", "טלפון", "הזמנות", "סטטוס", "כתובת"])
-    for order in product_orders:  # Assuming `product_orders` is fetched from the database
-        orders_ws.append(order)
-
-    # Stock sheet
-    stock_ws = wb.create_sheet(title="Stock")
-    stock_ws.append(["ID","שם המוצר","קטגוריה","מחיר","תיאור","תמונה","כמות במלאי", "משקל מוצר", "האם מוגדר פופולארי","סוג חיה","מבצע חודשי","מבצע","אחוז הנחה"])
-    for product in products:  # Assuming `products` is fetched from the database
-        stock_ws.append(product)
-
-    # Save the workbook to a BytesIO object
-    output = BytesIO()
-    wb.save(output)
-    output.seek(0)
-
-    # Send the file as a download
-    return send_file(output, as_attachment=True, download_name="admin_data.xlsx", mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-
 
 @app.route('/')
 def home():
@@ -80,6 +34,26 @@ def home():
         if product[8] == "כן":
             popular_products.append(product)    
     return render_template('home.html', popular_products=popular_products, adopt=adopt,first_product_on_sale=first_product_on_sale )
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=int(os.getenv("PORT", 5000)))
+
+
+def query(sql: str = "", params: tuple = (), db_name=DATABASE_PATH):
+    try:
+        with sqlite3.connect(db_name) as conn:
+            cur = conn.cursor()
+            cur.execute(sql, params)  # Pass parameters to execute
+            if sql.strip().lower().startswith('select'):
+                return cur.fetchall()  # Fetch all results for SELECT queries
+            conn.commit()
+    except sqlite3.Error as e:
+        print(f"Database error: {e}")
+        return None
+    except Exception as e:
+        print(f"Error: {e}")
+        return None
+    
 
 @app.route('/about')
 def about():  
@@ -453,27 +427,10 @@ def customer_club_signup():
         print("Error:", e)  
         return jsonify(success=False)
 
-#db
-def query(sql: str = "", params: tuple = (), db_name="petforme.db"):
-    try:
-        with sqlite3.connect(db_name) as conn:
-            cur = conn.cursor()
-            cur.execute(sql, params)  # Pass parameters to execute
-            if sql.strip().lower().startswith('select'):
-                return cur.fetchall()  # Fetch all results for SELECT queries
-            conn.commit()
-    except sqlite3.Error as e:
-        print(f"Database error: {e}")
-        return None
-    except Exception as e:
-        print(f"Error: {e}")
-        return None
-    
+
 def create_table_products(table="products"):
     sql = f"CREATE TABLE IF NOT EXISTS {table} (class_id NT AUTO_INCREMENT PRIMARY KEY, product_name TEXT, category TEXT)"
     query(sql)
-
-import os
 
 sender_email = os.environ.get("SENDER_EMAIL")
 sender_password = os.environ.get("SENDER_PASSWORD")
@@ -662,3 +619,54 @@ def create_products_table():
         );
     '''
     query(sql)
+
+
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+@app.route('/download-data', methods=['GET'])
+def download_data():
+
+    leads = query("SELECT * FROM leads")
+    product_orders = query("SELECT * FROM products_order")
+    products = query("SELECT * FROM products")
+    costumers = query("SELECT * FROM costumer_club")
+
+    # Create a new Excel workbook
+    wb = Workbook()
+
+    # Add a sheet for each section
+    # Leads sheet
+    leads_ws = wb.active
+    leads_ws.title = "Leads"
+    leads_ws.append(["ID", "שם", "טלפון", "תאריך", "סטטוס"])
+    for lead in leads:  # Assuming `leads` is fetched from the database
+        leads_ws.append(lead)
+
+    # Customer Club sheet
+    customer_ws = wb.create_sheet(title="Customer Club")
+    customer_ws.append(["ID", "שם", "טלפון", "אימייל", "תאריך", "אישור התראות", "סוג חיה"])
+    for customer in costumers:  # Assuming `customers` is fetched from the database
+        customer_ws.append(customer)
+
+    # Product Orders sheet
+    orders_ws = wb.create_sheet(title="Product Orders")
+    orders_ws.append(["ID", "תאריך", "שם", "טלפון", "הזמנות", "סטטוס", "כתובת"])
+    for order in product_orders:  # Assuming `product_orders` is fetched from the database
+        orders_ws.append(order)
+
+    # Stock sheet
+    stock_ws = wb.create_sheet(title="Stock")
+    stock_ws.append(["ID","שם המוצר","קטגוריה","מחיר","תיאור","תמונה","כמות במלאי", "משקל מוצר", "האם מוגדר פופולארי","סוג חיה","מבצע חודשי","מבצע","אחוז הנחה"])
+    for product in products:  # Assuming `products` is fetched from the database
+        stock_ws.append(product)
+
+    # Save the workbook to a BytesIO object
+    output = BytesIO()
+    wb.save(output)
+    output.seek(0)
+
+    # Send the file as a download
+    return send_file(output, as_attachment=True, download_name="admin_data.xlsx", mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
