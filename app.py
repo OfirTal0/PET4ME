@@ -56,7 +56,7 @@ if __name__ == "__main__":
 
 @app.route('/about')
 def about():  
-    return render_template('web-production-41fd.up.railway.app/about')
+    return render_template('about.html')
 
 
 @app.route('/catalog', methods=['GET','POST'])
@@ -71,7 +71,7 @@ def catalog():
         products = query(f"SELECT * FROM products WHERE category = '{category}'")
     else:
         products = query(f"SELECT * FROM products")
-    return render_template('web-production-41fd.up.railway.app/catalog', products=products)
+    return render_template('catalog.html', products=products)
 
 @app.route('/show_product', methods=['POST', 'GET'])
 def show_product():
