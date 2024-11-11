@@ -108,7 +108,31 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin: 10px;
     transition: transform 0.2s ease;
+    position: relative;
+
 }
+
+.monthly-sale, .sale-label, .out-of-stock {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1; /* Ensure they appear on top */
+  }
+
+  .monthly-sale {
+    margin-top: 10px;
+    margin-right: 10px;
+  }
+  
+  .sale-label {
+    margin-top: 30px;
+    margin-right: 10px;
+  }
+  
+  .out-of-stock {
+    margin-top: 50px;
+    margin-right: 10px;
+  }
 
 .product-card:hover {
     transform: scale(1.05); 
@@ -318,21 +342,10 @@
     height: fit-content;
 }
 
-.out-of-stock {
-    position: relative;
-    bottom: 270px;
-    left: 40px;
-
-}
-
-.monthly-sale, .sale-label {
-    position: relative;
-    bottom: 270px;
-    left:15px;
-    background-color: red;
-    color: white;
-    padding: 5px;
-    font-size: 0.8rem;
-    border-radius: 3px; /* Square corners */
-}
+.monthly-sale, .sale-label, .out-of-stock {
+    top: 0;
+    right: 0;
+    margin-top: 5px; /* Adjust margin for better spacing on smaller screens */
+    margin-right: 5px;
+  }
 }
