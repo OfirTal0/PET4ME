@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, session, flash, send_file, jsonify
 import sqlite3
 from werkzeug.utils import secure_filename
-from datetime import datetime
+from datetime import datetime,timedelta
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -9,6 +9,7 @@ from openpyxl import Workbook
 from io import BytesIO
 import json
 import os
+from flask import send_from_directory
 
 
 app = Flask(__name__, static_folder='static', template_folder='templates')
@@ -21,6 +22,14 @@ DATABASE_PATH = os.path.join(BASE_DIR, 'petforme.db')  # Make sure 'petforme.db'
 
 app.secret_key = os.getenv('SECRET_KEY','default_secret_key')
 
+@app.route('/static/<path:filename>')
+def static_file(filename):
+    # Serve static files from the 'static' folder with a custom cache timeout
+    return send_from_directory(
+        os.path.join(app.root_path, 'static'),
+        filename,
+        cache_timeout=timedelta(days=365)  # Set cache timeout (1 year)
+    )
 
 def query(sql: str = "", params: tuple = (), db_name=DATABASE_PATH):
     try:
