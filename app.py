@@ -8,10 +8,10 @@ from email.mime.multipart import MIMEMultipart
 from openpyxl import Workbook
 from io import BytesIO
 import json
-
 import os
 
-app = Flask(__name__, static_folder='static')
+
+app = Flask(__name__, static_folder='static', template_folder='templates')
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # Limit image size to 16 MB
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
@@ -19,7 +19,7 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # Get the directory where app.py is located
 DATABASE_PATH = os.path.join(BASE_DIR, 'petforme.db')  # Make sure 'petforme.db' matches your SQLite database file name
 
-app.secret_key = 'hamasisisis'
+app.secret_key = os.getenv('SECRET_KEY','default_secret_key')
 
 
 def query(sql: str = "", params: tuple = (), db_name=DATABASE_PATH):
