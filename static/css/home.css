@@ -357,26 +357,33 @@
 .products-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr); /* Three columns */
-    gap: 20px; /* Space between items */
-    margin: 20px; /* Margin around the grid */
+    gap: 20px;
+    margin: 20px;
 }
 
+.popular-product-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
 .popular-product-card {
-    background-color: #fff;
-    border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s, box-shadow 0.3s;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 2vh;
-    text-align: center;
-    height: 40vh;   
-    justify-content: space-evenly;
-    gap:2vh;
-    overflow: hidden; /* Prevents overflowing content */
+    background-color: #fff; /* White background for each card */
+    border-radius: 15px; /* Rounded corners for a smooth look */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow to give depth */
+    transition: transform 0.3s, box-shadow 0.3s; /* Smooth transitions for hover effects */
+    display: flex; /* Uses flexbox layout */
+    flex-direction: column; /* Arranges the items (image, text, etc.) vertically */
+    align-items: center; /* Centers the items horizontally */
+    padding: 2vh; /* Adds space around the content inside the card */
+    text-align: center; /* Centers the text horizontally */
+    height: 40vh; /* Fixed height for uniformity across cards */
+    justify-content: space-evenly; /* Spreads the items evenly across the height */
+    gap: 2vh; /* Adds space between each item inside the card */
+    overflow: hidden; /* Prevents any content from overflowing the card boundaries */
+}
 
-
+.popular-product-card:hover {
+    transform: translateY(-5px); /* Slight lift effect on hover */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* More pronounced shadow on hover */
 }
 
 .product-weight {
@@ -784,12 +791,9 @@
     }
     
     
-.products-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Three columns */
-    gap: 20px; /* Space between items */
-    margin: 20px; /* Margin around the grid */
-}
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr); /* Two columns on medium screens */
+    }
 
 .popular-product-card {
     height: 30vh;
@@ -975,3 +979,8 @@ h3 {
 
 }
 
+@media (max-width: 480px) {
+    .products-grid {
+        grid-template-columns: 1fr; /* One column on small screens */
+    }
+}
