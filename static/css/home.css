@@ -1,6 +1,5 @@
 .headerHome {
     text-align: center;
-    padding: 20px;
     background-color: #eeebeb98;
     border-bottom: 2px solid #ccc;
     direction: ltr;
@@ -34,16 +33,14 @@
     justify-content: center;
     align-items: center;
     background-size: 90% auto; /* Set width to 90% and adjust the height automatically */
-    background-position: center;
-    background-repeat: no-repeat;
-    width: 100%; 
+    background-color: rgba(3, 76, 116, 0.078);
     height: auto;
 }
 
 
 .squres-about {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(6, 2fr);
     grid-gap: 20px;
     justify-content: center;
     padding: 20px;
@@ -164,11 +161,11 @@
     display: flex;
     gap: 20vw;
     align-items: center;
-    background-image: url("https://t3.ftcdn.net/jpg/02/98/20/18/360_F_298201895_5bPjYW2qPWJ52Wg40H80d8hCAHsPIfpE.jpg");
+    /* background-image: url("https://t3.ftcdn.net/jpg/02/98/20/18/360_F_298201895_5bPjYW2qPWJ52Wg40H80d8hCAHsPIfpE.jpg"); */
     background-size: cover;
     background-position: center;
     padding: 5vh 10vw;
-    height: 50vh;
+    height: 40vh;
     border-radius: 15px;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
@@ -176,18 +173,16 @@
 
 .section3 {
     display: flex;
-    justify-content: space-between;
     padding: 20px 10%;
     background-color: white;
     margin-top: 10vh;
     gap: 2vh;
-
 }
 
 
 .box {
     width: 30vw;
-    height: 65vh;
+    gap: 3vh;
     border-radius: 10px;
     padding: 20px;
     border: 1px solid #ddd;
@@ -195,8 +190,8 @@
     text-align: center;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-evenly;
 }
 
 .box img {
@@ -454,16 +449,17 @@
     display: flex;
     align-items: center;
     flex-direction: column;
+
 }
 
 .adopt {
     display: flex;
-    flex-direction: row;
-    gap: 3vw;
+    flex-direction: column;
+    gap: 1vw;
     justify-content: space-evenly;
     align-items: center;
     background-color: #f5f5f5; /* Subtle background for the whole adoption section */
-    padding: 3vw;
+    padding: 2vw;
     border-radius: 15px;
     margin-top: 4vh;
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1); /* Larger shadow for more depth */
@@ -476,6 +472,7 @@
     border-radius: 20px;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15); /* Soft shadow around the image */
     transition: transform 0.3s ease; /* Smooth zoom effect on hover */
+
 }
 
 .adopt-image:hover {
@@ -487,11 +484,10 @@
     background-image: url("https://4.bp.blogspot.com/-Fu8K2cRCkoM/UUbNR4xM40I/AAAAAAAAFAQ/O1-1vAvZXHw/s1600/animal-tracks-background-pattern.jpg");
     background-size: cover;
     background-position: center;
-    height: 50vh;
-    width: 40vw;
+    width: 320px;
+    height: 320px;
     text-align: center;
     border-radius: 15px;
-    padding: 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -606,22 +602,16 @@
     margin-bottom: 1vw;
 }
 
-.social-links {
-    display: flex;
-    gap: 1.5vw;
-}
 
-.social-links a {
-    text-decoration: none;
-}
-
-.social-links img {
+.linkimg{
     width: 60px;
     height: 60px;
     transition: transform 0.3s;
+    text-decoration: none;
+
 }
 
-.social-links img:hover {
+.linkimg :hover {
     transform: scale(1.1);
 }
 
@@ -726,16 +716,18 @@
     }
 
     .animal-links {
-        gap: 3vw;; /* Space between the items */
+        gap: 1vw;; /* Space between the items */
     }
 
     .squres-about {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(3, 2fr);
         grid-gap: 20px;
         justify-content: center;
         padding: 20px;
         align-items: center;
+        margin: auto;
+
     }
     
     .squres-section {
@@ -743,9 +735,10 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        background-size: 90% 100%; /* Set width to 90% and adjust the height automatically */
         background-position: center;
         background-repeat: no-repeat;
+        width: 100%;
+
 
     }
 
@@ -754,19 +747,25 @@
         flex-direction: column;
         justify-content: space-between;
         background-color: white;
-        gap: 1vh;
         margin-top: 4vh;
-
+        padding: 5px;
+        width: 90vw;
     }
     
     .box {
-        width: 100%;
+        width: 90%;
         height: auto;
         border-radius: 10px;
-        padding: 20px;
         border: 1px solid #ddd;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2vw;
+    }
+
+    .box-content {
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -810,24 +809,25 @@
     display: flex;
     align-items: center;
     flex-direction: column;
+
 }
 
 .adopt {
     display: flex;
-    flex-direction: row;
-    gap: 3vw;
+    flex-direction: column;
+    gap: 5vw;
     justify-content: space-evenly;
     align-items: center;
     background-color: #f5f5f5; /* Subtle background for the whole adoption section */
+    padding: 5vw;
     border-radius: 15px;
-    margin-top: 0px;
-    padding:10px;
+    margin-top: 4vh;
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1); /* Larger shadow for more depth */
 }
 
 .adopt-image {
-    width: 220px;
-    height: 220px;
+    width: 180px;
+    height: 180px;
     object-fit: fill;
     border-radius: 20px;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15); /* Soft shadow around the image */
@@ -835,19 +835,9 @@
 }
 
 .adoption-info {
-
-    width: 220px;
-    height: 220px;
-    text-align: center;
-    border-radius: 20px;
-    padding: 0px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-    color: #333;
-    position: relative;
+    width: 180px;
+    height: 180px;
+    gap:1vh;
 }
 
 .adoption-info h2 {
@@ -859,13 +849,13 @@
 
 .adoption-info p {
     font-size: 0.8rem;
-    font-weight: 400;
+    font-weight: bold;
     color: #555;
+    margin:0px;
 }
 
 .adopt-button {
     margin-top: 0;
-    padding: 10px 20px;
     background-color: #ff7f50;
     color: #fff;
     font-size: 1rem;
@@ -879,8 +869,8 @@
 
 .section5 {
     display: flex;
-    flex-direction: column;
     gap: 2vh;
+    justify-content: space-evenly;
     align-items: center;
     background-image: url("https://t3.ftcdn.net/jpg/02/98/20/18/360_F_298201895_5bPjYW2qPWJ52Wg40H80d8hCAHsPIfpE.jpg");
     background-size: cover;
@@ -892,27 +882,28 @@
 }
 
 
-.visit-us {
-    display: flex;
-    flex-direction: row;
-
-    gap: 1vw;
-}
-.visit-us-row {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
 .visit-us h2 {
-    font-size: 1.5rem;
-    margin-bottom: 0px;
+    font-size: 1rem;
+    margin:0;
+
+}
+
+.visit-us .phone-number {
+    font-size: 1rem;
+    margin:0;
+
+}
+
+
+.visit-us h3 {
+    font-size: 1rem;
+    margin:0;
 }
 
 .contact {
     padding: 3vw;
     gap: 1.5vh;
+    width: 45vw;
 }
 
 .contact h2 {
@@ -923,18 +914,16 @@
 }
 .contactform {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     gap: 1.5vh;
     align-items: center;
 }
 
 .contactInput {
-    height: 3vh;
-    width: 20vw;
+    height: 2vh;
+    width: 30vw;
 
 }
-
-
 
 /* Modal content */
 .modal-content {
@@ -943,7 +932,6 @@
     width: 400px;
 
 }
-
 
 .customerClubFormInput {
     height: 1vh;
@@ -959,9 +947,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;   
-    width: 100%;
-    
+    flex-direction: column;  
+    width: 90%; 
+}
+
+.linkimg{
+    width: 40px;
+    height: 40px;
+
+
 }
 
 }

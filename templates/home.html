@@ -2,7 +2,7 @@
 
 {% block home %}
 
-<link rel="stylesheet" href="/static/css/home.css">
+<link rel="stylesheet" href="/static/home.css">
 
 <div class="container">
     <div class="headerHome">
@@ -18,7 +18,7 @@
                     <img src="static/images/home-dog.png" class="featured-image" alt="Dog">
                     <h3>כלב</h3>
                 </button>
-                <button type="submit" name="animal" value="חתול" class="animal-link">
+                <button type="submit" name="animal" value="חתול" class="animal-link" style="margin-left:20px;">
                     <img src="static/images/home-cat.png" class="featured-image" alt="Cat">
                     <h3>חתול</h3>
                 </button>
@@ -29,12 +29,12 @@
             </div>
         </form>
     </div>
-    <div class="squres-section" style="background-image: url('static/images/squers-background.png');">
+    <div class="squres-section">
         <h2 style="color:black; text-decoration: underline;">למה כדאי לקנות אצלנו?</h2>
 
         <div class="squres-about">
                 <div class="grid-item">
-                    <div class="icon" style="background-color: #f8b03cc3;">
+                    <div class="icon" style="background-color: #f8e4b9c8;">
                         <img src="static/images/badge.png" alt="Badge">
                     </div>
                     <h3>זכייני מזון סקנדינבי בריא ואיכותי</h3>
@@ -47,7 +47,7 @@
                     <h3>מובחרים</h3>
                 </div>
                 <div class="grid-item">
-                    <div class="icon" style="background-color: #f8b03cc3;">
+                    <div class="icon" style="background-color: #f8e4b9c8;">
                         <img src="static/images/phone-call.png" alt="Phone">
                     </div>
                     <h3>תמיד זמינים עבורך</h3>
@@ -59,7 +59,7 @@
                     <h3>יחס אישי</h3>
                 </div>
                 <div class="grid-item">
-                    <div class="icon" style="background-color: #f8b03cc3;">
+                    <div class="icon" style="background-color: #f8e4b9c8;">
                         <img src="static/images/location.png" alt="Location">
                     </div>
                     <h3>מגיעים לכל אזור בערבה</h3>
@@ -75,24 +75,40 @@
 
     <div class="section3">
         <div class="box">
+            <div class="box-title">
+                <h3>כל מה שרציתם לדעת</h3>
+            </div>
+            <div class="box-content">
             <img src="static\images\article-img.png" >
-            <h3>כל מה שרציתם לדעת</h3>
             <p>תוכלו למצוא כאן מידע שימושי על בעל החיים שלכם, מטיפים ועד מאמרים מקצועיים על תזונה, שינה והתנהגות! קריאה מהנה...</p>
+            </div>
             <a href="/blog">קרא עוד &gt;&gt;</a>
+
         </div>
         <div class="box">
+            <div class="box-title">
+                <h3>מחשבון האכלה של Pet4me</h3>
+            </div>
+            <div class="box-content">
             <img src="static\images\calculator.png" alt="מחשבון האכלה של Pet4me">
-            <h3>מחשבון האכלה של Pet4me</h3>
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod ante sit amet metus fermentum, ac iaculis libero condimentum.</p>
+            </div>
             <a href="Blog.html">קרא עוד &gt;&gt;</a>
+
         </div>
         <div class="box">
+            <div class="box-title">
+                <h3>עוד לא הצטרפתם למועדון הלקוחות שלנו?</h3>
+            </div>
+            <div class="box-content">
             <img src="static\images\club.png" alt="Customer Club Registration">
-            <h3>עוד לא הצטרפתם למועדון הלקוחות שלנו?</h3>
             <p>הצטרפו למועדון הלקוחות והתחילו להנות ממגוון מבצעים, הנחות והשקות של מוצרים חדשים לפני כולם!</p>
-            <!-- <a href="customer-club-registration.html">הירשם &gt;&gt;</a> -->
+            </div>
             <a href="#" onclick="openModal()">אל תפספס, הירשם&gt;&gt;</a>
+
+
         </div>
+
     </div>
 
     <div id="customerClubModal" class="modal">
@@ -150,18 +166,20 @@
         
         <div class="adopt">
             {% for adopt in adopt %}
+                <div style="display:flex; gap:3vw;">
                 <div class="adoption-info">
                     <h2>{{ adopt[1] }} מחפש בית!</h2> <!-- Title dynamically using the animal's name -->
                     <p>גיל: {{ adopt[3] }} שנים</p> <!-- Animal Age in Hebrew -->
                     <p>{{  adopt[4] }}</p> <!-- Animal Description -->
-                    <a href="#contact" class="adopt-button">קח אותי הביתה</a>
                 </div>
                 <img src="/static/uploads/{{ adopt[5] }}" class="adopt-image">
+                </div>
             {% endfor %}
+            <a href="#contact" class="adopt-button">קח אותי הביתה</a>
         </div>
     </div>
     <!-- Contact Form Section -->
-    <div class="section5">
+    <div class="section5" style="background-image: url('static/images/background-section.png');">
         <section id="contactForm" class="contact">
             <h2>צור קשר</h2>   
             <form action="/contact" method="POST" id="leadForm" class="contactform">
@@ -177,18 +195,12 @@
         </section>
 
         <div class="visit-us" id="contact">
-        <div class="visit-us-row">
             <h2>טלפון להזמנות</h2>
             <h3 class="phone-number">050-9936660</h3>
-        </div>
-        <div class="visit-us-row">
             <h2>פנו ישירות בוואטספ</h2>
-            <div class="social-links">
                 <a href="https://wa.me/pet4me">
                     <img class="linkimg" src="/static/images/whatsapp.png" alt="WhatsApp">
                 </a>
-            </div>
-        </div>
         </div>
     
     </div>

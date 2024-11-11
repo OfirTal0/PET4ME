@@ -313,6 +313,12 @@ footer p {
     text-align: center;
 }
 
+.login-box form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .login-title {
     margin-bottom: 20px;
     font-size: 24px;
@@ -439,12 +445,31 @@ footer p {
     .footer {
         display: flex;
         flex-direction: column;
-        justify-content: space-evenly;
+        justify-content: center;
         align-items: center;
         padding: 2vh 0;
         background-color: #333;
         color: white;
-        font-size: 0.9rem;
+        font-size: 0.7rem;
     }
+
+    .icon-left img {
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+        transition: transform 0.3s ease-in-out;
+    }
+    
+    .login-box {
+        background-color: white;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 250px;
+        text-align: center;
+    }
+
+    
+
 }
 
