@@ -6,10 +6,12 @@
 <div class="article-container">
     <h1 class="article-title">{{ article[1] }}</h1>  <!-- Article title -->
     
-    <img src="/static/uploads/blog/{{ article[0] }}.png" alt="{{ article[1] }}" class="article-image">  <!-- Article image -->
+    <img src="/static/uploads/blog/{{ article[3] }}" alt="{{ article[1] }}" class="article-image">  <!-- Article image -->
 
     <div class="article-text">
-        {{ article[4] }}  <!-- Article text content -->
+        {% for paragraph in article[4].split('|') %} <!-- Split text by delimiter -->
+            <p>{{ paragraph }}</p> <!-- Display each part as a paragraph -->
+        {% endfor %}
     </div>
 
     <div class="article-footer">

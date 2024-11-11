@@ -287,6 +287,13 @@
     margin: 0;
 }
 
+.cart-base {
+    display:flex;
+    flex-direction: row;
+    gap: 3vh;
+}
+
+
 @media (max-width: 768px) {
 
     .cart-base {

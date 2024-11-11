@@ -7,9 +7,9 @@
 }
 
 .box {
-    display: flex;
-    flex-direction: column;  /* Stack items vertically */
-    justify-content: space-evenly;
+    display: grid;
+    grid-template-columns: repeat(1, 5fr); 
+    gap: 5px;
     border-radius: 15px;
     padding: 20px;
     border: 1px solid #ddd;

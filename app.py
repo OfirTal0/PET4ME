@@ -13,7 +13,7 @@ import os
 
 app = Flask(__name__, static_folder='static', template_folder='templates')
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # Limit image size to 16 MB
+app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024  # Limit image size to 16 MB
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # Get the directory where app.py is located
@@ -57,18 +57,30 @@ def about():
     return render_template('about.html')
 
 
-@app.route('/catalog', methods=['GET','POST'])
+@app.route('/catalog', methods=['GET'])
 def catalog():
-    animal_type = request.args.get('animal')  # Get the animal type from query parameters
-    category = request.args.get('category')  # Get the animal type from query parameters
-    if animal_type:
-        products = query(f"SELECT * FROM products WHERE animal = '{animal_type}'")
-        if category:
-            products = query(f"SELECT * FROM products WHERE category = '{category}' and animal = '{animal_type}'")
-    elif category:
-        products = query(f"SELECT * FROM products WHERE category = '{category}'")
-    else:
-        products = query(f"SELECT * FROM products")
+    animal_types = request.args.getlist('animal[]')  # Get a list of selected animal types
+    categories = request.args.getlist('category[]')  # Get a list of selected categories
+
+    # Start building the SQL query
+    query_string = "SELECT * FROM products WHERE 1=1"
+    params = []
+
+    # If animal types were selected, add them to the query
+    if animal_types:
+        placeholders = ', '.join(['?'] * len(animal_types))  # Create placeholders for SQL
+        query_string += f" AND animal IN ({placeholders})"
+        params.extend(animal_types)
+
+    # If categories were selected, add them to the query
+    if categories:
+        placeholders = ', '.join(['?'] * len(categories))
+        query_string += f" AND category IN ({placeholders})"
+        params.extend(categories)
+
+    # Execute the query with the selected parameters
+    products = query(query_string, params)
+    
     return render_template('catalog.html', products=products)
 
 @app.route('/show_product', methods=['POST', 'GET'])
@@ -94,9 +106,8 @@ def search():
 
 @app.route('/contact', methods=['POST'])
 def contact():
-    data = request.get_json()
-    name = data.get('name')
-    phone = data.get('phone')
+    name = request.form.get('name')
+    phone = request.form.get('phone')
     date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     status = "new"  # Default status
 
@@ -104,9 +115,8 @@ def contact():
     insert_sql = f"INSERT INTO leads (name, phone, date, status) VALUES ('{name}', '{phone}', '{date}', '{status}')"
     query(insert_sql)  # Call existing query function for execution
     send_contact_email(name, phone, date)
+    return redirect('/')
 
-    # Respond with a success message
-    return jsonify(success=True)
 
 @app.route('/cart', methods=['GET', 'POST'])
 def cart():
@@ -352,7 +362,7 @@ def update_article():
     article_id = request.form['article_id']
     name = request.form['name']
     summary = request.form['summary']
-    text = request.form['text']
+    text = request.form['text'].replace('/', '|')  # Replace '/' with '|'
     
     query(f"""
     UPDATE blog
@@ -367,16 +377,21 @@ def update_article():
 def add_article():
     name = request.form['name']
     summary = request.form['summary']
-    text = request.form['text']
+    text = request.form['text'].replace('/', '|')  # Replace '/' with '|'
     image = request.files['image']
     image_filename = 'none'
+    
+    # Check if an image was uploaded, otherwise use default image
     if image and allowed_file(image.filename):
         image_filename = secure_filename(image.filename)
         image.save(os.path.join(app.config['UPLOAD_FOLDER'], 'blog', image_filename))
+    else:
+        image_filename = 'article-img.png'  # Default image if none is uploaded
     
+    # Insert article with image (either uploaded or default)
     query(f"INSERT INTO blog (name, summary, image, text) VALUES ('{name}', '{summary}', '{image_filename}', '{text}')")   
+    
     return redirect('/admin')
-
 
 @app.route('/remove_article', methods=['POST'])
 def remove_article():

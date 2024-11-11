@@ -3,7 +3,14 @@
     flex-direction: column;
     gap: 2vh;
     font-family: 'Montserrat', sans-serif;
+    min-height: 100vh;
+
 }
+
+.content {
+    flex: 1;
+  }
+  
 
 a {
     text-decoration: none;
@@ -389,7 +396,8 @@ footer p {
         background-color: #333;
         position: absolute;
         top: 20%;
-        right: 10%;
+        right: 5%;
+
     }
 
     .hamburger div {
@@ -397,16 +405,18 @@ footer p {
         height: 4px;
         width: 100%;
         margin: 5px 0;
+
     }
 
     .popup-menu {
         position: fixed;
         top: 0;
         right: -100%;
-        width: 100%;
-        height: 100%;
+        width: 50%;
+        height: 70%;
         background-color: #ffffff;
         box-shadow: -4px 0 6px rgba(0, 0, 0, 0.2);
+        border-radius: 20px;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -454,8 +464,8 @@ footer p {
     }
 
     .icon-left img {
-        width: 30px;
-        height: 30px;
+        width: 35px;
+        height: 35px;
         cursor: pointer;
         transition: transform 0.3s ease-in-out;
     }

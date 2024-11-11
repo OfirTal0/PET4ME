@@ -43,8 +43,7 @@
                     <div class="icon" style="background-color: #e1e1e1;">
                         <img src="static/images/versatility.png" alt="Versatility">
                     </div>
-                    <h3 >מגוון סוגי מזון</h3>
-                    <h3>מובחרים</h3>
+                    <h3> מגוון סוגי מזון מובחרים</h3>
                 </div>
                 <div class="grid-item">
                     <div class="icon" style="background-color: #f8e4b9c8;">
@@ -193,16 +192,15 @@
                 <p>תודה שיצרת קשר! נחזור אלייך בהקדם האפשרי</p>
             </div>
         </section>
-
+    
         <div class="visit-us" id="contact">
             <h2>טלפון להזמנות</h2>
             <h3 class="phone-number">050-9936660</h3>
             <h2>פנו ישירות בוואטספ</h2>
-                <a href="https://wa.me/pet4me">
-                    <img class="linkimg" src="/static/images/whatsapp.png" alt="WhatsApp">
-                </a>
+            <a href="https://wa.me/pet4me">
+                <img class="linkimg" src="/static/images/whatsapp.png" alt="WhatsApp">
+            </a>
         </div>
-    
     </div>
 </div>
 
@@ -218,10 +216,10 @@
 
     document.getElementById('leadForm').addEventListener('submit', function(event) {
         event.preventDefault();  // Prevent form from reloading the page
-
+    
         const name = document.getElementById('name').value;
         const phone = document.getElementById('phone').value;
-
+    
         fetch('/contact', {
             method: 'POST',
             headers: {
@@ -241,7 +239,6 @@
         })
         .catch(error => console.error('Error:', error));
     });
-
     document.getElementById('join-now-btn').addEventListener('click', function() {
         // Hide the original promo content
         document.getElementById('promo-box').style.display = 'none';

@@ -48,19 +48,22 @@
 }
 
 .grid-item {
+    width: 100%; /* Allows it to adapt to the grid column width */
+    height: 200px; /* Set a fixed height for uniformity */
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    flex-direction: column;   
-    width: 12vw;
+    justify-content: center;
+    text-align: center;
+    padding: 10px;
+    box-sizing: border-box;
 }
-
 .grid-item .icon {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100px;
-    height: 100px;
+    width: 90px;
+    height: 90px;
     border-radius: 50%;
     margin-bottom: 10px;
     cursor: pointer;
@@ -322,7 +325,6 @@
     background-color: #f9f9f9;
     border-radius: 15px;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-
 }
 
 
@@ -337,13 +339,14 @@
 .show-product-button {
     background-color: #4c10f1;
     color: white;
-    padding: 10px 20px;
     border-radius: 25px;
-    font-size: 1rem;
     text-decoration: none;
     border: none;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.3s;
+    margin-top: auto; /* Pushes the button to the bottom */
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
 }
 
 .show-product-button:hover {
@@ -369,8 +372,10 @@
     padding: 2vh;
     text-align: center;
     height: 40vh;   
-    justify-content: center;
+    justify-content: space-evenly;
     gap:2vh;
+    overflow: hidden; /* Prevents overflowing content */
+
 }
 
 .product-weight {
@@ -380,10 +385,12 @@
 }
 
 .productimg {
-    width: 50%;
-    height: 50% /* Maintain aspect ratio */
+    width: 15vw;
+    height: 15vh; /* Maintain aspect ratio */
+    object-fit: contain;
 
 }
+
 
 .customer-club-form {
     display: flex;
@@ -538,7 +545,7 @@
     justify-content: center;
     flex-direction: column;
     background-color: rgba(255, 255, 255, 0.85);
-    padding: 3vw;
+    padding: 2vw;
     border-radius: 15px;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
@@ -721,13 +728,10 @@
 
     .squres-about {
         display: grid;
-        grid-template-columns: repeat(3, 2fr);
-        grid-gap: 20px;
-        justify-content: center;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
         padding: 20px;
-        align-items: center;
-        margin: auto;
-
+        align-items: stretch; /* Ensures items align in height */
     }
     
     .squres-section {
@@ -943,14 +947,33 @@
     width: 30vw;
 }
 
-.grid-item {
+.icon {
+    width: 60px; /* Fixed size for icon container */
+    height: 60px;
     display: flex;
-    justify-content: center;
     align-items: center;
-    flex-direction: column;  
-    width: 90%; 
+    justify-content: center;
+    margin-bottom: 10px;
 }
 
+h3 {
+    font-size: 16px;
+    line-height: 1.2;
+    overflow-wrap: break-word; /* Allows text wrapping */
+    margin: 0;
+}
+
+.grid-item {
+    width: 100%; /* Allows it to adapt to the grid column width */
+    height: 200px; /* Set a fixed height for uniformity */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 10px;
+    box-sizing: border-box;
+}
 .linkimg{
     width: 40px;
     height: 40px;
