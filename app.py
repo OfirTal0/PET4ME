@@ -51,8 +51,6 @@ def home():
             popular_products.append(product)    
     return render_template('home.html', popular_products=popular_products, adopt=adopt,first_product_on_sale=first_product_on_sale )
 
-# if __name__ == "__main__":
-#     app.run(host="0.0.0.0", port=int(os.getenv("PORT", 5000)))    
 
 @app.route('/about')
 def about():  
@@ -648,5 +646,10 @@ def download_data():
     return send_file(output, as_attachment=True, download_name="admin_data.xlsx", mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 
 
-if __name__ == '__main__':
-    app.run(debug=False)
+# if __name__ == '__main__':
+#     app.run(debug=False)
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=int(os.getenv("PORT", 5000)))    
+
+
