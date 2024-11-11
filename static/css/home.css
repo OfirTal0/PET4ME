@@ -717,13 +717,13 @@
 @media (max-width: 768px) {
 
     .featured-image {
-        width: 120px; /* Fixed width for images */
-        height: 120px; /* Fixed height for images */
+        width: 110px; /* Fixed width for images */
+        height: 110px; /* Fixed height for images */
 
     }
 
     .animal-links {
-        gap: 1vw;; /* Space between the items */
+        gap: 0px;; /* Space between the items */
     }
 
     .squres-about {
