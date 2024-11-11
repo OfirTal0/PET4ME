@@ -54,12 +54,12 @@ def home():
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.getenv("PORT", 5000)))    
 
-@app.route('web-production-41fd.up.railway.app/about')
+@app.route('/about')
 def about():  
-    return render_template('about.html')
+    return render_template('web-production-41fd.up.railway.app/about')
 
 
-@app.route('web-production-41fd.up.railway.app/catalog', methods=['GET','POST'])
+@app.route('/catalog', methods=['GET','POST'])
 def catalog():
     animal_type = request.args.get('animal')  # Get the animal type from query parameters
     category = request.args.get('category')  # Get the animal type from query parameters
@@ -71,7 +71,7 @@ def catalog():
         products = query(f"SELECT * FROM products WHERE category = '{category}'")
     else:
         products = query(f"SELECT * FROM products")
-    return render_template('catalog.html', products=products)
+    return render_template('web-production-41fd.up.railway.app/catalog', products=products)
 
 @app.route('/show_product', methods=['POST', 'GET'])
 def show_product():
