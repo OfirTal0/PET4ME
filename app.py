@@ -217,8 +217,7 @@ def submit_order():
         flash("אירעה שגיאה בהגשת ההזמנה. אנא נסה שוב.")
         return redirect('/cart')  # Redirect to the cart page in case of error
 
-    if __name__ == '__main__':
-        app.run(debug=True)
+    
 
 @app.route('/blog', methods=['GET', 'POST'])
 def blog():
@@ -647,3 +646,7 @@ def download_data():
 
     # Send the file as a download
     return send_file(output, as_attachment=True, download_name="admin_data.xlsx", mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+
+
+if __name__ == '__main__':
+    app.run(debug=False)
