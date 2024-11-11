@@ -54,12 +54,12 @@ def home():
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.getenv("PORT", 5000)))    
 
-@app.route('/about')
+@app.route('web-production-41fd.up.railway.app/about')
 def about():  
     return render_template('about.html')
 
 
-@app.route('/catalog', methods=['GET','POST'])
+@app.route('web-production-41fd.up.railway.app/catalog', methods=['GET','POST'])
 def catalog():
     animal_type = request.args.get('animal')  # Get the animal type from query parameters
     category = request.args.get('category')  # Get the animal type from query parameters
@@ -72,28 +72,6 @@ def catalog():
     else:
         products = query(f"SELECT * FROM products")
     return render_template('catalog.html', products=products)
-
-# @app.route('/api/products', methods=['GET'])
-# def api_products():
-#     products_json = []
-#     products = query(f"SELECT * FROM products")
-#     for product in products:
-#         product_json = {
-#             "id": product[0], 
-#             "product_name": product[1], 
-#             "category": product[2], 
-#             "price": product[3], 
-#             "description": product[4],
-#             "image": product[0],  
-#             "stock": product[6], 
-#             "weight": product[7],
-#             "popular": product[8],
-#             "animal": product[9]
-#         }
-#         products_json.append(product_json)
-
-#     return json.dumps(products_json, ensure_ascii=False)
-
 
 @app.route('/show_product', methods=['POST', 'GET'])
 def show_product():
