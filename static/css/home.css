@@ -376,6 +376,7 @@
     gap:2vh;
     overflow: hidden; /* Prevents overflowing content */
 
+
 }
 
 .product-weight {
@@ -791,18 +792,9 @@
 }
 
 .popular-product-card {
-    background-color: #fff;
-    border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s, box-shadow 0.3s;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 2vh;
-    text-align: center;
-    height: 30vh;   
-    justify-content: center;
-    gap:2vh;
+    height: 30vh;
+    grid-template-columns: repeat(1, 4fr); /* Three columns */
+
 }
 
 
@@ -933,13 +925,13 @@
 .modal-content {
     margin: 5% auto;
     padding: 10px;
-    width: 400px;
+    width: 320px;
 
 }
 
 .customerClubFormInput {
     height: 1vh;
-    width: 30vw;
+    width: 40vw;
 }
 
 .customerClubFormSelect {
