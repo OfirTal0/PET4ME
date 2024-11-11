@@ -318,4 +318,21 @@
     height: fit-content;
 }
 
+.out-of-stock {
+    position: relative;
+    bottom: 270px;
+    left: 40px;
+
+}
+
+.monthly-sale, .sale-label {
+    position: relative;
+    bottom: 270px;
+    left:15px;
+    background-color: red;
+    color: white;
+    padding: 5px;
+    font-size: 0.8rem;
+    border-radius: 3px; /* Square corners */
+}
 }
