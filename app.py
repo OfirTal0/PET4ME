@@ -142,8 +142,11 @@ def show_product():
     product_id = request.form.get('product_id')
     product = query(sql=f"SELECT * FROM products WHERE id={product_id}")
 
+    product_in_cart = products_in_cart ()[0]
+    total_price = products_in_cart ()[1]
+
     if product:
-        return render_template('show_product.html', product=product[0])  # Pass the first item in the list
+        return render_template('show_product.html', product=product[0],product_in_cart=product_in_cart,total_price=total_price)  # Pass the first item in the list
     else:
         return render_template('show_product.html', error="Product not found")
 
