@@ -158,12 +158,10 @@ def search():
     else:
         return redirect('/catalog')
 
-@app.route('/contact', methods=['POST'])
+@app.route('/contact', methods=['GET','POST'])
 def contact():
-    # Parse the JSON data from the request body
-    data = request.get_json()
-    name = data.get('name')
-    phone = data.get('phone')
+    name = request.form.get('name')
+    phone = request.form.get('phone')
     date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     status = "new"  # Default status
 
@@ -171,9 +169,8 @@ def contact():
     insert_sql = f"INSERT INTO leads (name, phone, date, status) VALUES ('{name}', '{phone}', '{date}', '{status}')"
     query(insert_sql)  # Call existing query function for execution
     send_contact_email(name, phone, date)
+    return redirect('/')
 
-    # Return a JSON response to indicate success
-    return jsonify({'success': True})
 
 @app.route('/cart', methods=['GET', 'POST'])
 def cart():

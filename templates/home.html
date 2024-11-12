@@ -181,10 +181,10 @@
     <div class="section5" style="background-image: url('static/images/background-section.png');">
         <section id="contactForm" class="contact">
             <h2>צור קשר</h2>   
-            <form id="leadForm" class="contactform">
+            <form action="/contact" method="POST" id="leadForm" class="contactform">
                 <input class="contactInput" type="text" id="name" name="name" placeholder="שם מלא" required>
                 <input class="contactInput" type="tel" id="phone" name="phone" placeholder="טלפון" pattern="\d*" title="אנא הכנס מספרים בלבד" required>
-                <input class="contactSubmit" type="submit" onclick="leadFormSubmit()" value="קדימה!">
+                <input class="contactSubmit" type="submit" value="קדימה!">
             </form>
     
             <div id="successMessage" class="flash-message" style="display: none;">
@@ -204,33 +204,6 @@
 </div>
 
 <script>
-
-    function leadFormSubmit() {
-        event.preventDefault();  // Prevent the form from submitting traditionally
-            
-            const name = document.getElementById('name').value;
-            const phone = document.getElementById('phone').value;
-        
-            fetch('/contact', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ name, phone })
-            })
-            .then(response => response.json())  // Expecting JSON response from server
-            .then(data => {
-                if (data.success) {
-                    // Hide the form and show the success message
-                    document.getElementById('leadForm').style.display = 'none';
-                    document.getElementById('successMessage').style.display = 'block';
-                } else {
-                    alert("There was an error. Please try again.");
-                }
-            })
-            .catch(error => console.error('Error:', error));
-    }
-            
         
 
 

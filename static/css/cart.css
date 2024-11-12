@@ -338,13 +338,12 @@
     }
     
     .cart-table {
-        width: 100%;
         border-collapse:separate;
         text-align: center;
     }
 
     .order-section {
-        width: 0%; /* Full width on mobile */
+        width: 90%; /* Full width on mobile */
         padding: 15px; /* Less padding on mobile */
     }
 
