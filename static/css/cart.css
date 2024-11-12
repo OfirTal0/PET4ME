@@ -122,15 +122,17 @@
 
 
 .order-section {
-    width: 30%; /* Fixed width of 30% */
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    overflow: hidden;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    padding: 10px; /* Slightly increase padding */
+    width: 50%; /* Full width on larger screens */
+    max-width: 400px; /* Max width for larger screens */
+    margin: 20px auto; /* Center the order section */
+    padding: 20px; /* Padding inside */
+    border-radius: 8px; /* Rounded corners */
+    background-color: #fff; /* White background */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow for the card */
     display: flex;
-    flex-direction: column; 
-    align-items: center;
+    flex-direction: column;
+    gap: 15px; /* Spacing between form elements */
+    font-family: Arial, sans-serif;
 }
 
 .no-products {
@@ -140,49 +142,61 @@
 }
 
 .order-section h2 {
-    font-size: 24px; /* Increase font size for total price */
+    font-size: 1.6rem; /* Slightly larger font for the total price */
     color: #333; /* Dark text color */
-    margin-bottom: 20px; /* Space below the heading */
+    font-weight: bold; /* Make the price bold */
+    margin-bottom: 10px; /* Space below the price */
+    text-align: center; /* Center the heading */
 }
 
 .order-section .form-group {
-    display: flex; /* Use flexbox for better alignment */
-    flex-direction: column; /* Stack items vertically */
-    margin-bottom: 15px; /* Space between form items */
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Space between input fields */
 }
 
 .order-section label {
-    font-weight: bold; /* Bold label text */
-    margin-bottom: 5px; /* Space below labels */
+    font-size: 1rem; /* Standard font size */
+    font-weight: bold; /* Make labels bold */
+    color: #555; /* Darker label color */
 }
 
 .order-section input[type="text"],
 .order-section input[type="tel"] {
-    padding: 10px; /* Inner padding for inputs */
-    border: 1px solid #ccc; /* Border around inputs */
-    border-radius: 4px; /* Slightly rounded corners for inputs */
-    font-size: 16px; /* Font size for input text */
+    padding: 12px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.3s ease;
 }
 
 .order-section input[type="text"]:focus,
 .order-section input[type="tel"]:focus {
-    border-color: #007BFF; /* Change border color on focus */
-    outline: none; /* Remove default outline */
+    border-color: #007BFF; /* Highlight border on focus */
 }
 
 .order-section .submit-button {
-    background-color: #007BFF; /* Button background color */
-    color: white; /* Button text color */
-    padding: 10px 15px; /* Padding inside button */
-    border: none; /* No border */
-    border-radius: 4px; /* Rounded corners */
-    font-size: 16px; /* Font size for button text */
-    cursor: pointer; /* Change cursor to pointer on hover */
-    transition: background-color 0.3s; /* Smooth transition for hover effect */
+    background-color: #007BFF; /* Button color */
+    color: #fff; /* Button text color */
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px; /* Space above button */
 }
 
 .order-section .submit-button:hover {
-    background-color: #0056b3; /* Darker shade on hover */
+    background-color: #0056b3; /* Darker button color on hover */
+}
+
+
+.order-section .note-text {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 5px;
 }
 
 .cart-form {
@@ -330,8 +344,27 @@
     }
 
     .order-section {
-        width: 90%; /* Fixed width of 30% */
+        width: 0%; /* Full width on mobile */
+        padding: 15px; /* Less padding on mobile */
+    }
 
+    .order-section h2 {
+        font-size: 1.4rem; /* Smaller font size for the total price */
+    }
+
+    .order-section label {
+        font-size: 0.9rem; /* Smaller font size for labels */
+    }
+
+    .order-section input[type="text"],
+    .order-section input[type="tel"] {
+        font-size: 0.9rem; /* Slightly smaller text for inputs */
+        padding: 10px; /* Less padding for inputs */
+    }
+
+    .order-section .submit-button {
+        font-size: 1rem; /* Smaller font size for button */
+        padding: 10px 15px; /* Adjust button padding */
     }
 
     .cart-container {

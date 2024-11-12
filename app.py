@@ -66,75 +66,14 @@ def about():
     return render_template('about.html')
 
 
-@app.route('/catalog', methods=['GET'])
-def catalog():
-    animal_types = request.args.getlist('animal[]')  # Get a list of selected animal types
-    categories = request.args.getlist('category[]')  # Get a list of selected categories
-
-    # Start building the SQL query
-    query_string = "SELECT * FROM products WHERE 1=1"
-    params = []
-
-    # If animal types were selected, add them to the query
-    if animal_types:
-        placeholders = ', '.join(['?'] * len(animal_types))  # Create placeholders for SQL
-        query_string += f" AND animal IN ({placeholders})"
-        params.extend(animal_types)
-
-    # If categories were selected, add them to the query
-    if categories:
-        placeholders = ', '.join(['?'] * len(categories))
-        query_string += f" AND category IN ({placeholders})"
-        params.extend(categories)
-
-    # Execute the query with the selected parameters
-    products = query(query_string, params)
-    
-    return render_template('catalog.html', products=products)
-
-@app.route('/show_product', methods=['POST', 'GET'])
-def show_product():
-    product_id = request.form.get('product_id')
-    product = query(sql=f"SELECT * FROM products WHERE id={product_id}")
-
-    if product:
-        return render_template('show_product.html', product=product[0])  # Pass the first item in the list
-    else:
-        return render_template('show_product.html', error="Product not found")
-
-
-@app.route('/search', methods=['GET', 'POST'])
-def search():
-    text = request.args.get('text')  # Use 'GET' since it's a form with GET method
-    if text:
-        sql = f"SELECT * FROM products WHERE category LIKE '%{text}%' OR product_name LIKE '%{text}%' OR animal LIKE '%{text}%' OR description LIKE '%{text}%'"
-        products = query(sql)
-        return render_template('catalog.html', products=products)
-    else:
-        return redirect('/catalog')
-
-@app.route('/contact', methods=['POST'])
-def contact():
-    name = request.form.get('name')
-    phone = request.form.get('phone')
-    date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    status = "new"  # Default status
-
-    # Insert into leads table using raw SQL
-    insert_sql = f"INSERT INTO leads (name, phone, date, status) VALUES ('{name}', '{phone}', '{date}', '{status}')"
-    query(insert_sql)  # Call existing query function for execution
-    send_contact_email(name, phone, date)
-    return redirect('/')
-
-
-@app.route('/cart', methods=['GET', 'POST'])
-def cart():
+def products_in_cart ():
     products_in_cart = session.get('products_in_cart', {})  # This is a dictionary {product_id: quantity}
     product_details_in_cart = []  # Create a new list to hold product details
     total_price = 0  # Initialize total price
 
     for product_id, quantity in products_in_cart.items():  # Loop through the dictionary
         product = query(f"SELECT * FROM products WHERE id={product_id}")
+
         if product:
             product_info = product[0]
             product_info = list(product_info)  # Convert product tuple to list so we can modify it
@@ -161,10 +100,85 @@ def cart():
 
             # Accumulate total price including discount and round to 1 decimal point
             total_price += quantity * discounted_price
+            total_price = round(total_price, 1)
 
-    # Round the total price to 1 decimal point
-    total_price = round(total_price, 1)
+    return [product_details_in_cart,total_price]
 
+@app.route('/catalog', methods=['GET'])
+def catalog():
+    # Get selected animals and categories from the request
+    animal_types = request.args.getlist('animal[]')  # Get a list of selected animal types
+    categories = request.args.getlist('category[]')  # Get a list of selected categories
+
+    # Check if we have selected animals to display in the title
+    animal_selected = None
+    if animal_types:
+        animal_selected = ', '.join(animal_types)
+
+    # Start building the SQL query
+    query_string = "SELECT * FROM products WHERE 1=1"
+    params = []
+
+    # If animal types were selected, add them to the query
+    if animal_types:
+        placeholders = ', '.join(['?'] * len(animal_types))  # Create placeholders for SQL
+        query_string += f" AND animal IN ({placeholders})"
+        params.extend(animal_types)
+
+    # If categories were selected, add them to the query
+    if categories:
+        placeholders = ', '.join(['?'] * len(categories))
+        query_string += f" AND category IN ({placeholders})"
+        params.extend(categories)
+
+    # Execute the query with the selected parameters
+    products = query(query_string, params)
+    product_in_cart = products_in_cart ()[0]
+    total_price = products_in_cart ()[1]
+    return render_template('catalog.html', products=products, animal_selected=animal_selected,product_in_cart=product_in_cart,total_price=total_price)
+
+@app.route('/show_product', methods=['POST', 'GET'])
+def show_product():
+    product_id = request.form.get('product_id')
+    product = query(sql=f"SELECT * FROM products WHERE id={product_id}")
+
+    if product:
+        return render_template('show_product.html', product=product[0])  # Pass the first item in the list
+    else:
+        return render_template('show_product.html', error="Product not found")
+
+
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    text = request.args.get('text')  # Use 'GET' since it's a form with GET method
+    if text:
+        sql = f"SELECT * FROM products WHERE category LIKE '%{text}%' OR product_name LIKE '%{text}%' OR animal LIKE '%{text}%' OR description LIKE '%{text}%'"
+        products = query(sql)
+        return render_template('catalog.html', products=products)
+    else:
+        return redirect('/catalog')
+
+@app.route('/contact', methods=['POST'])
+def contact():
+    # Parse the JSON data from the request body
+    data = request.get_json()
+    name = data.get('name')
+    phone = data.get('phone')
+    date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    status = "new"  # Default status
+
+    # Insert into leads table using raw SQL
+    insert_sql = f"INSERT INTO leads (name, phone, date, status) VALUES ('{name}', '{phone}', '{date}', '{status}')"
+    query(insert_sql)  # Call existing query function for execution
+    send_contact_email(name, phone, date)
+
+    # Return a JSON response to indicate success
+    return jsonify({'success': True})
+
+@app.route('/cart', methods=['GET', 'POST'])
+def cart():
+    product_details_in_cart = products_in_cart ()[0]
+    total_price = products_in_cart ()[1]
     return render_template('cart.html', products=product_details_in_cart, total_price=total_price)
 
 @app.route('/remove_cart', methods=['POST'])
@@ -191,49 +205,94 @@ def update_cart():
 
 @app.route('/add_to_cart', methods=['POST'])
 def add_to_cart():
-    product_id = request.form.get('product_id') 
-    products_in_cart = session.get('products_in_cart', {})  
+    product_id = request.form.get('product_id')
+    products_in_cart = session.get('products_in_cart', {})
+
+    # Add product to the cart
     if product_id in products_in_cart:
         products_in_cart[product_id] += 1
     else:
         products_in_cart[product_id] = 1
-        
+
     session['products_in_cart'] = products_in_cart
-    return redirect('/cart')
 
+    # Get the updated cart products for the response
+    # Assuming you fetch product details from the database based on the product IDs in the cart
+    cart_product_details = []
+    for prod_id in products_in_cart.keys():
+        query_string = "SELECT * FROM products WHERE id = ?"
+        product = query(query_string, [prod_id])[0]  # Assuming query returns a list
+        cart_product_details.append(product)
 
+    # Return the updated cart product details and success message as JSON
+    return jsonify({
+        "success": True,
+        "cart_products": cart_product_details
+    })
 
 @app.route('/submit_order', methods=['POST'])
 def submit_order():
     try:
         name = request.form.get('name')
         phone = request.form.get('phone')
-        products_in_cart = session.get('products_in_cart', {})  # Make sure to get the cart as a dictionary
+        products_in_cart = session.get('products_in_cart', {})  # Get the cart as a dictionary
         date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         status = "new"
         address = request.form.get('address')
-
-        products_in_cart_str = ', '.join(f"{product_id}:{quantity}" for product_id, quantity in products_in_cart.items())
+        note = request.form.get('note')
 
         if not products_in_cart:
             flash("העגלה ריקה, לא ניתן לשלוח הזמנה", category="error")
             return redirect('/cart')  # Redirect back to the cart page
 
+        product_ids = list(products_in_cart.keys())
+        quantities = list(products_in_cart.values())
 
-        query(f"INSERT INTO products_order (date, name, phone, products_order, status, address) VALUES ('{date}', '{name}', '{phone}', '{products_in_cart_str}', '{status}', '{address}')"),
+        product_names_query = f"SELECT id, product_name FROM products WHERE id IN ({', '.join('?' for _ in product_ids)})"
+        
+        product_names = query(product_names_query, tuple(product_ids))
 
-        send_order_email(name, phone, products_in_cart_str, date, address)
+        if product_names is None:
+            print("Failed to fetch product names from the database.")
+            return  # Early return if there was an issue
 
-        session.pop('products_in_cart', None)  # Clear cart after submission
-        flash("קיבלנו את ההזמנה! נחזור אלייך בהקדם האפשרי", category="success")
+        product_dict = {str(product[0]): product[1] for product in product_names}
+
+        products_in_cart_str = ', '.join(
+            f"{product_dict.get(product_id, 'Unknown Product')}:{quantity}"
+            for product_id, quantity in zip(product_ids, quantities)
+        )
+
+        # Get the last order ID from the products_order table
+        last_order_id = query("SELECT id FROM products_order ORDER BY id DESC LIMIT 1")
+        
+        # If no orders exist, start with 1; otherwise, increment the last ID by 1
+        order_num = "PFM" + str(last_order_id[0][0] + 1 if last_order_id else 1)
+
+        # Insert the new order into the database
+        query(f"""
+            INSERT INTO products_order (order_num, date, name, phone, products_order, status, address)
+            VALUES ('{order_num}', '{date}', '{name}', '{phone}', '{products_in_cart_str}', '{status}', '{address}')
+        """)
+
+        # Send the order email
+        send_order_email(name, phone, products_in_cart_str, date, address, order_num,note)
+
+        # Clear the cart after submission
+        session.pop('products_in_cart', None)
+
+        # Flash success message and redirect
+        flash(f"""
+            הזמנה התקבלה!
+            מספר הזמנה: {order_num}.
+            אנו נעבד את ההזמנה בקרוב ונתקשר. מוזמנים ליצור קשר לכל שאלה נוספת. 
+        """, category="success")       
         return redirect('/cart')  # Redirect to the cart page
 
     except Exception as e:
-        # Log the error and flash a message
-        print(f"Error occurred: {e}")  # You can log this to a file or logging service
-        flash("אירעה שגיאה בהגשת ההזמנה. אנא נסה שוב.")
-        return redirect('/cart')  # Redirect to the cart page in case of error
-
+        # In case of any error, log the error and show an error message
+        flash(f"משהו השתבש, נסה שוב מאוחר יותר. {str(e)}", category="error")
+        return redirect('/cart')
     
 
 @app.route('/blog', methods=['GET', 'POST'])
@@ -307,18 +366,30 @@ def update_stock():
     weight = request.form.get('weight')
     monthly_sale = request.form.get('monthly_sale')
     sale = request.form.get('sale')
-    discount =request.form.get('discount')
+    discount = request.form.get('discount')
 
+    # Check if a new image was uploaded
+    image = request.files.get('image')
+    image_filename = None
 
-    # Update the product's details in the database
-    query(f"""
+    if image and allowed_file(image.filename):
+        image_filename = secure_filename(image.filename)
+        image.save(os.path.join(app.config['UPLOAD_FOLDER'], image_filename))
+        query(f"""
         UPDATE products 
-    SET product_name = ?, category = ?, price = ?, description = ?, popular = ?, animal = ?, stock = ?, weight = ?, 
-    monthly_sale = ?, sale = ?, discount = ? 
-    WHERE id = ?
+        SET product_name = ?, category = ?, price = ?, description = ?, image = ?, popular = ?, animal = ?, stock = ?, weight = ?, 
+        monthly_sale = ?, sale = ?, discount = ? 
+        WHERE id = ?
+    """, (name, category, price, description, image_filename, popular, animal, stock, weight, monthly_sale, sale, discount, product_id))
+
+    else:
+        query(f"""
+        UPDATE products 
+        SET product_name = ?, category = ?, price = ?, description = ?, popular = ?, animal = ?, stock = ?, weight = ?, 
+        monthly_sale = ?, sale = ?, discount = ? 
+        WHERE id = ?
     """, (name, category, price, description, popular, animal, stock, weight, monthly_sale, sale, discount, product_id))
 
-    # Redirect back to the admin page
     return redirect('/admin')
 
 @app.route('/add_product', methods=['POST'])
@@ -326,8 +397,9 @@ def add_product():
     name = request.form['name']
     description = request.form['description']
     category = request.form['category']
+    old_price = int(request.form['price'])
     popular = request.form['popular']
-    price = round(price, 1)  # Round the price to one decimal place
+    price = round(old_price, 1)  # Round the price to one decimal place
     stock = int(request.form['stock'])  # Ensure stock is an integer
     animal = request.form['animal']
     weight = request.form.get('weight')
@@ -336,7 +408,7 @@ def add_product():
     discount = 0
 
     image = request.files['image']
-    image_filename = 'none'
+    image_filename = 'no-image.png'  # Default image if no image is uploaded
     if image and allowed_file(image.filename):
         image_filename = secure_filename(image.filename)
         image.save(os.path.join(app.config['UPLOAD_FOLDER'], image_filename))
@@ -433,7 +505,7 @@ def create_table_products(table="products"):
 sender_email = os.environ.get("SENDER_EMAIL")
 sender_password = os.environ.get("SENDER_PASSWORD")
 
-def send_order_email(name, phone, products, order_date, address):
+def send_order_email(name, phone, products, order_date, address,order_num,note):
     # Email configuration
     sender_email = "ofirital0@gmail.com"
     sender_password = "asfl tyti jmdi ukfw"
@@ -442,26 +514,8 @@ def send_order_email(name, phone, products, order_date, address):
     # Parse the products string into a list of tuples (product_id, quantity)
     product_items = [item.split(':') for item in products.split(', ')]
     
-    # Extract product_ids
-    product_ids = [item[0] for item in product_items]
-
-    # Create the SQL query to fetch product names
-    product_names_query = f"SELECT id, product_name FROM products WHERE id IN ({', '.join('?' for _ in product_ids)})"
-    
-    # Execute the query with the product_ids
-    product_names = query(product_names_query, tuple(product_ids))
-
-    if product_names is None:
-        print("Failed to fetch product names from the database.")
-        return  # Early return if there was an issue
-
-    # Create a dictionary for easy lookup of product names
-    product_dict = {str(product[0]): product[1] for product in product_names}
-
-    # Create the email content using HTML
     order_details = []
-    for product_id, quantity in product_items:
-        product_name = product_dict.get(product_id, "Unknown Product")
+    for product_name, quantity in product_items:
         order_details.append((product_name, quantity))
 
     # Build the HTML content for the email
@@ -473,10 +527,12 @@ def send_order_email(name, phone, products, order_date, address):
     <html>
     <body>
         <h2>הזמנה חדשה נכנסה</h2>
+        <p>מספר הזמנה: {order_num}</p>
         <p>תאריך: {order_date}</p>
         <p>שם המזמין: {name}</p>
         <p>טלפון: {phone}</p>
         <p>כתובת: {address}</p>
+        <p>הערות {note}</p>
 
         <table style="border-collapse: collapse; width: 100%;">
             <thead>
@@ -497,7 +553,7 @@ def send_order_email(name, phone, products, order_date, address):
     msg = MIMEMultipart('alternative')  # Set the email to send both plain text and HTML
     msg['From'] = sender_email
     msg['To'] = receiver_email
-    msg['Subject'] = "New PET4ME Order"
+    msg['Subject'] = f"New PET4ME Order Num {order_num}"
 
     # Attach both plain text and HTML versions
     msg.attach(MIMEText("This email requires HTML support.", 'plain'))  # Fallback for non-HTML email clients
@@ -651,7 +707,7 @@ def download_data():
 
     # Product Orders sheet
     orders_ws = wb.create_sheet(title="Product Orders")
-    orders_ws.append(["ID", "תאריך", "שם", "טלפון", "הזמנות", "סטטוס", "כתובת"])
+    orders_ws.append(["ID", "תאריך", "שם", "טלפון", "הזמנות", "סטטוס", "כתובת", "מספר הזמנה"])
     for order in product_orders:  # Assuming `product_orders` is fetched from the database
         orders_ws.append(order)
 

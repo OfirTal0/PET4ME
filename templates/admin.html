@@ -97,6 +97,7 @@
             <thead>
                 <tr>
                     <th>ID</th>
+                    <th>מספר הזמנה</th>
                     <th>תאריך</th>
                     <th>שם</th>
                     <th>טלפון</th>
@@ -110,6 +111,7 @@
                 {% for order in product_orders %}
                 <tr>
                     <td>{{ order[0] }}</td>
+                    <td>{{ order[7] }}</td>
                     <td>{{ order[1] }}</td>
                     <td>{{ order[2] }}</td>
                     <td>{{ order[3] }}</td>
@@ -152,6 +154,7 @@
                     <th>מבצע חודשי?</th>
                     <th>מבצע</th>
                     <th>%הנחה</th>
+                    <th>תמונה</th>
                     <th>שנה פרטים</th>
                     <th>הסר</th>
 
@@ -160,7 +163,7 @@
             <tbody>
                 {% for product in products %}
                 <tr>
-                    <form action="/update_stock" method="POST">
+                    <form action="/update_stock" method="POST" enctype="multipart/form-data">
                         <input type="hidden" name="product_id" value="{{ product[0] }}">
                         <td><input type="text" name="name" value="{{ product[1] }}" required></td>
                         <td>
@@ -199,7 +202,9 @@
                             </select>
                         </td>
                         <td><input type="number" name="discount" value="{{ product[12] }}" style="width: 50px;" required></td>
-
+                        <td>
+                        <input type="file" name="image" value="{{ product[5] }}" accept="image/*">
+                        </td>
                         <td><button type="submit">עדכן</button></td>
                     </form>
                     <form action="/remove_product" method="POST">
@@ -251,9 +256,8 @@
             <input type="number" name="weight" id="weight" placeholder="None" class="input-admin"><br>
           
             <label for="image">Image URL:</label>
-            <input type="file" name="image" accept="image/*" required>
+            <input type="file" name="image" accept="image/*">
 
-            
             <button class="admin-button" type="submit">הוסף מוצר</button>
           </form>
     </div>

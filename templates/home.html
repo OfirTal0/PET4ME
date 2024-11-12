@@ -14,15 +14,15 @@
         <h2>איזו חיה יש לך?</h2>
         <form action="/catalog" method="GET" class="animal-form">
             <div class="animal-links">
-                <button type="submit" name="animal" value="כלב" class="animal-link">
+                <button type="submit" name="animal[]" value="כלב" class="animal-link">
                     <img src="static/images/home-dog.png" class="featured-image" alt="Dog">
                     <h3>כלב</h3>
                 </button>
-                <button type="submit" name="animal" value="חתול" class="animal-link" style="margin-left:20px;">
+                <button type="submit" name="animal[]" value="חתול" class="animal-link" style="margin-left:20px;">
                     <img src="static/images/home-cat.png" class="featured-image" alt="Cat">
                     <h3>חתול</h3>
                 </button>
-                <button type="submit" name="animal" value="אחר" class="animal-link">
+                <button type="submit" name="animal[]" value="אחר" class="animal-link">
                     <img src="static/images/home-parrot.png" class="featured-image" alt="Other animals">
                     <h3>אחר</h3>
                 </button>
@@ -177,17 +177,16 @@
             <a href="#contact" class="adopt-button">קח אותי הביתה</a>
         </div>
     </div>
-    <!-- Contact Form Section -->
+
     <div class="section5" style="background-image: url('static/images/background-section.png');">
         <section id="contactForm" class="contact">
             <h2>צור קשר</h2>   
-            <form action="/contact" method="POST" id="leadForm" class="contactform">
+            <form id="leadForm" class="contactform">
                 <input class="contactInput" type="text" id="name" name="name" placeholder="שם מלא" required>
                 <input class="contactInput" type="tel" id="phone" name="phone" placeholder="טלפון" pattern="\d*" title="אנא הכנס מספרים בלבד" required>
-                <input class="contactSubmit" type="submit" value="קדימה!">
+                <input class="contactSubmit" type="submit" onclick="leadFormSubmit()" value="קדימה!">
             </form>
     
-            <!-- Success Message Container -->
             <div id="successMessage" class="flash-message" style="display: none;">
                 <p>תודה שיצרת קשר! נחזור אלייך בהקדם האפשרי</p>
             </div>
@@ -205,6 +204,36 @@
 </div>
 
 <script>
+
+    function leadFormSubmit() {
+        event.preventDefault();  // Prevent the form from submitting traditionally
+            
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+        
+            fetch('/contact', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name, phone })
+            })
+            .then(response => response.json())  // Expecting JSON response from server
+            .then(data => {
+                if (data.success) {
+                    // Hide the form and show the success message
+                    document.getElementById('leadForm').style.display = 'none';
+                    document.getElementById('successMessage').style.display = 'block';
+                } else {
+                    alert("There was an error. Please try again.");
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+            
+        
+
+
     document.getElementById('join-now-btn').addEventListener('click', function() {
         // Hide the original promo content
         document.getElementById('promo-box').style.display = 'none';
@@ -213,32 +242,7 @@
         document.getElementById('customer-club-form').style.display = 'block';
     });
 
-
-    document.getElementById('leadForm').addEventListener('submit', function(event) {
-        event.preventDefault();  // Prevent form from reloading the page
     
-        const name = document.getElementById('name').value;
-        const phone = document.getElementById('phone').value;
-    
-        fetch('/contact', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ name, phone })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                // Hide the form and show the success message
-                document.getElementById('leadForm').style.display = 'none';
-                document.getElementById('successMessage').style.display = 'block';
-            } else {
-                alert("There was an error. Please try again.");
-            }
-        })
-        .catch(error => console.error('Error:', error));
-    });
     document.getElementById('join-now-btn').addEventListener('click', function() {
         // Hide the original promo content
         document.getElementById('promo-box').style.display = 'none';
