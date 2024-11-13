@@ -149,6 +149,7 @@
                     <th>קטגוריה</th>
                     <th>מחיר</th>
                     <th>תיאור</th>
+                    <th>רכיבים</th>
                     <th>פופולרי</th>
                     <th>סוג חיה</th>
                     <th>כמות במלאי</th>
@@ -175,6 +176,7 @@
                         </td>
                         <td><input type="float" name="price" value="{{ '%.2f' % product[3] }}" style="width: 50px;" required></td> <!-- Formatted price -->
                         <td><input type="text" name="description" value="{{ product[4] }}" required></td>
+                        <td><input type="text" name="components" value="{{ product[13] }}" required></td>
                         <td>
                             <select name="popular" required>
                                 <option value="כן" {% if product[8] == 'כן' %} selected {% endif %}>כן</option>
@@ -231,7 +233,8 @@
     
             <label for="description">תיאור כללי:</label>
             <textarea name="description" id="description" required></textarea><br>
-        
+            <label for="description">רכיבים:</label>
+            <textarea name="components" id="components"></textarea><br>
     
             <label for="category">קטגוריה:</label>
             <select name="category" id="category" required class="input-admin">

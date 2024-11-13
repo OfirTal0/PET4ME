@@ -249,6 +249,7 @@ def add_to_cart():
         "cart_products": cart_product_details
     })
 
+
 @app.route('/submit_order', methods=['POST'])
 def submit_order():
     try:
@@ -332,7 +333,6 @@ def login():
         password = "ari123"
         user_username = request.form.get('username') 
         user_password = request.form.get('password')  # Corrected key
-
         if username == user_username and password == user_password:
             return admin()
     
@@ -345,7 +345,6 @@ def admin():
     products = query("SELECT * FROM products")
     costumers = query("SELECT * FROM costumer_club")
     articles = query("SELECT * FROM blog")    
-  
     return render_template('admin.html', leads=leads, product_orders=product_orders, products=products, costumers=costumers,articles=articles)
 
 @app.route('/update_lead_status', methods=['POST'])
@@ -379,6 +378,7 @@ def update_stock():
     float_price = float(request.form.get('price'))  
     price = round(float_price, 2)  # Round to two decimal places
     description = request.form.get('description')
+    components = request.form.get('components')
     popular = request.form.get('popular')
     animal = request.form.get('animal')
     stock = int(request.form.get('stock')) 
@@ -397,17 +397,17 @@ def update_stock():
         query(f"""
         UPDATE products 
         SET product_name = ?, category = ?, price = ?, description = ?, image = ?, popular = ?, animal = ?, stock = ?, weight = ?, 
-        monthly_sale = ?, sale = ?, discount = ? 
+        monthly_sale = ?, sale = ?, discount = ?, components = ?
         WHERE id = ?
-    """, (name, category, price, description, image_filename, popular, animal, stock, weight, monthly_sale, sale, discount, product_id))
+    """, (name, category, price, description, image_filename, popular, animal, stock, weight, monthly_sale, sale, discount,components, product_id))
 
     else:
         query(f"""
         UPDATE products 
         SET product_name = ?, category = ?, price = ?, description = ?, popular = ?, animal = ?, stock = ?, weight = ?, 
-        monthly_sale = ?, sale = ?, discount = ? 
+        monthly_sale = ?, sale = ?, discount = ?, components = ?
         WHERE id = ?
-    """, (name, category, price, description, popular, animal, stock, weight, monthly_sale, sale, discount, product_id))
+    """, (name, category, price, description, popular, animal, stock, weight, monthly_sale, sale, discount,components, product_id))
 
     return redirect('/admin')
 
@@ -415,6 +415,7 @@ def update_stock():
 def add_product():
     name = request.form['name']
     description = request.form['description']
+    components = request.form['components']
     category = request.form['category']
     float_price = float(request.form.get('price'))  
     popular = request.form['popular']
@@ -433,8 +434,8 @@ def add_product():
         image.save(os.path.join(app.config['UPLOAD_FOLDER'], image_filename))
 
     # Insert into products table
-    query(f"INSERT INTO products (product_name, category, price, description, image, stock, weight, popular, animal, monthly_sale, sale, discount) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-          (name, category, price, description, image_filename, stock, weight, popular, animal, monthly_sale, sale, discount))
+    query(f"INSERT INTO products (product_name, category, price, description, image, stock, weight, popular, animal, monthly_sale, sale, discount, components) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+          (name, category, price, description, image_filename, stock, weight, popular, animal, monthly_sale, sale, discount, components))
     return redirect('/admin')
 
 @app.route('/remove_product', methods=['POST'])
