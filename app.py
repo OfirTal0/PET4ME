@@ -93,19 +93,18 @@ def query(sql: str = "", params: tuple = (), db_name=DATABASE_PATH):
 def inject_cart_length():
     len_product_in_cart = len(products_in_cart()[0]) if 'products_in_cart' in session else 0
     return dict(len_product_in_cart=len_product_in_cart)
-@app.route('/')
 
-# @app.route('/api/download_db', methods=['GET'])
-# def download_db():
-#     return send_file('petforme.db', as_attachment=True)
+@app.route('/api/download_db', methods=['GET'])
+def download_db():
+    return send_file('petforme.db', as_attachment=True)
 
-# import shutil
+import shutil
 
-# @app.route('/download_static', methods=['GET'])
-# def download_static():
-#     # Zip the static directory
-#     shutil.make_archive('static_files', 'zip', 'static')
-#     return send_file('static_files.zip', as_attachment=True)
+@app.route('/download_static', methods=['GET'])
+def download_static():
+    # Zip the static directory
+    shutil.make_archive('static_files', 'zip', 'static')
+    return send_file('static_files.zip', as_attachment=True)
 
 @app.route('/', methods=['GET','POST'])
 def home():
