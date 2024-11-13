@@ -10,6 +10,8 @@ from io import BytesIO
 import json
 import os
 from flask import send_from_directory
+from flask import send_file
+
 
 
 app = Flask(__name__, static_folder='static', template_folder='templates')
@@ -93,6 +95,18 @@ def inject_cart_length():
     return dict(len_product_in_cart=len_product_in_cart)
 @app.route('/')
 
+@app.route('/download_db', methods=['GET'])
+def download_db():
+    return send_file('petforme.db', as_attachment=True)
+
+import shutil
+
+@app.route('/download_static', methods=['GET'])
+def download_static():
+    # Zip the static directory
+    shutil.make_archive('static_files', 'zip', 'static')
+    return send_file('static_files.zip', as_attachment=True)
+    
 def home():
     if 'products_in_cart' not in session:
         session['products_in_cart'] = {}
@@ -404,8 +418,8 @@ def add_product():
     category = request.form['category']
     float_price = float(request.form.get('price'))  
     popular = request.form['popular']
-    price = round(float_price, 2)  # Round to two decimal places
-    stock = int(request.form['stock'])  # Ensure stock is an integer
+    price = round(float_price, 2)
+    stock = int(request.form['stock'])
     animal = request.form['animal']
     weight = request.form.get('weight')
     monthly_sale = 'לא'
@@ -413,12 +427,14 @@ def add_product():
     discount = 0
 
     image = request.files['image']
-    image_filename = 'no-image.png'  # Default image if no image is uploaded
+    image_filename = 'no-image.png'
     if image and allowed_file(image.filename):
         image_filename = secure_filename(image.filename)
         image.save(os.path.join(app.config['UPLOAD_FOLDER'], image_filename))
 
-    query(f"INSERT INTO products (product_name, category, price, description, image, stock, weight, popular, animal, monthly_sale, sale, discount)  VALUES ('{name}', '{category}', '{price}', '{description}', '{image_filename}', '{stock}', '{weight}', '{popular}', '{animal}', '{monthly_sale}', '{sale}', '{discount}')")
+    # Insert into products table
+    query(f"INSERT INTO products (product_name, category, price, description, image, stock, weight, popular, animal, monthly_sale, sale, discount) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+          (name, category, price, description, image_filename, stock, weight, popular, animal, monthly_sale, sale, discount))
     return redirect('/admin')
 
 @app.route('/remove_product', methods=['POST'])
@@ -433,13 +449,17 @@ def add_adopt():
     description = request.form['description']
     type = request.form['type']
     age = round(float(request.form['age']), 1)
+    
     image = request.files['image']
     image_filename = 'none'
     if image and allowed_file(image.filename):
         image_filename = secure_filename(image.filename)
         image.save(os.path.join(app.config['UPLOAD_FOLDER'], image_filename))
     
-    query(f"INSERT INTO adopt (name, type, age, description, image) VALUES ('{name}', '{type}', '{age}', '{description}', '{image_filename}')")   
+    # Insert into adopt table
+    query(f"INSERT INTO adopt (name, type, age, description, image) VALUES (?, ?, ?, ?, ?)",
+          (name, type, age, description, image_filename))
+    
     return redirect('/admin')
 
 

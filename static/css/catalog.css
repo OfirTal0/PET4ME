@@ -110,7 +110,7 @@
 .products-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr); /* Four columns */
-    gap: 15px;
+    gap: 10px;
     margin-top: 20px;
 }
 
