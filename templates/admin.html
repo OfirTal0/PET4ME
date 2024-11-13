@@ -187,7 +187,7 @@
                             <select name="animal" required>
                                 <option value="כלב" {% if product[9] == 'כלב' %} selected {% endif %}>כלב</option>
                                 <option value="חתול" {% if product[9] == 'חתול' %} selected {% endif %}>חתול</option>
-                                <option value="אחר" {% if product[9] == 'אחר' %} selected {% endif %}>אחר</option>
+                                <option value="בעלי כנף" {% if product[9] == 'בעלי כנף' %} selected {% endif %}>בעלי כנף</option>
                             </select>
                         </td>
                         <td><input type="number" name="stock" value="{{ product[6] }}" style="width: 50px;" required></td>
@@ -228,7 +228,7 @@
             <select name="animal" id="animal" required class="input-admin"> 
               <option value="כלב">כלב</option>
               <option value="חתול">חתול</option>
-              <option value="אחר">אחר</option>
+              <option value="כנף">בעלי כנף</option>
             </select><br>
     
             <label for="description">תיאור כללי:</label>
@@ -276,7 +276,7 @@
             <select name="type" id="type" required class="input-admin">
               <option value="כלב">כלב</option>
               <option value="חתול">חתול</option>
-              <option value="אחר">אחר</option>
+              <option value="כנף">בעלי כנף</option>
             </select><br>
           
 
