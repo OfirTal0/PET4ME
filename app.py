@@ -50,8 +50,8 @@ def products_in_cart ():
                 discounted_price = price
 
             # Round the prices to 1 decimal point
-            discounted_price = round(discounted_price, 1)
-            price = round(price, 1)
+            discounted_price = round(discounted_price, 2)
+            price = round(price, 2)
 
             # Add the discounted price and quantity to the product info
             product_info.append(quantity * discounted_price)  # Calculate total price for this product
@@ -59,7 +59,7 @@ def products_in_cart ():
 
             # Accumulate total price including discount and round to 1 decimal point
             total_price += quantity * discounted_price
-            total_price = round(total_price, 1)
+            total_price = round(total_price, 2)
 
     return [product_details_in_cart,total_price]
 

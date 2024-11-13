@@ -158,8 +158,8 @@
 }
 
 .product-image img {
-    width: 10vw;
-    height: 15vh;
+    width: 15vw;
+    height: 18vh;
     object-fit: contain;
 
 }
@@ -499,8 +499,8 @@
 }
 
 .product-image img{
-    width: 15vw;
-    height: 15vh;
+    width: 20vw;
+    height: 18vh;
     object-fit: contain;
 
 }
@@ -515,4 +515,15 @@
     margin-top: 5px; /* Adjust margin for better spacing on smaller screens */
     margin-right: 5px;
   }
+
+  .buttons_display {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: auto;
+  }
+
+  .show-product-button, .add-to-cart-button {
+    width: 25vw;
+} 
 }

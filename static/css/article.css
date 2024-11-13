@@ -56,4 +56,10 @@
     .article-text {
         font-size: 16px;
     }
+
+    .article-image {
+        width: 70%;
+
+    }
+    
 }

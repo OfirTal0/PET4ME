@@ -65,9 +65,9 @@
                 </div>
                 <div class="grid-item">
                     <div class="icon" style="background-color: #e1e1e1;">
-                        <img src="static/images/user.png" alt="User">
+                        <img src="static/images/commitment.png" alt="User">
                     </div>
-                    <h3>יחס אישי</h3>
+                    <h3>מחויבים לשביעות רצונך</h3>
                 </div>
         </div>
     </div>
@@ -90,9 +90,9 @@
             </div>
             <div class="box-content">
             <img src="static\images\calculator.png" alt="מחשבון האכלה של Pet4me">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod ante sit amet metus fermentum, ac iaculis libero condimentum.</p>
+            <p>מחשבון האכלה לגורים ולכלבים בוגרים, וטבלאות האכלה כלליות! בקרוב מאוד אצלכם...</p>
             </div>
-            <a href="Blog.html">קרא עוד &gt;&gt;</a>
+            <a href="/blog">קרא עוד &gt;&gt;</a>
 
         </div>
         <div class="box">
@@ -146,7 +146,7 @@
     <div class="section4">
         <h2>מוצרים פופלאריים</h2>
         <div class="products-grid">
-            {% for product in popular_products %}
+            {% for product in popular_products[:6] %}
             <div class="popular-product-card">
                 <img src="/static/uploads/{{ product[5] }}" class="productimg" alt="{{ product.product_name }}">
                 <h3>{{ product[1] }}</h3>
