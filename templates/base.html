@@ -25,7 +25,7 @@
                     <a class="linknavbar" href="/catalog">קטלוג מוצרים</a>
                     <a class="linknavbar" href="/blog">בלוג</a>
                     <a class="linknavbar" href="/#contact">צור קשר</a>
-                    <img class="logo" src="/static/images/logo.png" alt="Logo">
+                    <a href="/"><img class="logo" src="/static/images/logo.png" alt="Logo"></a>
                 </nav>
                 
                 <div class="popup-menu" id="popup-menu">
@@ -40,8 +40,12 @@
             </div>
             <div class="icon-left">
                 <a href="/cart">
-                    <img src="/static/images/cart.png" alt="Cart">
+                    <div class="cart-icon">
+                        <img src="/static/images/cart.png" alt="Cart">
+                        <span class="cart-badge">{{ len_product_in_cart }}</span>
+                    </div>
                 </a>
+
                 <a href="https://wa.me/pet4me">
                     <img class="linkimg" src="/static/images/whatsapp.png" alt="WhatsApp">
                 </a>

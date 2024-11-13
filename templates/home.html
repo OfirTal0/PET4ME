@@ -132,7 +132,7 @@
                 </select>
 
                 <label>
-                    <input type="checkbox" id="agree_updates" name="agree_updates">
+                    <input type="checkbox" id="agree_updates" name="agree_updates" required>
                     אני מסכים לקבל עדכונים
                 </label>
                 
@@ -151,7 +151,7 @@
                 <img src="/static/uploads/{{ product[5] }}" class="productimg" alt="{{ product.product_name }}">
                 <h3>{{ product[1] }}</h3>
                 <p class="product-weight">Weight: {{ product[7] }} kg</p>
-                <form action="/show_product" method="POST" target="_blank">
+                <form action="/show_product" method="POST">
                     <input  type="hidden" name="product_id" value="{{ product[0] }}">
                     <input type="submit" class="show-product-button" value="עוד פרטים">
                 </form>
@@ -183,13 +183,11 @@
             <h2>צור קשר</h2>   
             <form action="/contact" method="POST" id="leadForm" class="contactform">
                 <input class="contactInput" type="text" id="name" name="name" placeholder="שם מלא" required>
-                <input class="contactInput" type="tel" id="phone" name="phone" placeholder="טלפון" pattern="\d*" title="אנא הכנס מספרים בלבד" required>
-                <input class="contactSubmit" type="submit" value="קדימה!">
+                <input class="contactInput" type="tel" id="contactPhone" name="phone" placeholder="טלפון" pattern="\d*" title="אנא הכנס מספרים בלבד" required>
+                <input class="contactInput" type="text" id="note" name="note" placeholder="הערה">
+                <input class="contactSubmit" type="submit" value="קדימה!" onclick="return validatePhone()">
             </form>
     
-            <div id="successMessage" class="flash-message" style="display: none;">
-                <p>תודה שיצרת קשר! נחזור אלייך בהקדם האפשרי</p>
-            </div>
         </section>
     
         <div class="visit-us" id="contact">
@@ -327,6 +325,18 @@
             submitForm();
         }
         }
-    
+        function validatePhone() {
+            const phoneInput = document.getElementById('contactPhone').value;
+            const phonePattern = /^05\d{8}$/; // Israeli mobile numbers starting with 05 and containing 10 digits
+        
+            if (!phonePattern.test(phoneInput)) {
+                alert("מספר הטלפון חייב להיות בן 10 ספרות ולהתחיל ב-05.");
+                return false; // Prevent form submission
+            }
+        
+            // If phone number is valid, show a confirmation message
+            alert("תודה שיצרת איתנו קשר, נחזור אלייך בהקדם האפשרי!");
+            return true; // Allow form submission
+        }
 </script>
 {% endblock %}

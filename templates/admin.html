@@ -31,6 +31,7 @@
                     <th>ID</th>
                     <th>שם</th>
                     <th>טלפון</th>
+                    <th>הערות</th>
                     <th>תאריך</th>
                     <th>סטטוס</th>
                     <th>שנה סטטוס</th>
@@ -42,6 +43,7 @@
                     <td>{{ lead[0] }}</td>
                     <td>{{ lead[1] }}</td>
                     <td>{{ lead[2] }}</td>
+                    <td>{{ lead[5] }}</td>
                     <td>{{ lead[3] }}</td>
                     <td>{{ lead[4] }}</td>
                     <td>
@@ -157,7 +159,6 @@
                     <th>תמונה</th>
                     <th>שנה פרטים</th>
                     <th>הסר</th>
-
                 </tr>
             </thead>
             <tbody>
@@ -172,7 +173,7 @@
                                 <option value="אביזרים" {% if product[2] == 'אביזרים' %} selected {% endif %}>אביזרים</option>
                             </select>
                         </td>
-                        <td><input type="number" name="price" value="{{ product[3] }}" style="width: 50px;" required></td>
+                        <td><input type="float" name="price" value="{{ '%.2f' % product[3] }}" style="width: 50px;" required></td> <!-- Formatted price -->
                         <td><input type="text" name="description" value="{{ product[4] }}" required></td>
                         <td>
                             <select name="popular" required>
@@ -203,7 +204,7 @@
                         </td>
                         <td><input type="number" name="discount" value="{{ product[12] }}" style="width: 50px;" required></td>
                         <td>
-                        <input type="file" name="image" value="{{ product[5] }}" accept="image/*">
+                            <input type="file" name="image" value="{{ product[5] }}" accept="image/*">
                         </td>
                         <td><button type="submit">עדכן</button></td>
                     </form>
@@ -212,11 +213,10 @@
                         <td><button type="submit" class="remove-btn">הסר</button></td>
                     </form>
                 </tr>
-
                 {% endfor %}
             </tbody>
         </table>
-
+    
         <h3>הוספת מוצר חדש</h3>
         <form action="/add_product" method="POST" enctype="multipart/form-data">
             <label for="name">שם מוצר:</label>
@@ -228,10 +228,10 @@
               <option value="חתול">חתול</option>
               <option value="אחר">אחר</option>
             </select><br>
-
+    
             <label for="description">תיאור כללי:</label>
             <textarea name="description" id="description" required></textarea><br>
-          
+        
     
             <label for="category">קטגוריה:</label>
             <select name="category" id="category" required class="input-admin">
@@ -240,15 +240,14 @@
             </select><br>
           
             <label for="price">מחיר:</label>
-            <input type="number" name="price" id="price" required class="input-admin"><br>
-          
+            <input type="float" name="price" id="price" step="0.01" required class="input-admin"><br> <!-- Price input with 2 decimals -->
+    
             <label for="popular">האם מוצר פופלארי?</label>
             <select name="popular" id="popular" required class="input-admin">
               <option value="כן">כן</option>
               <option value="לא">לא</option>
             </select><br>
-
-
+    
             <label for="stock">כמות במלאי:</label>
             <input type="number" name="stock" id="stock" required class="input-admin"><br>
           
@@ -257,9 +256,9 @@
           
             <label for="image">Image URL:</label>
             <input type="file" name="image" accept="image/*">
-
+    
             <button class="admin-button" type="submit">הוסף מוצר</button>
-          </form>
+        </form>
     </div>
 
     <!-- Section: Adopt Post -->
@@ -282,7 +281,7 @@
             <textarea name="description" id="description" required></textarea><br>
           
             <label for="age">גיל:</label>
-            <input type="number" name="age" id="age" required class="input-admin"><br>
+            <input type="number" name="age" id="age" step="0.1" required class="input-admin" min="0"><br>
           
             <label for="image">Image URL:</label>
             <input type="file" name="image" accept="image/*" required>

@@ -72,10 +72,10 @@
                     <span class="out-of-stock">אזל מהמלאי</span>
                     {% elif product[11] == "כן" %}
                     <span class="monthly-sale">מבצע!</span>
-                    <span class="old-price">₪{{ product[3] | round(1) }}</span>  
-                    <span class="new-price">₪{{ (product[3] - (product[3] * product[12] / 100)) | round(1) }}</span>
+                    <span class="old-price">₪{{ product[3] | round(2) }}</span>  
+                    <span class="new-price">₪{{ (product[3] - (product[3] * product[12] / 100)) | round(2) }}</span>
                     {% else %}
-                    ₪{{ product[3] | round(1) }}
+                    ₪{{ product[3] | round(2) }}
                     {% endif %}
                 </p>
 
@@ -88,7 +88,7 @@
                     {% endif %}
                     <form action="/show_product" method="POST">
                         <input type="hidden" name="product_id" value="{{ product[0] }}">
-                        <input type="submit" class="show-product-button" value="...">
+                        <input type="submit" class="show-product-button" value="ראה עוד">
                     </form>
                 </div>
             </div>
@@ -124,10 +124,10 @@
                                 <h4>{{ product[1] }}</h4>
                                 <p class="product-weight">משקל: {{ product[7] }} ק"ג</p>
                                 {% if product[12] > 0 %}
-                                    <p class="old-price">₪{{ product[3] | round(1) }}</p>
-                                    <p class="new-price">מחיר לאחר הנחה: ₪{{ (product[3] - (product[3] * product[12] / 100)) | round(1) }}</p>
+                                    <p class="old-price">₪{{ product[3] | round(2) }}</p>
+                                    <p class="new-price">מחיר לאחר הנחה: ₪{{ (product[3] - (product[3] * product[12] / 100)) | round(2) }}</p>
                                 {% else %}
-                                    <p class="new-price">₪{{ product[3] | round(1) }}</p>
+                                    <p class="new-price">₪{{ product[3] | round(2) }}</p>
                                 {% endif %}
                             </div>
                         </td>
@@ -146,10 +146,10 @@
 
 <script>
     document.getElementById("toggleFilter").addEventListener("click", function() {
-        var filterForm = document.getElementById("filterFormMobile");
+        var filterForm = document.getElementById("filterForm"); // Changed to filterForm
         var button = document.getElementById("toggleFilter");
-
-        filterForm.classList.toggle("show");
+    
+        filterForm.classList.toggle("show"); // Toggle the "show" class
         if (filterForm.classList.contains("show")) {
             button.textContent = "סגור אופציות סינון";
         } else {

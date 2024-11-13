@@ -1,7 +1,6 @@
 .catalog-display {
     display: grid;
     grid-template-columns: 15% 80%; /* Sidebar is 20%, product grid is 80% */
-    gap: 20px;
 }
 
 .sort {
@@ -250,17 +249,13 @@
     align-items: center;
 }
 
-#filterFormMobile {
-    display: none;
-}
-
-
-/* Make the filter form visible when toggled */
-#filterFormMobile.show {
+#filterForm {
     display: block;
-    align-items: center;
 }
 
+#filterForm.show {
+    display: block;
+}
 /* Button to open filter options (visible only on mobile) */
 .toggle-filter-button {
     display: none;

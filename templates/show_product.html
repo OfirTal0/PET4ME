@@ -9,7 +9,7 @@
     </div>
     <div class="product-info">
         <h2 style="color:black;">{{ product[1] }}</h2> 
-        <p class="product-weight">משקל שק: {{ product[7] }} גרם</p> <!-- Product Weight -->
+        <p class="product-weight">משקל שק: {{ product[7] }} ק"ג</p> <!-- Product Weight -->
         <p class="product-price">
             {% if product[10] == "כן" or product[11] == "כן" %}
                 <span class="monthly-sale">מבצע!</span> 
@@ -53,10 +53,10 @@
                                 <h4>{{ product[1] }}</h4>
                                 <p class="product-weight">משקל: {{ product[7] }} ק"ג</p>
                                 {% if product[12] > 0 %}
-                                    <p class="old-price">₪{{ product[3] | round(1) }}</p>
-                                    <p class="new-price">מחיר לאחר הנחה: ₪{{ (product[3] - (product[3] * product[12] / 100)) | round(1) }}</p>
+                                    <p class="old-price">₪{{ product[3] | round(2) }}</p>
+                                    <p class="new-price">מחיר לאחר הנחה: ₪{{ (product[3] - (product[3] * product[12] / 100)) | round(2) }}</p>
                                 {% else %}
-                                    <p class="new-price">₪{{ product[3] | round(1) }}</p>
+                                    <p class="new-price">₪{{ product[3] | round(2) }}</p>
                                 {% endif %}
                             </div>
                         </td>

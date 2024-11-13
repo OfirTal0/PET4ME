@@ -22,49 +22,6 @@ DATABASE_PATH = os.path.join(BASE_DIR, 'petforme.db')  # Make sure 'petforme.db'
 
 app.secret_key = os.getenv('SECRET_KEY','default_secret_key')
 
-@app.route('/static/<path:filename>')
-def static_file(filename):
-    # Serve static files from the 'static' folder with a custom cache timeout
-    return send_from_directory(
-        os.path.join(app.root_path, 'static'),
-        filename,
-        cache_timeout=timedelta(days=365)  # Set cache timeout (1 year)
-    )
-
-def query(sql: str = "", params: tuple = (), db_name=DATABASE_PATH):
-    try:
-        with sqlite3.connect(db_name) as conn:
-            cur = conn.cursor()
-            cur.execute(sql, params)  # Pass parameters to execute
-            if sql.strip().lower().startswith('select'):
-                return cur.fetchall()  # Fetch all results for SELECT queries
-            conn.commit()
-    except sqlite3.Error as e:
-        print(f"Database error: {e}")
-        return None
-    except Exception as e:
-        print(f"Error: {e}")
-        return None
-
-@app.route('/')
-def home():
-    if 'products_in_cart' not in session:
-        session['products_in_cart'] = {}
-    adopt = query(f"SELECT * FROM adopt ORDER BY id DESC LIMIT 1")
-    products = query(f"SELECT * FROM products")
-    products_on_sale = [product for product in products if product[10] == "כן"]
-    first_product_on_sale = products_on_sale[0] if products_on_sale else None
-    popular_products = []
-    for product in products:
-        if product[8] == "כן":
-            popular_products.append(product)    
-    return render_template('home.html', popular_products=popular_products, adopt=adopt,first_product_on_sale=first_product_on_sale )
-
-
-@app.route('/about')
-def about():  
-    return render_template('about.html')
-
 
 def products_in_cart ():
     products_in_cart = session.get('products_in_cart', {})  # This is a dictionary {product_id: quantity}
@@ -103,6 +60,53 @@ def products_in_cart ():
             total_price = round(total_price, 1)
 
     return [product_details_in_cart,total_price]
+
+
+@app.route('/static/<path:filename>')
+def static_file(filename):
+    # Serve static files from the 'static' folder with a custom cache timeout
+    return send_from_directory(
+        os.path.join(app.root_path, 'static'),
+        filename,
+        cache_timeout=timedelta(days=365)  # Set cache timeout (1 year)
+    )
+
+def query(sql: str = "", params: tuple = (), db_name=DATABASE_PATH):
+    try:
+        with sqlite3.connect(db_name) as conn:
+            cur = conn.cursor()
+            cur.execute(sql, params)  # Pass parameters to execute
+            if sql.strip().lower().startswith('select'):
+                return cur.fetchall()  # Fetch all results for SELECT queries
+            conn.commit()
+    except sqlite3.Error as e:
+        print(f"Database error: {e}")
+        return None
+    except Exception as e:
+        print(f"Error: {e}")
+        return None
+
+
+@app.context_processor
+def inject_cart_length():
+    len_product_in_cart = len(products_in_cart()[0]) if 'products_in_cart' in session else 0
+    return dict(len_product_in_cart=len_product_in_cart)
+@app.route('/')
+
+def home():
+    if 'products_in_cart' not in session:
+        session['products_in_cart'] = {}
+    adopt = query(f"SELECT * FROM adopt ORDER BY id DESC LIMIT 1")
+    products = query(f"SELECT * FROM products")
+    products_on_sale = [product for product in products if product[10] == "כן"]
+    first_product_on_sale = products_on_sale[0] if products_on_sale else None
+    popular_products = [product for product in products if product[8] == "כן"]
+
+    return render_template('home.html', popular_products=popular_products, adopt=adopt, first_product_on_sale=first_product_on_sale)
+
+@app.route('/about')
+def about():  
+    return render_template('about.html')
 
 @app.route('/catalog', methods=['GET'])
 def catalog():
@@ -165,13 +169,14 @@ def search():
 def contact():
     name = request.form.get('name')
     phone = request.form.get('phone')
+    note = request.form.get('note',"none")
     date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     status = "new"  # Default status
 
     # Insert into leads table using raw SQL
-    insert_sql = f"INSERT INTO leads (name, phone, date, status) VALUES ('{name}', '{phone}', '{date}', '{status}')"
+    insert_sql = f"INSERT INTO leads (name, phone, date, status, note) VALUES ('{name}', '{phone}', '{date}', '{status}', '{note}')"
     query(insert_sql)  # Call existing query function for execution
-    send_contact_email(name, phone, date)
+    send_contact_email(name, phone, date, note)
     return redirect('/')
 
 
@@ -357,8 +362,8 @@ def update_stock():
     product_id = request.form.get('product_id')
     name = request.form.get('name')
     category = request.form.get('category')
-    float_price = int(request.form.get('price'))  
-    price = round(float_price, 1)  
+    float_price = float(request.form.get('price'))  
+    price = round(float_price, 2)  # Round to two decimal places
     description = request.form.get('description')
     popular = request.form.get('popular')
     animal = request.form.get('animal')
@@ -397,9 +402,9 @@ def add_product():
     name = request.form['name']
     description = request.form['description']
     category = request.form['category']
-    old_price = int(request.form['price'])
+    float_price = float(request.form.get('price'))  
     popular = request.form['popular']
-    price = round(old_price, 1)  # Round the price to one decimal place
+    price = round(float_price, 2)  # Round to two decimal places
     stock = int(request.form['stock'])  # Ensure stock is an integer
     animal = request.form['animal']
     weight = request.form.get('weight')
@@ -427,7 +432,7 @@ def add_adopt():
     name = request.form['name']
     description = request.form['description']
     type = request.form['type']
-    age = int(request.form['age'])
+    age = round(float(request.form['age']), 1)
     image = request.files['image']
     image_filename = 'none'
     if image and allowed_file(image.filename):
@@ -612,7 +617,7 @@ def send_costumer_club_email(name, phone, email, date, confirmation, animal_type
 
 
 
-def send_contact_email(name, phone, date):
+def send_contact_email(name, phone, date,note):
     # Email configuration
     sender_email = "ofirital0@gmail.com"
     sender_password = "asfl tyti jmdi ukfw"
@@ -626,6 +631,8 @@ def send_contact_email(name, phone, date):
         <p>תאריך: {date}</p>
         <p>שם מלא: {name}</p>
         <p>טלפון: {phone}</p>
+        <p>הערות: {note}</p>
+
     </body>
     </html>
     """
