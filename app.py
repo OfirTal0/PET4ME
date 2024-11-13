@@ -95,7 +95,7 @@ def inject_cart_length():
     return dict(len_product_in_cart=len_product_in_cart)
 @app.route('/')
 
-@app.route('/download_db', methods=['GET'])
+@app.route('/api/download_db', methods=['GET'])
 def download_db():
     return send_file('petforme.db', as_attachment=True)
 
@@ -106,7 +106,8 @@ def download_static():
     # Zip the static directory
     shutil.make_archive('static_files', 'zip', 'static')
     return send_file('static_files.zip', as_attachment=True)
-    
+
+@app.route('/', methods=['GET','POST'])
 def home():
     if 'products_in_cart' not in session:
         session['products_in_cart'] = {}
