@@ -1,6 +1,7 @@
 .catalog-display {
     display: grid;
     grid-template-columns: 15% 80%; /* Sidebar is 20%, product grid is 80% */
+    grid-gap: 2vw;
 }
 
 .sort {
@@ -117,18 +118,14 @@
 .product-card {
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: space-between;
-    max-width: 250px; /* Adjust as needed */
-    height: 300px; /* Fixed height for uniformity */
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin: 10px;
-    transition: transform 0.2s ease;
-    position: relative;
-
+    align-items: center;
+    width: 250px; /* Set a fixed width for each card */
+    padding: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    text-align: center;
+    height: 350px;
 }
 
 .monthly-sale, .sale-label, .out-of-stock {
@@ -158,16 +155,16 @@
 }
 
 .product-image img {
-    width: 15vw;
-    height: 18vh;
-    object-fit: contain;
-
+    max-width: 8vw;
+    object-fit: cover;
 }
 
 .product-name {
-    font-size: 1.25rem;
-    margin: 10px 0;
-    color: #333;
+    font-size: 16px;
+    font-weight: bold;
+    height: 40px; /* Set a fixed height */
+    overflow: hidden;
+
 }
 
 .product-weight {
@@ -179,6 +176,19 @@
     font-size: 1.1rem;
     color: #333;
     margin: 10px 0;
+}
+
+.product-price,
+.product-description {
+    /* Optional styling for other elements */
+    margin: 8px 0;
+    font-size: 14px;
+}
+
+.product-description {
+    height: 60px; /* Set height if description lengths vary */
+    overflow: hidden; /* Hide overflow */
+    text-overflow: ellipsis;
 }
 
 .monthly-sale, .sale-label {
@@ -464,14 +474,13 @@
 .products-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr); /* Four columns */
-    gap:0px;
-
 }
 
 .product-card {
     max-width: 140px;
     height: auto; /* Allow height to adjust for mobile */
     padding: 15px;
+    justify-content: space-between;
 }
 
 
@@ -499,10 +508,8 @@
 }
 
 .product-image img{
-    width: 20vw;
-    height: 18vh;
+    max-width: 20vw;
     object-fit: contain;
-
 }
 
 .sort {

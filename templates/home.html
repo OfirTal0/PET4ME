@@ -180,23 +180,26 @@
 
     <div class="section5" style="background-image: url('static/images/background-section.png');">
         <section id="contactForm" class="contact">
-            <h2>צור קשר</h2>   
+            <h2>צור קשר</h2>
             <form action="/contact" method="POST" id="leadForm" class="contactform">
-                <input class="contactInput" type="text" id="name" name="name" placeholder="שם מלא" required>
-                <input class="contactInput" type="tel" id="contactPhone" name="phone" placeholder="טלפון" pattern="\d*" title="אנא הכנס מספרים בלבד" required>
-                <input class="contactInput" type="text" id="note" name="note" placeholder="הערה">
-                <input class="contactSubmit" type="submit" value="קדימה!" onclick="return validatePhone()">
+                    <input class="contactInput" type="text" id="name" name="name" placeholder="שם מלא" required>
+                    <input class="contactInput" type="tel" id="contactPhone" name="phone" placeholder="טלפון" pattern="\d*" title="אנא הכנס מספרים בלבד" required>
+                    <input class="contactInput" type="text" id="note" name="note" placeholder="הערה">
+                    <input class="contactSubmit" type="submit" value="קדימה!" onclick="return validatePhone()">
             </form>
-    
         </section>
     
         <div class="visit-us" id="contact">
-            <h2>טלפון להזמנות</h2>
-            <h3 class="phone-number">050-9936660</h3>
-            <h2>פנו ישירות בוואטספ</h2>
-            <a href="https://wa.me/pet4me">
-                <img class="linkimg" src="/static/images/whatsapp.png" alt="WhatsApp">
-            </a>
+            <div class="visit-us-column">
+                <h2>טלפון להזמנות</h2>
+                <h3 class="phone-number">050-9936660</h3>
+            </div>
+            <div class="visit-us-column-whats">
+                <h2>פנו ישירות בוואטספ</h2>
+                <a href="https://wa.me/pet4me">
+                    <img class="linkimg" src="/static/images/whatsapp.png" alt="WhatsApp">
+                </a>
+            </div>
         </div>
     </div>
 </div>

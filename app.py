@@ -11,6 +11,7 @@ import json
 import os
 from flask import send_from_directory
 from flask import send_file
+import uuid
 
 
 
@@ -87,7 +88,11 @@ def query(sql: str = "", params: tuple = (), db_name=DATABASE_PATH):
     except Exception as e:
         print(f"Error: {e}")
         return None
-
+    
+def generate_unique_filename(filename):
+    ext = filename.rsplit('.', 1)[-1]  # Get the file extension
+    unique_id = f"{datetime.now().strftime('%Y%m%d%H%M%S')}_{uuid.uuid4().hex[:8]}"
+    return f"{unique_id}.{ext}"
 
 @app.context_processor
 def inject_cart_length():
@@ -392,8 +397,9 @@ def update_stock():
     image_filename = None
 
     if image and allowed_file(image.filename):
-        image_filename = secure_filename(image.filename)
+        image_filename = generate_unique_filename(image.filename)
         image.save(os.path.join(app.config['UPLOAD_FOLDER'], image_filename))
+        
         query(f"""
         UPDATE products 
         SET product_name = ?, category = ?, price = ?, description = ?, image = ?, popular = ?, animal = ?, stock = ?, weight = ?, 
@@ -428,9 +434,10 @@ def add_product():
     discount = 0
 
     image = request.files['image']
-    image_filename = 'no-image.png'
+    image_filename = 'no-image.png'  # Default image filename
+
     if image and allowed_file(image.filename):
-        image_filename = secure_filename(image.filename)
+        image_filename = generate_unique_filename(image.filename)
         image.save(os.path.join(app.config['UPLOAD_FOLDER'], image_filename))
 
     # Insert into products table
@@ -452,11 +459,13 @@ def add_adopt():
     age = round(float(request.form['age']), 1)
     
     image = request.files['image']
-    image_filename = 'none'
+    image_filename = 'none'  # Default image filename
+
     if image and allowed_file(image.filename):
-        image_filename = secure_filename(image.filename)
+        # Generate a unique filename and save the image
+        image_filename = generate_unique_filename(image.filename)
         image.save(os.path.join(app.config['UPLOAD_FOLDER'], image_filename))
-    
+
     # Insert into adopt table
     query(f"INSERT INTO adopt (name, type, age, description, image) VALUES (?, ?, ?, ?, ?)",
           (name, type, age, description, image_filename))
