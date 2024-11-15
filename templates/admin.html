@@ -192,7 +192,7 @@
                             </select>
                         </td>
                         <td><input type="number" name="stock" value="{{ product[6] }}" style="width: 50px;" required></td>
-                        <td><input type="number" name="weight" value="{{ product[7] }}" style="width: 50px;" ></td>
+                        <td><input type="text" name="weight" value="{{ product[7] }}" style="width: 50px;" ></td>
                         <td>
                             <select name="monthly_sale" required>
                                 <option value="כן" {% if product[10] == 'כן' %} selected {% endif %}>כן</option>
@@ -258,7 +258,7 @@
             <input type="number" name="stock" id="stock" required class="input-admin"><br>
           
             <label for="weight">משקל: נא להוסיף כולל יחידת מידה (ק"ג / גרם / ליטר)</label>
-            <input type="number" name="weight" id="weight" placeholder="None" class="input-admin"><br>
+            <input type="text" name="weight" id="weight" placeholder="None" class="input-admin"><br>
           
             <label for="image">Image URL:</label>
             <input type="file" name="image" accept="image/*">
