@@ -224,6 +224,14 @@
     background-color: #e53935;
 }
 
+.out-of-stock {
+    background-color: rgb(122, 123, 124);
+    color: white;
+    padding: 5px;
+    font-size: 1.5rem;
+    border-radius: 3px; /* Square corners */
+}
+
 
 /* Mobile responsive adjustments */
 @media (max-width: 768px) {

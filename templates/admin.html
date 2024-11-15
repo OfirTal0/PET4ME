@@ -141,6 +141,7 @@
 
     <!-- Section: Stock Management -->
     <div id="stock" class="admin-section">
+        <div class="update-section-admin">
         <h2>ניהול מלאי</h2>
         <table class="admin-table">
             <thead>
@@ -218,7 +219,9 @@
                 {% endfor %}
             </tbody>
         </table>
-    
+        </div>
+        
+        <div id="add-product-form" class="">
         <h3>הוספת מוצר חדש</h3>
         <form action="/add_product" method="POST" enctype="multipart/form-data">
             <label for="name">שם מוצר:</label>
@@ -263,6 +266,7 @@
             <button class="admin-button" type="submit">הוסף מוצר</button>
         </form>
     </div>
+    </div>
 
     <!-- Section: Adopt Post -->
     <div id="adopt" class="admin-section">
@@ -273,7 +277,7 @@
             <input type="text" name="name" id="name" required class="input-admin"><br>
           
             <label for="type">סוג חיה:</label>
-            <select name="type" id="type" required class="input-admin">
+            <select name="type" id="type" required class="input-admin-select">
               <option value="כלב">כלב</option>
               <option value="חתול">חתול</option>
               <option value="כנף">בעלי כנף</option>
@@ -284,7 +288,7 @@
             <textarea name="description" id="description" required></textarea><br>
           
             <label for="age">גיל:</label>
-            <input type="number" name="age" id="age" step="0.1" required class="input-admin" min="0"><br>
+            <input type="number" name="age" id="age" step="0.1" required class="input-admin-select" min="0"><br>
           
             <label for="image">Image URL:</label>
             <input type="file" name="image" accept="image/*" required>
@@ -296,6 +300,7 @@
 
 
     <div id="articles-section" class="admin-section">
+        <div class="update-section-admin">
         <h2>מאמרים</h2>
         <!-- List of Articles -->
         <table class="admin-table">
@@ -327,7 +332,7 @@
                 {% endfor %}
             </tbody>
         </table>
-
+        </div>
         <!-- Add Article Form -->
         <div id="add-article-form">
             <h4>הוסף מאמר חדש</h4>

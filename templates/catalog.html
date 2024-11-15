@@ -66,7 +66,7 @@
             </div>
             <div class="product-info">
                 <h3 class="product-name">{{ product[1] }}</h3>
-                <p class="product-weight">משקל: {{ product[7] }} ק"ג</p>
+                <p class="product-weight">משקל: {{ product[7] }}</p>
                 <p class="product-price">
                     {% if product[6] == 0 %}
                     <span class="out-of-stock">אזל מהמלאי</span>
@@ -81,7 +81,7 @@
 
                 <div class="buttons_display">
                     {% if not product[6] == 0 %}
-                    <form action="/add_to_cart" method="POST">
+                    <form action="/add_to_cart" method="POST" >
                         <input type="hidden" name="product_id" value="{{ product[0] }}">
                         <input type="submit" class="add-to-cart-button" value="הוסף לעגלה">
                     </form>
@@ -122,7 +122,7 @@
                         <td>
                             <div class="product-info">
                                 <h4>{{ product[1] }}</h4>
-                                <p class="product-weight">משקל: {{ product[7] }} ק"ג</p>
+                                <p class="product-weight">משקל: {{ product[7] }}</p>
                                 {% if product[12] > 0 %}
                                     <p class="old-price">₪{{ product[3] | round(2) }}</p>
                                     <p class="new-price">מחיר לאחר הנחה: ₪{{ (product[3] - (product[3] * product[12] / 100)) | round(2) }}</p>
@@ -204,7 +204,7 @@
                 <td>
                     <div class="product-info">
                         <h4>${product[1]}</h4>
-                        <p class="product-weight">משקל: ${product[7]} ק"ג</p>
+                        <p class="product-weight">משקל: ${product[7]}</p>
                         ${product[12] > 0 ? `
                             <p class="old-price">₪${(product[3]).toFixed(2)}</p>
                             <p class="new-price">מחיר לאחר הנחה: ₪${(product[3] - (product[3] * product[12] / 100)).toFixed(2)}</p>

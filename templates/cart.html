@@ -28,7 +28,7 @@
                 <td>
                     <div class="product-info">
                         <h3>{{ product[1] }}</h3>
-                        <p class="product-weight">משקל: {{ product[7] }} ק"ג</p>
+                        <p class="product-weight">משקל: {{ product[7] }}</p>
                         {% if product[12] > 0 %}
                             <p class="old-price">₪{{ product[3] | round(2) }}</p>  <!-- Round price to 1 decimal place -->
                             <p class="new-price">מחיר לאחר הנחה: ₪{{ (product[3] - (product[3] * product[12] / 100)) | round(2) }}</p>  <!-- Round price after discount to 1 decimal place -->
