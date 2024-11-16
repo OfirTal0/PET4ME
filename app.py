@@ -12,7 +12,9 @@ import os
 from flask import send_from_directory
 from flask import send_file
 import uuid
+from zoneinfo import ZoneInfo 
 
+israel_timezone = ZoneInfo("Asia/Jerusalem")
 
 
 app = Flask(__name__, static_folder='static', template_folder='templates')
@@ -91,7 +93,7 @@ def query(sql: str = "", params: tuple = (), db_name=DATABASE_PATH):
     
 def generate_unique_filename(filename):
     ext = filename.rsplit('.', 1)[-1]  # Get the file extension
-    unique_id = f"{datetime.now().strftime('%Y%m%d%H%M%S')}_{uuid.uuid4().hex[:8]}"
+    unique_id = f"{datetime.now(israel_timezone).strftime('%Y%m%d%H%M%S')}_{uuid.uuid4().hex[:8]}"
     return f"{unique_id}.{ext}"
 
 @app.context_processor
@@ -189,7 +191,7 @@ def contact():
     name = request.form.get('name')
     phone = request.form.get('phone')
     note = request.form.get('note',"none")
-    date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    date = datetime.now(israel_timezone).strftime('%Y-%m-%d %H:%M:%S')
     status = "new"  # Default status
 
     # Insert into leads table using raw SQL
@@ -261,7 +263,7 @@ def submit_order():
         name = request.form.get('name')
         phone = request.form.get('phone')
         products_in_cart = session.get('products_in_cart', {})  # Get the cart as a dictionary
-        date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        date = datetime.now(israel_timezone).strftime('%Y-%m-%d %H:%M:%S')
         status = "new"
         address = request.form.get('address')
         note = request.form.get('note')
@@ -522,7 +524,7 @@ def customer_club_signup():
     phone = data.get('phone')
     email = data.get('email')
     animal_type = data.get('animal_type')  # New field
-    date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    date = datetime.now(israel_timezone).strftime('%Y-%m-%d %H:%M:%S')
     confirmation = data.get('agree_updates')
     try:
         query(f"INSERT INTO costumer_club (name, phone, email, date, confirmation, animal) VALUES ('{name}', '{phone}', '{email}', '{date}', '{confirmation}', '{animal_type}')")

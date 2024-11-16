@@ -307,6 +307,9 @@
         if (!animalType) {
             errorMessage += "יש לבחור סוג חיה.<br>";
         }
+        if (!agreeUpdates) {
+            errorMessage += "יש להסכים לקבלת עדכונים.<br>";
+        }
     
         // Check if the phone number is exactly 10 digits
         const phoneRegex = /^05\d{8}$/; // Matches Israeli phone format (starting with 05 and 10 digits)

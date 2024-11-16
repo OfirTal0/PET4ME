@@ -194,6 +194,14 @@ footer p {
     margin: 0;
 }
 
+.phone-link {
+    text-decoration: none; /* Removes underline */
+    color: inherit; /* Inherits the white color from parent */
+}
+
+.phone-link:hover {
+    text-decoration: underline; /* Optional: Add underline on hover for visual feedback */
+}
 
 /* Product Title */
 .product h3 {
