@@ -544,9 +544,9 @@ sender_password = os.environ.get("SENDER_PASSWORD")
 
 def send_order_email(name, phone, products, order_date, address,order_num,note):
     # Email configuration
-    sender_email = "ofirital0@gmail.com"
-    sender_password = "asfl tyti jmdi ukfw"
-    receiver_email = "ofirital0@gmail.com"
+    sender_email = "Pets4me2024@gmail.com"
+    sender_password = "gpsq osxk onuj ghbm"
+    receiver_email = "Pets4me2024@gmail.com"
 
     # Parse the products string into a list of tuples (product_id, quantity)
     product_items = [item.split(':') for item in products.split(', ')]
@@ -608,9 +608,9 @@ def send_order_email(name, phone, products, order_date, address,order_num,note):
 
 def send_costumer_club_email(name, phone, email, date, confirmation, animal_type):
     # Email configuration
-    sender_email = "ofirital0@gmail.com"
-    sender_password = "asfl tyti jmdi ukfw"
-    receiver_email = "ofirital0@gmail.com"
+    sender_email = "Pets4me2024@gmail.com"
+    sender_password = "gpsq osxk onuj ghbm"
+    receiver_email = "Pets4me2024@gmail.com"
     
    
     html_body = f"""
@@ -651,9 +651,9 @@ def send_costumer_club_email(name, phone, email, date, confirmation, animal_type
 
 def send_contact_email(name, phone, date,note):
     # Email configuration
-    sender_email = "ofirital0@gmail.com"
-    sender_password = "asfl tyti jmdi ukfw"
-    receiver_email = "ofirital0@gmail.com"
+    sender_email = "Pets4me2024@gmail.com"
+    sender_password = "gpsq osxk onuj ghbm"
+    receiver_email = "Pets4me2024@gmail.com"
     
    
     html_body = f"""
