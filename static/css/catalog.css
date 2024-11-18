@@ -110,8 +110,8 @@
 
 .products-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* Four columns */
-    gap: 15px;
+    grid-template-columns: repeat(4, 1fr); /* Four columns */
+    gap: 20px;
     margin-top: 20px;
 }
 
@@ -120,12 +120,13 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    width: 250px; /* Set a fixed width for each card */
+    width: 100%; /* Full width of the grid cell */
+    max-width: 250px; /* Limit width */
     padding: 16px;
     border: 1px solid #ccc;
     border-radius: 8px;
     text-align: center;
-    height: 350px;
+    box-sizing: border-box;
 }
 
 .monthly-sale, .sale-label, .out-of-stock {
@@ -212,17 +213,18 @@
     color: red;
 }
 
-.show-product-button, .add-to-cart-button {
-    background-color:white;
-    border-color: black;
-    color: black;
-    padding: 8px 15px;
-    border-radius: 3px;
+.show-product-button,
+.add-to-cart-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 7vw; /* Buttons span 90% of the container */
+    max-width: 200px; /* Set a maximum width */
+    padding: 10px;
     font-size: 0.9rem;
+    text-align: center;
+    border-radius: 3px;
     cursor: pointer;
-    transition: background-color 0.3s;
-    width: 9vw;
-    
 }
 
 .show-product-button:hover {
@@ -280,16 +282,6 @@
     cursor: pointer;
 }
 
-/* Show the toggle button on mobile */
-@media (max-width: 768px) {
-    .toggle-filter-button {
-        display: block;
-    }
-
-    .filter-button input[type="submit"] {
-        width: 100%;
-    }
-}
 
 /* Button to close filter options */
 .close-filter-button {
@@ -455,9 +447,25 @@
     background-color: #e53935;
 }
 
+.buttons_display {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 100%; /* Align to the product card width */
+    margin-top: auto; /* Push buttons to the bottom of the card */
+}
 
 
 @media (max-width: 768px) {
+    .toggle-filter-button {
+            display: block;
+        }
+    
+    .filter-button input[type="submit"] {
+            width: 100%;
+     }
 
     .searchclass {
         display: flex;
@@ -480,8 +488,8 @@
 }
 
 .product-card {
-    max-width: 140px;
-    height: auto; /* Allow height to adjust for mobile */
+    width: 90%; /* Make the card fit the available space */
+    max-width: none; /* Remove the max width on smaller screens */    height: auto; /* Allow height to adjust for mobile */
     padding: 15px;
     justify-content: space-between;
 }
@@ -511,8 +519,8 @@
 }
 
 .product-image img{
-    width: 20vw;
-    height: 20vh;
+    width: 80%; /* Scale images proportionally */
+    height: auto; /* Maintain aspect ratio */
     object-fit: contain;
 }
 
@@ -536,6 +544,6 @@
   }
 
   .show-product-button, .add-to-cart-button {
-    width: 30vw;
+    width: 15vw; /* Buttons span 90% of the container */
 } 
 }
