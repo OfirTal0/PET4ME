@@ -225,6 +225,10 @@
     text-align: center;
     border-radius: 3px;
     cursor: pointer;
+    white-space: nowrap; 
+    text-overflow: ellipsis; 
+
+
 }
 
 .show-product-button:hover {
@@ -488,7 +492,7 @@
 }
 
 .product-card {
-    width: 90%; /* Make the card fit the available space */
+    width: 95%; /* Make the card fit the available space */
     max-width: none; /* Remove the max width on smaller screens */    height: auto; /* Allow height to adjust for mobile */
     padding: 15px;
     justify-content: space-between;
@@ -519,8 +523,8 @@
 }
 
 .product-image img{
-    width: 80%; /* Scale images proportionally */
-    height: auto; /* Maintain aspect ratio */
+    width: 20vw;
+    height: 20vh;
     object-fit: contain;
 }
 
@@ -544,6 +548,6 @@
   }
 
   .show-product-button, .add-to-cart-button {
-    width: 15vw; /* Buttons span 90% of the container */
+    width: 30vw; /* Buttons span 90% of the container */
 } 
 }
