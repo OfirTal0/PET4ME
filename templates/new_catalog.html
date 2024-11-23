@@ -47,7 +47,7 @@
                     {% endfor %}
                     
                     <select name="sort" id="sort" onchange="this.form.submit()">
-                        <option value="">בחר</option>
+                        <option value="">מיון לפי:</option>
                         <option value="name_asc" {% if request.args.get('sort') == 'name_asc' %}selected{% endif %}>
                             שם המוצר (א-ת)
                         </option>
@@ -60,7 +60,6 @@
         </div>
 
         <form action="/new_catalog" method="GET" id="filterForm" class="filter-form">
-
             <div class="filter-section">
                 <h3>סוג חיה</h3>
                 <div class="filter-options">
