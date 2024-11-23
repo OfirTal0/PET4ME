@@ -25,12 +25,41 @@
 </div>
 
 <div class="searchclass">
-    <h3 style="font-size:large">חיפוש</h3>
-    <form action="/search" method="GET">
-        <input type="text" name="text" placeholder="חפש מוצר..." class="search-input">
-        <input type="submit" value="חפש" class="search-button">
-    </form>
+        <div class="sort-options">
+            <h3 style="font-size:large">חיפוש</h3>
+            <form action="/search" method="GET">
+                <input type="text" name="text" placeholder="חפש מוצר..." class="search-input">
+                <input type="submit" value="חפש" class="search-button">
+            </form>
+        </div>
+
+        <div class="sort-options">
+            <h3 style="font-size:large">מיון לפי:</h3>
+
+            <form action="/catalog" method="GET">
+                <!-- Retain existing filters when sorting -->
+                {% for animal in request.args.getlist('animal[]') %}
+                <input type="hidden" name="animal[]" value="{{ animal }}">
+                {% endfor %}
+                {% for category in request.args.getlist('category[]') %}
+                <input type="hidden" name="category[]" value="{{ category }}">
+                {% endfor %}
+                
+                <select name="sort" id="sort" onchange="this.form.submit()">
+                    <option value="">בחר</option>
+                    <option value="name_asc" {% if request.args.get('sort') == 'name_asc' %}selected{% endif %}>
+                        שם המוצר (א-ת)
+                    </option>
+                    <option value="price_asc" {% if request.args.get('sort') == 'price_asc' %}selected{% endif %}>
+                        מחיר נמוך לגבוה
+                    </option>
+                </select>
+            </form>
+        </div>
+    
 </div>
+
+
 <div class="catalog-display">
     <div class="sort">
         <div class="sortclass">

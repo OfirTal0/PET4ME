@@ -100,6 +100,12 @@
 </div>
 
 <script>
+
+    
+    document.querySelector('.hamburger').addEventListener('click', () => {
+        document.querySelector('.nav-links').classList.toggle('active');
+    });
+    
     function validatePhone() {
         const phoneInput = document.getElementById('contactPhone').value;
         const phonePattern = /^05\d{8}$/; // Israeli mobile numbers starting with 05 and containing 10 digits

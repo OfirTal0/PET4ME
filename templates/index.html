@@ -1,0 +1,257 @@
+{% extends "new_base.html" %}
+
+{% block index %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+
+<div class="headerHome">
+    <p class="logo-title-mobile">מזון ואביזרים לכלבים וחתולים - רק בדרום ים המלח והערבה</p>
+
+    <p class="delivery-info">
+        <i class="fas fa-truck"></i>
+        הזמנה שנכנסת עד 16:00 מסופקת באותו היום ועד בית
+    </p>
+    <p class="delivery-info">
+        <i class="fas fa-paw"></i>
+        זכייני מזון סקנדינבי בריא ואיכותי
+    </p>
+</div>
+    <!-- Categories -->
+    <section>
+        <form action="/new_catalog" method="GET"  class="categories">
+            <button class="category-card" type="submit" name="animal[]" value="כלב" style="cursor: pointer;">
+                <img src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e" alt="Dog">
+                <h3>מזון וציוד לכלבים</h3>
+            </button>
+            <button class="category-card" type="submit" name="animal[]" value="חתול" style="cursor: pointer;">
+                <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba" alt="Cat">
+                <h3>מזון וציוד לחתולים</h3>
+            </button>
+            <button class="category-card" type="submit" name="animal[]" value="כנף" style="cursor: pointer;">
+                <img src="https://images.unsplash.com/photo-1552728089-57bdde30beb3" alt="Bird">
+                <h3>מזון וציוד לבעלי כנף</h3>
+            </button>
+        </form>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section class="why-us">
+        <h2>למה לקנות אצלנו?</h2>
+        <div class="benefits">
+            <div class="benefit">
+                <i class="fas fa-truck"></i>
+                <h3>משלוחים</h3>
+                <p>לכל אזור בערבה</p>
+            </div>
+            <div class="benefit">
+                <i class="fas fa-medal"></i>
+                <h3>איכות מובטחת</h3>
+                <p>מוצרים מובחרים</p>
+            </div>
+            <div class="benefit">
+                <i class="fas fa-headset"></i>
+                <h3>תמיכה ויחס אישי</h3>
+                <p>שירות לקוחות מסור</p>
+            </div>
+            <div class="benefit">
+                <i class="fas fa-percent"></i>
+                <h3>מבצעים והנחות</h3>
+                <p>חסכון משתלם</p>
+            </div>
+            <div class="benefit">
+                <i class="fas fa-shield-alt"></i>
+                <h3>אבטחה מלאה</h3>
+                <p>תשלום מאובטח</p>
+            </div>
+            <div class="benefit">
+                <i class="fas fa-undo"></i>
+                <h3>החזרות קלות</h3>
+                <p>14 יום החזרה</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Popular Products -->
+    <section class="popular-products">
+        <h2>מוצרים פופולריים</h2>
+        <button class="scroll-btn left"><i class="fas fa-chevron-left"></i></button>
+        <div class="products-container">
+            {% for product in popular_products[:6] %}
+            <div class="product-card">
+                <img src="/static/uploads/{{ product[5] }}" alt="Dog Food">
+                <h3>{{ product[1] }}</h3>
+                <p>משקל : {{ product[7] }}</p>
+                <form action="/show_product" method="POST">
+                    <input  type="hidden" name="product_id" value="{{ product[0] }}">
+                    <input type="submit" class="show-product-button" value="עוד פרטים">
+                </form>
+            </div>
+            {% endfor %}
+
+        </div>
+        <button class="scroll-btn right"><i class="fas fa-chevron-right"></i></button>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter">
+        <h2>הצטרפו למועדון הלקוחות</h2>
+        <p>הצטרפו למועדון הלקוחות והתחילו להנות ממגוון מבצעים, הנחות והשקות של מוצרים חדשים לפני כולם!</p>
+        <form class="subscribe-form" action="/customer-club-signup" method="POST">
+            <input type="text" id="name" name="name" required placeholder="שם מלא">
+            <input type="email" id="email" name="email" placeholder="אימייל" required>
+            <input type="tel" id="phone" name="phone" required pattern="^05\d(-?\d{7})$" placeholder="טלפון" title="אנא הכנס 10 תווים מספריים בלבד">
+            <label for="animal">סוג החיה שברשותך:</label>
+            <select class="customerClubFormSelect" id="animal_type" name="animal_type" required>
+                <option value="כלב">כלב</option>
+                <option value="חתול">חתול</option>
+                <option value="כנף">בעלי כנף</option>
+            </select>
+            <label>
+                <input type="checkbox" id="agree_updates" name="agree_updates" required>
+                אני מסכים לקבל עדכונים
+            </label>
+        
+            <button class="customerClubFormSubmit" type="submit">שלח</button>
+        </form>
+    </section>
+
+    <!-- Blog Preview -->
+    <section class="blog">
+        <h2>הבלוג שלנו</h2>
+        <div class="blog-preview">
+        {% for article in articles[:3] %}
+
+            <div class="box">
+                <div class="box-title">
+                    <h3>{{ article[1] }}</h3>
+                </div>
+                <div class="box-content">
+                <img src="/static/uploads/blog/{{ article[3] }}" >
+                <p>{{ article[2] }}</p>
+                </div>
+                <a href="{{ url_for('article', id=article[0]) }}">קרא עוד &gt;&gt;</a>
+            </div>
+        {% endfor %}
+        </div>
+    </section>
+
+    <!-- Adoption -->
+    <section class="adoption">
+        <h2>פינת האימוץ</h2>
+        {% for adopt in adopt %}
+
+        <div class="adoption-card">
+            <img src="/static/uploads/{{ adopt[5] }}" alt="Pet for adoption">
+            <div class="adoption-info">
+                <h2>הכירו את {{ adopt[1] }}</h2>
+                <p>גיל: {{ adopt[3] }} שנים</p>
+                <p>{{  adopt[4] }}</p>
+                <a href="#contact" class="adopt-button">קח אותי הביתה</a>
+            </div>
+        </div>
+        {% endfor %}
+
+    </section>
+
+    <!-- Contact -->
+    <section class="contact" id="contact">
+        <div class="contact-overlay">
+            <h2>צרו קשר</h2>
+            <form action="/contact" method="POST" id="leadForm" class="contact-form">
+                <input type="text" id="name" name="name" placeholder="שם מלא" required>
+                <input type="tel" id="contactPhone" name="phone" placeholder="טלפון" pattern="\d*" title="אנא הכנס מספרים בלבד" required>
+                <input type="text" id="note" name="note" placeholder="הערה">
+                <input class="contactSubmit" type="submit" value="קדימה!" onclick="return validatePhone()">
+            </form>
+        </div>
+    </section>
+
+    
+
+    <script>
+        // Hamburger Menu
+        document.querySelector('.hamburger').addEventListener('click', () => {
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
+
+        // Product Scroll
+        const productsContainer = document.querySelector('.products-container');
+        
+        document.querySelector('.scroll-btn.left').addEventListener('click', () => {
+            productsContainer.scrollBy({
+                left: -300,
+                behavior: 'smooth'
+            });
+        });
+
+        document.querySelector('.scroll-btn.right').addEventListener('click', () => {
+            productsContainer.scrollBy({
+                left: 300,
+                behavior: 'smooth'
+            });
+        });
+
+        function validateForm() {
+            const name = document.getElementById("name").value.trim();
+            const phone = document.getElementById("phone").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const animalType = document.getElementById("animal_type").value;
+            const agreeUpdates = document.getElementById("agree_updates").checked;
+            let errorMessage = "";
+        
+            // Check if all fields are answered
+            if (!name) {
+                errorMessage += "יש להזין שם מלא.<br>";
+            }
+            if (!phone) {
+                errorMessage += "יש להזין מספר טלפון.<br>";
+            }
+            if (!email) {
+                errorMessage += "יש להזין אימייל.<br>";
+            }
+            if (!animalType) {
+                errorMessage += "יש לבחור סוג חיה.<br>";
+            }
+            if (!agreeUpdates) {
+                errorMessage += "יש להסכים לקבלת עדכונים.<br>";
+            }
+        
+            // Check if the phone number is exactly 10 digits
+            const phoneRegex = /^05\d{8}$/; // Matches Israeli phone format (starting with 05 and 10 digits)
+            if (phone && !phoneRegex.test(phone)) {
+                errorMessage += "מספר הטלפון חייב להיות בן 10 ספרות ולהתחיל ב-05.<br>";
+            }
+        
+            // Check if the email is in a valid format
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (email && !emailRegex.test(email)) {
+                errorMessage += "האימייל שהוזן אינו בפורמט תקין.<br>";
+            }
+            const errorMessageContainer = document.getElementById("error-message");
+            if (errorMessage) {
+                errorMessageContainer.innerHTML = errorMessage;
+                errorMessageContainer.style.display = "block";
+            } else {
+                errorMessageContainer.style.display = "none";
+                submitForm();
+            }
+            }
+            function validatePhone() {
+                const phoneInput = document.getElementById('contactPhone').value;
+                const phonePattern = /^05\d{8}$/; // Israeli mobile numbers starting with 05 and containing 10 digits
+            
+                if (!phonePattern.test(phoneInput)) {
+                    alert("מספר הטלפון חייב להיות בן 10 ספרות ולהתחיל ב-05.");
+                    return false; // Prevent form submission
+                }
+            
+                // If phone number is valid, show a confirmation message
+                alert("תודה שיצרת איתנו קשר, נחזור אלייך בהקדם האפשרי!");
+                return true; // Allow form submission
+            }
+
+       
+    </script>
+
+
+{% endblock %}

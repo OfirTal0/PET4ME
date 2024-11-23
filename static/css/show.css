@@ -14,8 +14,8 @@
     transition: transform 0.3s, box-shadow 0.3s;
     align-items: center;
     justify-content: center;
-    padding: 2vh;
     text-align: center;
+    padding: 3rem 2rem;
     gap: 10vw;
 }
 
@@ -59,26 +59,23 @@
     color: red;
 }
 
-.show-product-button, .add-to-cart-button {
-    background-color: black;
+.add-to-cart {
+    background: #4CAF50;
     color: white;
-    padding: 8px 15px;
-    border-radius: 3px;
-    font-size: 0.9rem;
+    width: 200px;
     cursor: pointer;
-    transition: background-color 0.3s;
+
 }
 
-.add-to-cart-button:hover {
-    background-color: white;
-    border-color: black;
-    color: black;
+.add-to-cart:hover {
+    background: #45a049;
 }
 
 .info {
     margin-top: 3vh;
     display: flex;
     flex-direction: column;
+    padding: 3rem 2rem;
 }
 
 .info h2 {

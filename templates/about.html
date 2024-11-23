@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "new_base.html" %}
 
 {% block about %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/about.css') }}">
@@ -7,7 +7,6 @@
 <div class="about-section">
     <div class="about-text">
         <h2>אודותינו</h2>
-        <img class="logo" src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo">
         <p>
             PET4ME, חנות חיות אונליין הממוקמת בערבה התיכונה, שואפת לספק לכם ולחיות המחמד שלכם את המיטב. 
         </p>
@@ -43,4 +42,12 @@
     </div>
 
 </div>
+
+<script>
+    
+    document.querySelector('.hamburger').addEventListener('click', () => {
+        document.querySelector('.nav-links').classList.toggle('active');
+    });
+    
+</script>
 {% endblock %}

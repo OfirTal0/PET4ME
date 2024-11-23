@@ -68,6 +68,12 @@
     .box {
         width: 90%;  /* Ensure boxes take up full width in their column */
     }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing:content-box;
+    }
 }
 
 /* Adjust for small screens */
@@ -79,5 +85,11 @@
     .box {
         width: 90%;  /* Ensure boxes take up full width in their column */
         height: auto;  /* Let the height adjust according to content */
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing:content-box;
     }
 }

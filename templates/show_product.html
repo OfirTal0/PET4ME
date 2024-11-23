@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "new_base.html" %}
 
 {% block show_product %}
 <link rel="stylesheet" href="/static/css/show.css">
@@ -25,57 +25,57 @@
 
         <form action="/add_to_cart" method="POST">
             <input type="hidden" name="product_id" value="{{ product[0] }}">
-            <input type="submit" class="add-to-cart-button" value="הוסף לעגלה">
+            <input type="submit" class="add-to-cart" value="הוסף לעגלה">
         </form>
         {% endif %}
     </div>
 
+ 
+    <div id="cart-popup" class="cart-popup" style="display:none;">
+        <div class="popup-content">
+            <div class="popup-header">
+                <h3>המוצרים בעגלה</h3>
+            </div>
+            <div id="cart-products-list" class="cart-products-list">
+                <table class="cart-table">
+                    <thead>
+                        <tr>
+                            <th>תמונה</th>
+                            <th>תיאור</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in product_in_cart %}
+                        <tr>
+                            <td>
+                                <div class="cart-image">
+                                    <img src="/static/uploads/{{ product[5] }}" alt="{{ product[1] }}">
+                                </div>
+                            </td>
+                            <td>
+                                <div class="product-info">
+                                    <h4>{{ product[1] }}</h4>
+                                    <p class="product-weight">משקל: {{ product[7] }}</p>
+                                    {% if product[12] > 0 %}
+                                        <p class="old-price">₪{{ product[3] | round(2) }}</p>
+                                        <p class="new-price">מחיר לאחר הנחה: ₪{{ (product[3] - (product[3] * product[12] / 100)) | round(2) }}</p>
+                                    {% else %}
+                                        <p class="new-price">₪{{ product[3] | round(2) }}</p>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="popup-footer">
+                <button id="go-to-cart" class="add-to-cart">לעבור לעגלה</button>
+                <span id="close-popup" class="close-popup-button" onclick="closeCartPopup()">סגור</span>
     
-<div id="cart-popup" class="cart-popup" style="display:none;">
-    <div class="popup-content">
-        <div class="popup-header">
-            <h3>המוצרים בעגלה</h3>
-        </div>
-        <div id="cart-products-list" class="cart-products-list">
-            <table class="cart-table">
-                <thead>
-                    <tr>
-                        <th>תמונה</th>
-                        <th>תיאור</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for product in product_in_cart %}
-                    <tr>
-                        <td>
-                            <div class="cart-image">
-                                <img src="/static/uploads/{{ product[5] }}" alt="{{ product[1] }}">
-                            </div>
-                        </td>
-                        <td>
-                            <div class="product-info">
-                                <h4>{{ product[1] }}</h4>
-                                <p class="product-weight">משקל: {{ product[7] }}</p>
-                                {% if product[12] > 0 %}
-                                    <p class="old-price">₪{{ product[3] | round(2) | round(2) }}</p>
-                                    <p class="new-price">מחיר לאחר הנחה: ₪{{ (product[3] - (product[3] * product[12] / 100)) | round(2) }}</p>
-                                {% else %}
-                                    <p class="new-price">₪{{ product[3] | round(2) }}</p>
-                                {% endif %}
-                            </div>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        <div class="popup-footer">
-            <button id="go-to-cart" class="go-to-cart-button">לעבור לעגלה</button>
-            <span id="close-popup" class="close-popup-button" onclick="closeCartPopup()">סגור</span>
-
+            </div>
         </div>
     </div>
-</div>
 
 </div>
 
@@ -88,6 +88,11 @@
 
 <script>
 
+    document.querySelector('.hamburger').addEventListener('click', () => {
+        document.querySelector('.nav-links').classList.toggle('active');
+    });
+    
+ 
     function openCartPopup() {
         document.getElementById("cart-popup").style.display = "flex";
     }
@@ -96,7 +101,7 @@
         document.getElementById("cart-popup").style.display = "none";
     }
     
-    document.querySelectorAll('.add-to-cart-button').forEach(button => {
+    document.querySelectorAll('.add-to-cart').forEach(button => {
         button.addEventListener('click', function(event) {
             event.preventDefault();  // Prevent form submission
     
@@ -137,9 +142,9 @@
                         <h4>${product[1]}</h4>
                         <p class="product-weight">משקל: ${product[7]}</p>
                         ${product[12] > 0 ? `
-                            <p class="old-price">₪${(product[3]).toFixed(1)}</p>
-                            <p class="new-price">מחיר לאחר הנחה: ₪${(product[3] - (product[3] * product[12] / 100)).toFixed(1)}</p>
-                        ` : `<p class="new-price">₪${(product[3]).toFixed(1)}</p>`}
+                            <p class="old-price">₪${(product[3]).toFixed(2)}</p>
+                            <p class="new-price">מחיר לאחר הנחה: ₪${(product[3] - (product[3] * product[12] / 100)).toFixed(2)}</p>
+                        ` : `<p class="new-price">₪${(product[3]).toFixed(2)}</p>`}
                     </div>
                 </td>
             `;
@@ -149,9 +154,8 @@
     
     // Go to the cart page
     document.getElementById("go-to-cart").addEventListener('click', function() {
-        window.location.href = '/cart';  // Redirect to /cart
+        window.location.href = '/new_cart';  // Redirect to /cart
     });
-
 
 </script>
 {% endblock %}

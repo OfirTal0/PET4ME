@@ -1,0 +1,250 @@
+{% extends "new_base.html" %}
+
+{% block new_catalog %}
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/new_catalog.css') }}">
+
+    <!-- Catalog Header -->
+    <section class="catalog-header">
+        <h1>
+            {% if request.args.getlist('animal[]') %}
+            {% if 'כלב' in request.args.getlist('animal[]') %}
+                מוצרים לכלב
+            {% elif 'חתול' in request.args.getlist('animal[]') %}
+                מוצרים לחתול
+            {% elif 'כנף' in request.args.getlist('animal[]') %}
+                מוצרים לבעלי כנף
+            {% endif %}
+        {% else %}
+            כל המוצרים
+        {% endif %}
+        </h1>
+
+        <form action="/new_catalog" method="GET">
+            <button class="main-button" type="submit">לכל המוצרים</button>
+        </form>
+    </section>
+
+    <!-- Search and Filter -->
+    <section class="catalog-filters">
+        <div class="search-sort">
+ 
+            <form action="/search" method="GET">
+                <div class="search-box">
+                    <input type="text" name="text" placeholder="חפש מוצר..." class="search-input">
+                    <i class="fas fa-search"></i>
+                </div>
+            </form>
+
+            <div class="sort-box">
+                <form action="/new_catalog" method="GET">
+                    <!-- Retain existing filters when sorting -->
+                    {% for animal in request.args.getlist('animal[]') %}
+                    <input type="hidden" name="animal[]" value="{{ animal }}">
+                    {% endfor %}
+                    {% for category in request.args.getlist('category[]') %}
+                    <input type="hidden" name="category[]" value="{{ category }}">
+                    {% endfor %}
+                    
+                    <select name="sort" id="sort" onchange="this.form.submit()">
+                        <option value="">בחר</option>
+                        <option value="name_asc" {% if request.args.get('sort') == 'name_asc' %}selected{% endif %}>
+                            שם המוצר (א-ת)
+                        </option>
+                        <option value="price_asc" {% if request.args.get('sort') == 'price_asc' %}selected{% endif %}>
+                            מחיר נמוך לגבוה
+                        </option>
+                    </select>
+                </form>
+            </div>
+        </div>
+
+        <form action="/new_catalog" method="GET" id="filterForm" class="filter-form">
+
+            <div class="filter-section">
+                <h3>סוג חיה</h3>
+                <div class="filter-options">
+                    <label><input type="checkbox" name="animal[]" value="כלב"> כלב</label>
+                    <label><input type="checkbox" name="animal[]" value="חתול"> חתול</label>
+                    <label><input type="checkbox" name="animal[]" value="כנף">בעלי כנף</label>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h3>קטגוריה</h3>
+                <label><input type="checkbox" name="category[]" value="מזון"> מזון</label><br>
+                <label><input type="checkbox" name="category[]" value="אביזרים"> אביזרים</label>
+            </div>
+
+            <button type="submit" value="סנן" class="filter-submit">החל סינון</button>
+        </form>
+    </section>
+
+    <!-- Products Grid -->
+    <section class="products-grid">
+        {% for product in products %}
+        <div class="product-card">
+            <img src="/static/uploads/{{ product[5] }}" alt="Dog Food">
+            <h3>{{ product[1] }}</h3>
+            <div class="product-details">
+                <p class="price">
+                    {% if product[6] == 0 %}
+                    <span class="out-of-stock">אזל מהמלאי</span>
+                    {% elif product[11] == "כן" %}
+                    <span class="monthly-sale">מבצע!</span>
+                    <span class="old-price">₪{{ product[3] | round(2) }}</span>  
+                    <span class="new-price">₪{{ (product[3] - (product[3] * product[12] / 100)) | round(2) }}</span>
+                    {% else %}
+                    ₪{{ product[3] | round(2) }}
+                    {% endif %}
+                </p>
+                <p class="weight">{{ product[7] }}</p>
+            </div>
+            <div class="product-buttons">
+
+                {% if not product[6] == 0 %}
+                <form action="/add_to_cart" method="POST" >
+                    <input type="hidden" name="product_id" value="{{ product[0] }}">
+                    <input type="submit" class="add-to-cart" value="הוסף לעגלה">
+                </form>
+                {% endif %}
+                <form action="/show_product" method="POST">
+                    <input type="hidden" name="product_id" value="{{ product[0] }}">
+                    <input type="submit" class="show-more" value="ראה עוד">
+                </form>
+
+            </div>
+        </div>
+        {% endfor %}
+
+    </section>
+
+    <div id="cart-popup" class="cart-popup" style="display:none;">
+        <div class="popup-content">
+            <div class="popup-header">
+                <h3>המוצרים בעגלה</h3>
+            </div>
+            <div id="cart-products-list" class="cart-products-list">
+                <table class="cart-table">
+                    <thead>
+                        <tr>
+                            <th>תמונה</th>
+                            <th>תיאור</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in product_in_cart %}
+                        <tr>
+                            <td>
+                                <div class="cart-image">
+                                    <img src="/static/uploads/{{ product[5] }}" alt="{{ product[1] }}">
+                                </div>
+                            </td>
+                            <td>
+                                <div class="product-info">
+                                    <h4>{{ product[1] }}</h4>
+                                    <p class="product-weight">משקל: {{ product[7] }}</p>
+                                    {% if product[12] > 0 %}
+                                        <p class="old-price">₪{{ product[3] | round(2) }}</p>
+                                        <p class="new-price">מחיר לאחר הנחה: ₪{{ (product[3] - (product[3] * product[12] / 100)) | round(2) }}</p>
+                                    {% else %}
+                                        <p class="new-price">₪{{ product[3] | round(2) }}</p>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="popup-footer">
+                <button id="go-to-cart" class="add-to-cart">לעבור לעגלה</button>
+                <span id="close-popup" class="close-popup-button" onclick="closeCartPopup()">סגור</span>
+    
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Float WhatsApp (Same as index.html) -->
+    <a href="https://wa.me/1234567890" class="float-whatsapp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script>
+
+        document.querySelector('.hamburger').addEventListener('click', () => {
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
+        
+
+    
+        function openCartPopup() {
+            document.getElementById("cart-popup").style.display = "flex";
+        }
+        
+        function closeCartPopup() {
+            document.getElementById("cart-popup").style.display = "none";
+        }
+        
+        document.querySelectorAll('.add-to-cart').forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.preventDefault();  // Prevent form submission
+        
+                // Submit the form via AJAX
+                const form = button.closest('form');
+                const formData = new FormData(form);
+        
+                fetch(form.action, {
+                    method: 'POST',
+                    body: formData
+                }).then(response => response.json()).then(data => {
+                    if (data.success) {
+                        openCartPopup();  // Show the cart popup
+                        updateCartPopup(data.cart_products);  // Update the cart popup with new products
+                    }
+                }).catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+        });
+    
+        function updateCartPopup(cartProducts) {
+            const cartProductsList = document.getElementById("cart-products-list");
+            const tableBody = cartProductsList.querySelector('tbody');
+            tableBody.innerHTML = '';  // Clear existing cart items
+        
+            // Add each product to the cart popup
+            cartProducts.forEach(product => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>
+                        <div class="cart-image">
+                            <img src="/static/uploads/${product[5]}" alt="${product[1]}">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="product-info">
+                            <h4>${product[1]}</h4>
+                            <p class="product-weight">משקל: ${product[7]}</p>
+                            ${product[12] > 0 ? `
+                                <p class="old-price">₪${(product[3]).toFixed(2)}</p>
+                                <p class="new-price">מחיר לאחר הנחה: ₪${(product[3] - (product[3] * product[12] / 100)).toFixed(2)}</p>
+                            ` : `<p class="new-price">₪${(product[3]).toFixed(2)}</p>`}
+                        </div>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        } 
+        
+        // Go to the cart page
+        document.getElementById("go-to-cart").addEventListener('click', function() {
+            window.location.href = '/new_cart';  // Redirect to /cart
+        });
+
+
+    </script>
+
+
+{% endblock %}

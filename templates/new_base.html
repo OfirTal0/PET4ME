@@ -1,0 +1,94 @@
+
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet4me</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-top">
+            <div class="header-icons">
+                <a href="/new_cart" class="cart-icon"><i class="fas fa-shopping-cart"></i></a>
+                <span class="cart-badge">{{ len_product_in_cart }}</span>
+
+                <a href="https://wa.me/pet4me" class="whatsapp-icon" target="_blank" ><i class="fab fa-whatsapp"></i></a>
+            </div>
+            <p class="logo-title">מזון ואביזרים לכלבים וחתולים - רק בדרום ים המלח והערבה</p>
+
+            <a  class="logo" href="/">Pet4me</a>
+        </div>
+        <nav class="navbar">
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-links">
+                <li><a  href="/">ראשי</a></li>
+                <li><a href="/about">אודותינו</a></li>
+                <li><a href="/new_catalog">קטלוג</a></li>
+                <li><a href="/blog">בלוג</a></li>
+                <li><a href="/#contact">צור קשר</a></li>
+            </ul>
+        </nav>
+    </header>
+
+
+    <main class="content">
+
+        {% block index %}{% endblock %}
+        {% block new_catalog %}{% endblock %}
+        {% block article %}{% endblock %}
+        {% block about %}{% endblock %}
+        {% block blog %}{% endblock %}
+        {% block new_cart %}{% endblock %}
+        {% block show_product %}{% endblock %}
+        {% block login %}{% endblock %}
+        {% block admin %}{% endblock %}
+
+
+
+    </main>
+
+
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Pet4me</h3>
+                <p>החנות המובילה לציוד לחיות מחמד בערבה</p>
+            </div>
+            <div class="footer-section">
+                <h3>ניווט מהיר</h3>
+                <ul>
+                    <li><a href="/">ראשי</a></li>
+                    <li><a href="/about">אודות</a></li>
+                    <li><a href="/new_catalog">קטלוג</a></li>
+                    <li><a href="/blog">בלוג</a></li>
+                    <p><a style="color:white" href="/login" target="_blank">ניהול</a></p>
+
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>צור קשר</h3>
+                <p>ערבה, עין יהב</p>
+                <p>טלפון: 050-9936660</p>
+                <a href="mailto:pets4me2024@gmail.com" style="color:white">pets4me2024@gmail.com</a>
+
+            </div>
+        </div>
+    </footer>
+
+    <!-- Float WhatsApp -->
+    <a href="https://wa.me/pet4me" class="float-whatsapp" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+</body>
+</html>

@@ -105,6 +105,8 @@ def inject_cart_length():
 def download_db():
     return send_file('petforme.db', as_attachment=True)
 
+
+
 import shutil
 
 @app.route('/download_static', methods=['GET'])
@@ -113,8 +115,9 @@ def download_static():
     shutil.make_archive('static_files', 'zip', 'static')
     return send_file('static_files.zip', as_attachment=True)
 
+
 @app.route('/', methods=['GET','POST'])
-def home():
+def index():
     if 'products_in_cart' not in session:
         session['products_in_cart'] = {}
     adopt = query(f"SELECT * FROM adopt ORDER BY id DESC LIMIT 1")
@@ -122,18 +125,22 @@ def home():
     products_on_sale = [product for product in products if product[10] == "כן"]
     first_product_on_sale = products_on_sale[0] if products_on_sale else None
     popular_products = [product for product in products if product[8] == "כן"]
+    product_of_month = query("SELECT * FROM products WHERE monthly_sale = 'כן' LIMIT 1")
+    articles = query(f"SELECT * FROM blog")
 
-    return render_template('home.html', popular_products=popular_products, adopt=adopt, first_product_on_sale=first_product_on_sale)
+    return render_template('index.html', articles =articles, popular_products=popular_products, adopt=adopt, first_product_on_sale=first_product_on_sale,product_of_month=product_of_month[0] if product_of_month else None)
+
 
 @app.route('/about')
 def about():  
     return render_template('about.html')
 
-@app.route('/catalog', methods=['GET'])
-def catalog():
+@app.route('/new_catalog')
+def new_catalog(): 
     # Get selected animals and categories from the request
     animal_types = request.args.getlist('animal[]')  # Get a list of selected animal types
     categories = request.args.getlist('category[]')  # Get a list of selected categories
+    sort_option = request.args.get('sort')  # Get the selected sorting option
 
     # Check if we have selected animals to display in the title
     animal_selected = None
@@ -146,7 +153,7 @@ def catalog():
 
     # If animal types were selected, add them to the query
     if animal_types:
-        placeholders = ', '.join(['?'] * len(animal_types))  # Create placeholders for SQL
+        placeholders = ', '.join(['?'] * len(animal_types))
         query_string += f" AND animal IN ({placeholders})"
         params.extend(animal_types)
 
@@ -154,13 +161,23 @@ def catalog():
     if categories:
         placeholders = ', '.join(['?'] * len(categories))
         query_string += f" AND category IN ({placeholders})"
-        params.extend(categories)
+        params.extend(categories)   
 
-    # Execute the query with the selected parameters
-    products = query(query_string, params)
-    product_in_cart = products_in_cart ()[0]
-    total_price = products_in_cart ()[1]
-    return render_template('catalog.html', products=products, animal_selected=animal_selected,product_in_cart=product_in_cart,total_price=total_price)
+    # Add sorting
+    if sort_option == "name_asc":
+        products = query(query_string, params)
+        products = sorted(products, key=lambda x: x[1])  # מניחים שהשם נמצא בעמודה 1
+    elif sort_option == "price_asc":
+        query_string += " ORDER BY price ASC"  # מיון ב-SQL
+        products = query(query_string, params)
+    else:
+        products = query(query_string, params)
+
+    product_in_cart = products_in_cart()[0]
+    total_price = products_in_cart()[1]
+    return render_template('new_catalog.html', products=products, animal_selected=animal_selected, product_in_cart=product_in_cart, total_price=total_price)
+
+
 
 @app.route('/show_product', methods=['POST', 'GET'])
 def show_product():
@@ -182,9 +199,9 @@ def search():
     if text:
         sql = f"SELECT * FROM products WHERE category LIKE '%{text}%' OR product_name LIKE '%{text}%' OR animal LIKE '%{text}%' OR description LIKE '%{text}%'"
         products = query(sql)
-        return render_template('catalog.html', products=products)
+        return render_template('new_catalog.html', products=products)
     else:
-        return redirect('/catalog')
+        return redirect('/new_catalog')
 
 @app.route('/contact', methods=['GET','POST'])
 def contact():
@@ -207,6 +224,14 @@ def cart():
     total_price = products_in_cart ()[1]
     return render_template('cart.html', products=product_details_in_cart, total_price=total_price)
 
+
+@app.route('/new_cart', methods=['GET', 'POST'])
+def new_cart():
+    product_details_in_cart = products_in_cart ()[0]
+    total_price = products_in_cart ()[1]
+    return render_template('new_cart.html', products=product_details_in_cart, total_price=total_price)
+
+
 @app.route('/remove_cart', methods=['POST'])
 def remove_cart():
     products_in_cart = session.get('products_in_cart', {})  # Retrieve the dictionary from the session
@@ -216,18 +241,28 @@ def remove_cart():
         del products_in_cart[product_to_remove]  # Remove the product from the dictionary
 
     session['products_in_cart'] = products_in_cart  # Update the session with the modified cart
-    return redirect('/cart')
+    return redirect('/new_cart')
 
 @app.route('/update_cart', methods=['POST'])
 def update_cart():
     product_id = request.form.get('product_id')
-    new_quantity = int(request.form.get('quantity'))
-    products_in_cart = session.get('products_in_cart', {})
-    if product_id in products_in_cart:
-        products_in_cart[product_id] = new_quantity  # Update quantity for the product
+    action = request.form.get('action')  # Check if the action is increase or decrease
+    current_quantity = int(request.form.get('quantity'))
     
-    session['products_in_cart'] = products_in_cart
-    return redirect('/cart')
+    # Retrieve current cart from the session
+    products_in_cart = session.get('products_in_cart', {})
+    
+    if product_id in products_in_cart:
+        if action == "increase":
+            products_in_cart[product_id] = current_quantity + 1  # Increment quantity
+        elif action == "decrease" and current_quantity > 1:
+            products_in_cart[product_id] = current_quantity - 1  # Decrement quantity
+        else:
+            # Optional: Handle case where quantity is already at 1 and can't be decreased
+            flash("כמות מינימלית היא 1", "error")
+    
+    session['products_in_cart'] = products_in_cart  # Save updated cart back to session
+    return redirect('/new_cart')
 
 @app.route('/add_to_cart', methods=['POST'])
 def add_to_cart():
@@ -270,7 +305,7 @@ def submit_order():
 
         if not products_in_cart:
             flash("העגלה ריקה, לא ניתן לשלוח הזמנה", category="error")
-            return redirect('/cart')  # Redirect back to the cart page
+            return redirect('/new_cart')  # Redirect back to the cart page
 
         product_ids = list(products_in_cart.keys())
         quantities = list(products_in_cart.values())
@@ -314,12 +349,12 @@ def submit_order():
             מספר הזמנה: {order_num}.
             אנו נעבד את ההזמנה בקרוב ונתקשר. מוזמנים ליצור קשר לכל שאלה נוספת. 
         """, category="success")       
-        return redirect('/cart')  # Redirect to the cart page
+        return redirect('/new_cart')  # Redirect to the cart page
 
     except Exception as e:
         # In case of any error, log the error and show an error message
         flash(f"משהו השתבש, נסה שוב מאוחר יותר. {str(e)}", category="error")
-        return redirect('/cart')
+        return redirect('/new_cart')
     
 
 @app.route('/blog', methods=['GET', 'POST'])
@@ -349,10 +384,13 @@ def login():
 def admin():
     leads = query("SELECT * FROM leads")
     product_orders = query("SELECT * FROM products_order")
+    # Fetch products without sorting
     products = query("SELECT * FROM products")
+    # Sort products by name in Python (assuming product_name is in index 1)
+    products_sorted = sorted(products, key=lambda x: x[1])
     costumers = query("SELECT * FROM costumer_club")
     articles = query("SELECT * FROM blog")    
-    return render_template('admin.html', leads=leads, product_orders=product_orders, products=products, costumers=costumers,articles=articles)
+    return render_template('admin.html', leads=leads, product_orders=product_orders, products=products_sorted, costumers=costumers, articles=articles)
 
 @app.route('/update_lead_status', methods=['POST'])
 def update_lead_status():
@@ -516,24 +554,35 @@ def remove_article():
     article_id = request.form['article_id']
     query(f"DELETE FROM blog WHERE id = ?", (article_id))
     return redirect('/admin')
-
 @app.route('/customer-club-signup', methods=['POST'])
 def customer_club_signup():
-    data = json.loads(request.data)
-    name = data.get('name')
-    phone = data.get('phone')
-    email = data.get('email')
-    animal_type = data.get('animal_type')  # New field
+    # Extract form data
+    name = request.form.get('name')
+    phone = request.form.get('phone')
+    email = request.form.get('email')
+    animal_type = request.form.get('animal_type')  # New field
     date = datetime.now(israel_timezone).strftime('%Y-%m-%d %H:%M:%S')
-    confirmation = data.get('agree_updates')
-    try:
-        query(f"INSERT INTO costumer_club (name, phone, email, date, confirmation, animal) VALUES ('{name}', '{phone}', '{email}', '{date}', '{confirmation}', '{animal_type}')")
-        send_costumer_club_email(name, phone, email, date, confirmation, animal_type)
-        return jsonify(success=True)
-    except Exception as e:
-        print("Error:", e)  
-        return jsonify(success=False)
+    confirmation = request.form.get('agree_updates')  # "on" if checked
 
+    # Convert confirmation checkbox value to a boolean
+    confirmation_value = 1 if confirmation == "on" else 0
+
+    try:
+        # Use parameterized query to prevent SQL injection
+        query(
+            "INSERT INTO costumer_club (name, phone, email, date, confirmation, animal) VALUES (?, ?, ?, ?, ?, ?)",
+            (name, phone, email, date, confirmation_value, animal_type)
+        )
+
+        # Send a confirmation email (if implemented)
+        send_costumer_club_email(name, phone, email, date, confirmation_value, animal_type)
+
+        # Show a success alert
+        return "<script>alert('תודה שנרשמת למועדון הלקוחות!'); window.location.href='/';</script>"
+
+    except Exception as e:
+        print("Error:", e)  # Log the error for debugging
+        return "<script>alert('שגיאה בהרשמה, אנא נסה שנית.'); window.location.href='/';</script>"
 
 def create_table_products(table="products"):
     sql = f"CREATE TABLE IF NOT EXISTS {table} (class_id NT AUTO_INCREMENT PRIMARY KEY, product_name TEXT, category TEXT)"

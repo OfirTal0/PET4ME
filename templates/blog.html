@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "new_base.html" %}
 
 {% block blog %}
 <link rel="stylesheet" href="/static/css/blog.css">
@@ -16,4 +16,11 @@
         {% endfor %}
     </div>
 </div>
+
+<script>
+    
+    document.querySelector('.hamburger').addEventListener('click', () => {
+        document.querySelector('.nav-links').classList.toggle('active');
+    });
+</script>
 {% endblock %}

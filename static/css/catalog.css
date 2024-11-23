@@ -5,7 +5,7 @@
 }
 
 .sort {
-    margin-top: 30px;
+    margin-top: 20px;
     border: 1px solid #ddd;
     border-radius: 5px;
     overflow: hidden;
@@ -40,11 +40,11 @@
 .search-input {
     padding: 5px; /* Smaller search box */
     font-size: 0.9rem;
-    width: 15%; /* Full width */
+    width: 15vw /* Full width */
 }
 
 .search-button, .filter-button input[type="submit"] {
-    padding: 8px 15px; /* Uniform button size */
+    padding: 8px 15px; 
     background-color: #4caf50; /* Match styles */
     color: white;
     border: none;
@@ -59,7 +59,9 @@
 
 .searchclass {
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap:5vw;
 }
 
 
@@ -461,6 +463,22 @@
     margin-top: auto; /* Push buttons to the bottom of the card */
 }
 
+.sort-options {
+    margin: 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    font-size: 1rem;
+}
+
+.sort-options select {
+    padding: 5px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+}
 
 @media (max-width: 768px) {
     .toggle-filter-button {
@@ -474,15 +492,13 @@
     .searchclass {
         display: flex;
         flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        gap: 3vw;
+        gap:0px;
     }
 
     .search-input {
         padding: 5px; /* Smaller search box */
         font-size: 0.9rem;
-        width: 50%; /* Full width */
+        width: 40%; /* Full width */
     }
     
     
@@ -530,6 +546,8 @@
 
 .sort {
     height: fit-content;
+    margin-top: 0px;
+
 }
 
 .monthly-sale, .sale-label, .out-of-stock {

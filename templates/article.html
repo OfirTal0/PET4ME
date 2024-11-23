@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "new_base.html" %}
 
 {% block article %}
 <link rel="stylesheet" href="/static/css/article.css">
@@ -20,4 +20,10 @@
     </div>
 </div>
 
+<script>
+    
+    document.querySelector('.hamburger').addEventListener('click', () => {
+        document.querySelector('.nav-links').classList.toggle('active');
+    });
+</script>
 {% endblock %}
