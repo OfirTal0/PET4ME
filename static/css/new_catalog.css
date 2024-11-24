@@ -189,17 +189,6 @@
 }
 
 
-.monthly-sale, .sale-label {
-    position: relative;
-    bottom: 240px;
-    left: 25px;
-    background-color: red;
-    color: white;
-    padding: 5px;
-    font-size: 0.8rem;
-    border-radius: 3px; /* Square corners */
-}
-
 .old-price {
     text-decoration: line-through;
     color: grey;
@@ -212,8 +201,6 @@
     font-weight: bold;
 }
 
-
-.monthly-sale,
 .sale-label,
 .out-of-stock {
     position: absolute;
@@ -229,22 +216,11 @@
     text-align: center;
 }
 
-  .monthly-sale {
-    margin-top: 10px;
-    margin-right: 10px;
-  }
-  
-  .sale-label {
-    margin-top: 30px;
-    margin-right: 10px;
-  }
-  
-  .out-of-stock {
-    margin-top: 50px;
-    margin-right: 10px;
-  }
+.out-of-stock {
+    background-color: rgb(117, 116, 116);
+}
 
-  .cart-popup {
+.cart-popup {
     position: fixed;
     top: 0;
     left: 0;
@@ -425,8 +401,6 @@
         margin: 0 auto;
     }
 
-    
-    .monthly-sale,
     .sale-label,
     .out-of-stock {
         top: 5px;

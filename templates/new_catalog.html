@@ -90,7 +90,7 @@
                     {% if product[6] == 0 %}
                     <span class="out-of-stock">אזל מהמלאי</span>
                     {% elif product[11] == "כן" %}
-                    <span class="monthly-sale">מבצע!</span>
+                    <span class="sale-label">מבצע!</span>
                     <span class="old-price">₪{{ product[3] | round(2) }}</span>  
                     <span class="new-price">₪{{ (product[3] - (product[3] * product[12] / 100)) | round(2) }}</span>
                     {% else %}
