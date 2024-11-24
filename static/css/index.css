@@ -568,10 +568,153 @@ button:hover {
 }
 
 
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.popup-overlay.active {
+    display: flex;
+    opacity: 1;
+}
+
+.popup-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    max-width: 500px;
+    width: 90%;
+    position: relative;
+    transform: translateY(-20px);
+    transition: transform 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.popup-overlay.active .popup-content {
+    transform: translateY(0);
+}
+
+.popup-close {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #666;
+    transition: color 0.3s;
+}
+
+.popup-close:hover {
+    color: #333;
+}
+
+.popup-image {
+    width: 250px;
+    height: 250px;
+    object-fit: contain;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+}
+
+.popup-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.popup-description {
+    color: #666;
+    margin-bottom: 1rem;
+}
+
+.popup-sale {
+    background: #ff4444;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    display: inline-block;
+    margin-bottom: 1rem;
+}
+
+.popup-prices {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.popup-old-price {
+    color: #666;
+    text-decoration: line-through;
+}
+
+.popup-new-price {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #4CAF50;
+}
+
+.popup-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+.popup-add-cart {
+    flex: 1;
+    background: #4CAF50;
+    color: white;
+    padding: 0.8rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+    width: 200px;
+}
+
+.popup-add-cart:hover {
+    background: #45a049;
+}
+
+.popup-show-more {
+    flex: 1;
+    background: white;
+    color: #4CAF50;
+    padding: 0.8rem;
+    border: 1px solid #4CAF50;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+    width: 200px;
+
+}
+
+.popup-show-more:hover {
+    background: #f0f0f0;
+}
+
+
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .hamburger {
         display: flex;
+    }
+    .popup-buttons {
+        flex-direction: column;
     }
 
     
@@ -712,5 +855,12 @@ button:hover {
         text-align: center; /* Center text and icons */
     }
     
+    .popup-content {
+        padding: 1rem;
+    }
+
+    .popup-image {
+        height: 200px;
+    }
 
 }

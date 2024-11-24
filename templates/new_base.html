@@ -41,6 +41,31 @@
 
     <main class="content">
 
+        {% if product_of_month %}
+        <div class="popup-overlay">
+            <div class="popup-content">
+                <button class="popup-close">&times;</button>
+                <img src="/static/uploads/{{ product_of_month[5] }}" alt="Product of the Month" class="popup-image">
+                <h2 class="popup-title">{{ product_of_month[1] }}</h2>
+                <p class="popup-description">משקל שק: {{ product_of_month[7] }}</p>
+                <span class="popup-sale">מבצע החודש!</span>
+                <div class="popup-prices">
+                    <span class="popup-old-price">₪{{ product_of_month[3] | round(2) }}</span>
+                    <span class="popup-new-price">₪{{ (product_of_month[3] - (product_of_month[3] * product_of_month[12] / 100)) | round(2) }}</span>
+                </div>
+                <div class="popup-buttons">
+                    <form action="/add_to_cart" method="POST" >
+                        <input type="hidden" name="product_id" value="{{ product_of_month[0] }}">
+                        <input type="submit" class="popup-add-cart" value="הוסף לעגלה">
+                    </form>
+                    <form action="/show_product" method="POST">
+                        <input type="hidden" name="product_id" value="{{ product_of_month[0] }}">
+                        <input type="submit" class="popup-show-more" value="ראה עוד">
+                    </form>
+                </div>
+            </div>
+        </div>
+    {%endif %}
         {% block index %}{% endblock %}
         {% block new_catalog %}{% endblock %}
         {% block article %}{% endblock %}
@@ -90,5 +115,72 @@
         <i class="fab fa-whatsapp"></i>
     </a>
 
+    <script>
+        function showPopup() {
+            // Check if the popup has been closed in the current session
+            if (!sessionStorage.getItem('popupClosed')) {
+                const popup = document.querySelector('.popup-overlay');
+                setTimeout(() => {
+                    popup.classList.add('active');
+                }, 1000);
+            }
+        }
+    
+        // Close the popup and set session storage
+        document.querySelector('.popup-close').addEventListener('click', () => {
+            const popup = document.querySelector('.popup-overlay');
+            popup.classList.remove('active');
+            sessionStorage.setItem('popupClosed', 'true');
+        });
+    
+        // Add to cart functionality
+        document.querySelector('.popup-add-cart').addEventListener('click', (event) => {
+            event.preventDefault(); // Prevent default action
+        
+            alert('המוצר נוסף לסל הקניות!');
+            document.querySelector('.popup-overlay').classList.remove('active');
+            sessionStorage.setItem('popupClosed', 'true');
+        
+            // Reference the button that triggered the event
+            const button = event.target;
+        
+            // Find the closest form element (if applicable)
+            const form = button.closest('form');
+            if (!form) {
+                console.error('No form found for the button.');
+                return;
+            }
+        
+            // Create FormData from the form
+            const formData = new FormData(form);
+        
+            // Submit the form data via AJAX
+            fetch(form.action, {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        openCartPopup(); // Show the cart popup
+                        updateCartPopup(data.cart_products); // Update the cart popup with new products
+                    } else {
+                        console.error('Failed to add product to cart:', data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+
+    
+        // Redirect to catalog
+        document.querySelector('.popup-show-more').addEventListener('click', () => {
+            window.location.href = 'catalog.html';
+        });
+    
+        // Show popup when the page loads
+        window.addEventListener('load', showPopup);
+    </script>
 </body>
 </html>

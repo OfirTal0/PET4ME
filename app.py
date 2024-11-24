@@ -132,8 +132,10 @@ def index():
 
 
 @app.route('/about')
-def about():  
-    return render_template('about.html')
+def about(): 
+    product_of_month = query("SELECT * FROM products WHERE monthly_sale = 'כן' LIMIT 1")
+
+    return render_template('about.html', product_of_month=product_of_month[0] if product_of_month else None )
 
 @app.route('/new_catalog')
 def new_catalog(): 
@@ -141,6 +143,7 @@ def new_catalog():
     animal_types = request.args.getlist('animal[]')  # Get a list of selected animal types
     categories = request.args.getlist('category[]')  # Get a list of selected categories
     sort_option = request.args.get('sort')  # Get the selected sorting option
+    product_of_month = query("SELECT * FROM products WHERE monthly_sale = 'כן' LIMIT 1")
 
     # Check if we have selected animals to display in the title
     animal_selected = None
@@ -175,7 +178,7 @@ def new_catalog():
 
     product_in_cart = products_in_cart()[0]
     total_price = products_in_cart()[1]
-    return render_template('new_catalog.html', products=products, animal_selected=animal_selected, product_in_cart=product_in_cart, total_price=total_price)
+    return render_template('new_catalog.html', product_of_month=product_of_month[0] if product_of_month else None,products=products, animal_selected=animal_selected, product_in_cart=product_in_cart, total_price=total_price)
 
 
 
@@ -186,11 +189,12 @@ def show_product():
 
     product_in_cart = products_in_cart ()[0]
     total_price = products_in_cart ()[1]
+    product_of_month = query("SELECT * FROM products WHERE monthly_sale = 'כן' LIMIT 1")
 
     if product:
-        return render_template('show_product.html', product=product[0],product_in_cart=product_in_cart,total_price=total_price)  # Pass the first item in the list
+        return render_template('show_product.html',product_of_month=product_of_month[0] if product_of_month else None, product=product[0],product_in_cart=product_in_cart,total_price=total_price)  # Pass the first item in the list
     else:
-        return render_template('show_product.html', error="Product not found")
+        return render_template('show_product.html', product_of_month=product_of_month[0] if product_of_month else None,error="Product not found")
 
 
 @app.route('/search', methods=['GET', 'POST'])
@@ -218,18 +222,13 @@ def contact():
     return redirect('/')
 
 
-@app.route('/cart', methods=['GET', 'POST'])
-def cart():
-    product_details_in_cart = products_in_cart ()[0]
-    total_price = products_in_cart ()[1]
-    return render_template('cart.html', products=product_details_in_cart, total_price=total_price)
-
 
 @app.route('/new_cart', methods=['GET', 'POST'])
 def new_cart():
+    product_of_month = query("SELECT * FROM products WHERE monthly_sale = 'כן' LIMIT 1")
     product_details_in_cart = products_in_cart ()[0]
     total_price = products_in_cart ()[1]
-    return render_template('new_cart.html', products=product_details_in_cart, total_price=total_price)
+    return render_template('new_cart.html',product_of_month=product_of_month[0] if product_of_month else None, products=product_details_in_cart, total_price=total_price)
 
 
 @app.route('/remove_cart', methods=['POST'])
@@ -359,14 +358,16 @@ def submit_order():
 
 @app.route('/blog', methods=['GET', 'POST'])
 def blog():
+    product_of_month = query("SELECT * FROM products WHERE monthly_sale = 'כן' LIMIT 1")
     articles = query(f"SELECT * FROM blog")
-    return render_template('blog.html', articles= articles)
+    return render_template('blog.html', product_of_month=product_of_month[0] if product_of_month else None,articles= articles)
 
 @app.route('/article/<int:id>', methods=['GET'])
 def article(id):
+    product_of_month = query("SELECT * FROM products WHERE monthly_sale = 'כן' LIMIT 1")
     # You should query for the article by the given id and pass the data to the template
     article = query(f"SELECT * FROM blog WHERE id = {id}")
-    return render_template('article.html', article= article[0])
+    return render_template('article.html', product_of_month=product_of_month[0] if product_of_month else None,article= article[0])
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
