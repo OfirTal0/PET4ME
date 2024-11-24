@@ -182,6 +182,8 @@
     
         // Redirect to catalog
         document.querySelector('.popup-show-more').addEventListener('click', () => {
+            document.querySelector('.popup-overlay').classList.remove('active');
+            sessionStorage.setItem('popupClosed', 'true');
             window.location.href = 'catalog.html';
         });
     
