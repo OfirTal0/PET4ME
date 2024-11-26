@@ -87,13 +87,14 @@
             <h3>{{ product[1] }}</h3>
             <div class="product-details">
                 <p class="price">
-                    {% if product[6] == 0 %}
-                    <span class="out-of-stock">אזל מהמלאי</span>
-                    {% elif product[11] == "כן" %}
+                    {% if product[11] == "כן" %}
                     <span class="sale-label">מבצע!</span>
                     <span class="old-price">₪{{ product[3] | round(2) }}</span>  
                     <span class="new-price">₪{{ (product[3] - (product[3] * product[12] / 100)) | round(2) }}</span>
                     {% else %}
+                        {% if product[6] == 0 %}
+                        <span class="out-of-stock">אזל מהמלאי</span>
+                        {% endif %}
                     ₪{{ product[3] | round(2) }}
                     {% endif %}
                 </p>
@@ -101,12 +102,14 @@
             </div>
             <div class="product-buttons">
 
-                {% if not product[6] == 0 %}
-                <form action="/add_to_cart" method="POST" >
+                <form action="/add_to_cart" method="POST">
                     <input type="hidden" name="product_id" value="{{ product[0] }}">
-                    <input type="submit" class="add-to-cart" value="הוסף לעגלה">
+                    <input type="submit" 
+                           class="add-to-cart" 
+                           value="הוסף לעגלה" 
+                           {% if product[6] == 0 %} disabled title="אזל מהמלאי" {% endif %}>
                 </form>
-                {% endif %}
+                
                 <form action="/show_product" method="POST">
                     <input type="hidden" name="product_id" value="{{ product[0] }}">
                     <input type="submit" class="show-more" value="ראה עוד">

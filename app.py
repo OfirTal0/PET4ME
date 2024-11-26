@@ -106,6 +106,10 @@ def download_db():
     return send_file('petforme.db', as_attachment=True)
 
 
+@app.route('/api/cart_length', methods=['GET'])
+def get_cart_length():
+    len_product_in_cart = len(session['products_in_cart']) if 'products_in_cart' in session else 0
+    return {'len_product_in_cart': len_product_in_cart}
 
 import shutil
 

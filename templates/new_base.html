@@ -24,7 +24,7 @@
 
                 <a href="https://wa.me/pet4me" class="whatsapp-icon" target="_blank" ><i class="fab fa-whatsapp"></i></a>
             </div>
-            <p class="logo-title">מזון ואביזרים לכלבים וחתולים - רק בדרום ים המלח והערבה</p>
+            <p class="logo-title">מזון ואביזרים לכלבים וחתולים - רק בדרום ים המלח והערבה התיכונה</p>
 
             <a  class="logo" href="/">Pet4me</a>
         </div>
@@ -93,7 +93,7 @@
         <div class="footer-content">
             <div class="footer-section">
                 <h3>Pet4me</h3>
-                <p>החנות המובילה לציוד לחיות מחמד בערבה</p>
+                <p>החנות המובילה למזון ציוד לחיות מחמד בערבה</p>
             </div>
             <div class="footer-section">
                 <h3>ניווט מהיר</h3>
@@ -189,6 +189,49 @@
     
         // Show popup when the page loads
         window.addEventListener('load', showPopup);
+
+        function updateCartLength() {
+            fetch('/api/cart_length')
+                .then(response => response.json())
+                .then(data => {
+                    const cartBadge = document.querySelector('.cart-badge');
+                    if (cartBadge) {
+                        cartBadge.textContent = data.len_product_in_cart;
+                    }
+                })
+                .catch(error => console.error('Error updating cart length:', error));
+        }
+    
+        // Call the function every 5 seconds (adjust as needed)
+        setInterval(updateCartLength, 2000);
+
+        document.querySelector('.popup-add-cart').addEventListener('click', (event) => {
+            event.preventDefault(); // Prevent the default action
+        
+            const button = event.target;
+            const form = button.closest('form');
+            if (!form) {
+                console.error('No form found for the button.');
+                return;
+            }
+        
+            const formData = new FormData(form);
+        
+            fetch(form.action, {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('המוצר נוסף לסל הקניות!');
+                        updateCartLength(); // Update cart length dynamically
+                    } else {
+                        console.error('Failed to add product to cart:', data.message);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        });
     </script>
 </body>
 </html>

@@ -216,6 +216,13 @@
     text-align: center;
 }
 
+.add-to-cart[disabled], .add-to-cart.disabled-button {
+    background-color: #ccc; /* צבע אפור */
+    color: #777; /* צבע טקסט כהה */
+    cursor: not-allowed;
+    border: 1px solid #aaa;
+}
+
 .out-of-stock {
     background-color: rgb(117, 116, 116);
 }
