@@ -1,0 +1,485 @@
+{% extends "new_base.html" %}
+
+{% block admin_new %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin_new.css') }}">
+
+<div class="admin-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="logo">Pet4me ניהול</div>
+        <nav class="admin-nav">
+            <button class="nav-button active" data-section="leads">לידים</button>
+            <button class="nav-button" data-section="orders">הזמנות</button>
+            <button class="nav-button" data-section="club">מועדון לקוחות</button>
+            <button class="nav-button" data-section="stock">מלאי</button>
+            <button class="nav-button" data-section="adopt">אימוץ</button>
+            <button class="nav-button" data-section="blog">בלוג</button>
+            <button class="nav-button download-data" onclick="window.location.href='/download-data'">הורד נתונים (Excel)</button>
+
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Leads Section -->
+        <section id="leads" class="section active">
+            <h2>ניהול לידים</h2>
+            <form id="leads-form" action="/update_lead_status_new" method="POST">
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>שם</th>
+                                <th>טלפון</th>
+                                <th>הערות</th>
+                                <th>תאריך</th>
+                                <th>סטטוס</th>
+                                <th>שנה סטטוס</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for lead in leads %}
+                            <tr>
+                                <td>{{ lead[0] }}</td>
+                                <td>{{ lead[1] }}</td>
+                                <td>{{ lead[2] }}</td>
+                                <td>{{ lead[5] }}</td>
+                                <td>{{ lead[3] }}</td>
+                                <td>{{ lead[4] }}</td>
+                                <td>
+                                    <select name="status_{{ lead[0] }}" class="status-select">
+                                        <option value="new" {% if lead[4] == 'new' %} selected {% endif %}>חדש</option>
+                                        <option value="contacted" {% if lead[4] == 'contacted' %} selected {% endif %}>נוצר קשר</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <button type="submit" class="submit-button">עדכן שינויים</button>
+            </form>
+        </section>
+
+        <!-- Orders Section -->
+        <section id="orders" class="section">
+            <h2>ניהול הזמנות</h2>
+            <form id="orders-form" action="/update_order_status_new" method="POST">
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>מספר הזמנה</th>
+                                <th>תאריך</th>
+                                <th>שם</th>
+                                <th>טלפון</th>
+                                <th>הזמנות</th>
+                                <th>כתובת</th>
+                                <th>סטטוס</th>
+                                <th>שנה סטטוס</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for order in product_orders %}
+                            <tr>
+                                <td>{{ order[0] }}</td>
+                                <td>{{ order[7] }}</td>
+                                <td>{{ order[1] }}</td>
+                                <td>{{ order[2] }}</td>
+                                <td>{{ order[3] }}</td>
+                                <td>{{ order[4] }}</td>
+                                <td>{{ order[6] }}</td>
+                                <td>{{ order[5] }}</td>
+                                <td>
+                                    <select name="status_{{ order[0] }}" class="status-select">
+                                        <option value="pending" {% if order[5] == 'pending' %} selected {% endif %}>ממתין</option>
+                                        <option value="shipped" {% if order[5] == 'shipped' %} selected {% endif %}>נשלח</option>
+                                        <option value="delivered" {% if order[5] == 'delivered' %} selected {% endif %}>נמסר</option>
+                                        <option value="cancelled" {% if order[5] == 'cancelled' %} selected {% endif %}>בוטל</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <button type="submit" class="submit-button">עדכן שינויים</button>
+            </form>
+        </section>
+
+        <!-- Club Section -->
+        <section id="club" class="section">
+            <h2>ניהול מועדון לקוחות</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>שם</th>
+                            <th>טלפון</th>
+                            <th>אימייל</th>
+                            <th>תאריך</th>
+                            <th>סוג החיה ברשותו</th>
+                            <th>אישור התראות</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for costumer in costumers %}
+                    <td>{{ costumer[0] }}</td>
+                    <td>{{ costumer[1] }}</td>
+                    <td>{{ costumer[2] }}</td>
+                    <td>{{ costumer[3] }}</td>
+                    <td>{{ costumer[4] }}</td>
+                    <td>{{ costumer[6] }}</td>
+                    <td>{{ costumer[5] }}</td>
+                </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Stock Section -->
+        <section id="stock" class="section">
+            <h2>ניהול מלאי</h2>
+            <form id="stock-form" action="/update_stock_new" method="POST" enctype="multipart/form-data">
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>שם המוצר</th>
+                                <th>קטגוריה</th>
+                                <th>מחיר</th>
+                                <th>תיאור</th>
+                                <th>רכיבים</th>
+                                <th>פופולרי</th>
+                                <th>סוג חיה</th>
+                                <th>כמות במלאי</th>
+                                <th>משקל</th>
+                                <th>מבצע חודשי?</th>
+                                <th>מבצע</th>
+                                <th>%הנחה</th>
+                                <th>תמונה</th>
+                                <th>הסר מוצר</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for product in products %}
+                            <tr>
+                                <!-- Update Fields -->
+                                <input type="hidden" name="product_id_{{ product[0] }}" value="{{ product[0] }}">
+                                <td><input type="text" name="name_{{ product[0] }}" value="{{ product[1] }}" style="width: 200px;" required></td>
+                                <td>
+                                    <select name="category_{{ product[0] }}" required style="width: 100px;">
+                                        <option value="מזון" {% if product[2] == 'מזון' %} selected {% endif %}>מזון</option>
+                                        <option value="אביזרים" {% if product[2] == 'אביזרים' %} selected {% endif %}>אביזרים</option>
+                                    </select>
+                                </td>
+                                <td><input type="text" name="price_{{ product[0] }}" value="{{ '%.2f' % product[3] }}" style="width: 100px;" required></td>
+                                <td><input type="text" name="description_{{ product[0] }}" value="{{ product[4] }}" required style="width: 400px;"></td>
+                                <td><input type="text" name="components_{{ product[0] }}" value="{{ product[13] }}" required style="width: 400px;"></td>
+                                <td>
+                                    <select name="popular_{{ product[0] }}" required style="width: 100px;">
+                                        <option value="כן" {% if product[8] == 'כן' %} selected {% endif %}>כן</option>
+                                        <option value="לא" {% if product[8] == 'לא' %} selected {% endif %}>לא</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select name="animal_{{ product[0] }}" required style="width: 100px;">
+                                        <option value="כלב" {% if product[9] == 'כלב' %} selected {% endif %}>כלב</option>
+                                        <option value="חתול" {% if product[9] == 'חתול' %} selected {% endif %}>חתול</option>
+                                        <option value="כנף" {% if product[9] == 'כנף' %} selected {% endif %}>בעלי כנף</option>
+                                    </select>
+                                </td>
+                                <td><input type="number" name="stock_{{ product[0] }}" value="{{ product[6] }}" required style="width: 100px;"></td>
+                                <td><input type="text" name="weight_{{ product[0] }}" value="{{ product[7] }}" style="width: 100px;"></td>
+                                <td>
+                                    <select name="monthly_sale_{{ product[0] }}" required style="width: 100px;">
+                                        <option value="כן" {% if product[10] == 'כן' %} selected {% endif %}>כן</option>
+                                        <option value="לא" {% if product[10] == 'לא' %} selected {% endif %}>לא</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select name="sale_{{ product[0] }}" required style="width: 100px;">
+                                        <option value="כן" {% if product[11] == 'כן' %} selected {% endif %}>כן</option>
+                                        <option value="לא" {% if product[11] == 'לא' %} selected {% endif %}>לא</option>
+                                    </select>
+                                </td>
+                                <td><input type="number" name="discount_{{ product[0] }}" value="{{ product[12] }}" style="width: 100px;" required></td>
+                                <td>
+                                    <input type="file" name="image" accept="image/*" style="width: 300px;">
+                                </td>
+            
+                                <!-- Remove Product Form -->
+                                <td>
+                                    <button type="button" class="action-btn delete" data-id="{{ product[0] }}">הסר</button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Update All Button -->
+                <button type="submit" class="submit-button">עדכן שינויים</button>
+            </form>
+
+            <!-- Add New Product Form -->
+            <div class="add-product-form">
+                <h3>הוסף מוצר חדש</h3>
+                <form action="/add_product_new" method="POST" enctype="multipart/form-data" id="newProductForm">
+                    <div class="form-group">
+                        <label for="productName">שם המוצר</label>
+                        <input type="text" name="name" id="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="animalType">סוג חיה</label>
+                        <select name="animal" id="animal" required>
+                            <option value="dog">כלב</option>
+                            <option value="cat">חתול</option>
+                            <option value="bird">בעלי כנף</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="shortDesc">תיאור כללי</label>
+                        <textarea name="description" id="description" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="fullDesc">רכיבים</label>
+                        <textarea name="components" id="components" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="category">קטגוריה</label>
+                        <select  name="category" id="category"  required>
+                            <option value="food">מזון</option>
+                            <option value="toys">אביזרים</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="price">מחיר</label>
+                        <input type="float" name="price" id="price" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="popular">האם מוצר פופלארי? יש לסמן רק 6 אופציות כפופלאריות</label>
+                        <select  name="popular" id="popular" required>
+                            <option value="כן">כן</option>
+                            <option value="לא">לא</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="stock">כמות במלאי</label>
+                        <input type="number" name="stock" id="stock" required>
+                    </div>
+                    <div class="form-group">
+                        <label  for="weight">משקל: נא להוסיף כולל יחידת מידה (ק"ג / גרם / ליטר)</label>
+                        <input type="text" name="weight" id="weight" placeholder="None">
+                    </div>
+
+                    <div class="form-group">
+                        <label  for="image">Image URL:</label>
+                        <input type="file" name="image" accept="image/*">
+                    </div>
+                    <button type="submit" class="submit-btn">הוסף מוצר</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Adopt Section -->
+        <section id="adopt" class="section">
+            <h2>ניהול אימוץ</h2>
+            <form action="/add_adopt" method="POST" enctype="multipart/form-data" class="adopt-form">
+                <div class="form-group">
+                    <label for="petName">שם החיה</label>
+                    <input type="text" name="name" id="name" required >
+                </div>
+                <div class="form-group">
+                    <label for="petType">סוג חיה:</label>
+                    <select name="type" id="type" required >
+                        <option value="כלב">כלב</option>
+                        <option value="חתול">חתול</option>
+                        <option value="כנף">בעלי כנף</option>
+                      </select>
+                    </div>
+                <div class="form-group">
+                    <label for="petAge">גיל</label>
+                    <input type="number" name="age" id="age" step="0.1" required min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="petDesc">תיאור</label>
+                    <textarea name="description" id="description" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="petImage">תמונה</label>
+                    <input type="file" name="image" accept="image/*" required>
+                </div>
+                <button type="submit" class="submit-btn">פרסם</button>
+            </form>
+        </section>
+
+        <!-- Blog Section -->
+        <section id="blog" class="section">
+            <h2>ניהול בלוג</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>שם מאמר</th>
+                            <th>תקציר</th>
+                            <th>טקסט</th>
+                            <th>עדכון</th>
+                            <th>הסרה</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for article in articles %}
+                    <tr>
+                        <form action="/update_article" method="POST">
+                            <input type="hidden" name="article_id" value="{{ article[0] }}" style="width:400px">
+                            <td><input type="text" name="name" value="{{ article[1] }}" style="width:400px" required></td>
+                            <td><input type="text" name="summary" value="{{ article[2] }}" style="width:400px" required></td>
+                            <td><input type="text" name="text" value="{{ article[4]}}" style="width:400px" required></td>
+                            <td><button type="submit">עדכן</button></td>
+                        </form>
+                        <!-- Remove Button -->
+                        <form action="/remove_article" method="POST">
+                            <input type="hidden" name="article_id" value="{{ article[0] }}">
+                            <td><button type="submit" class="remove-btn">הסר</button></td>
+                        </form>
+                    </tr>
+                {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Add New Article Form -->
+            <div class="add-article-form">
+                <h3>הוסף מאמר חדש</h3>
+                <form  form action="/add_article" method="POST" enctype="multipart/form-data" id="newArticleForm">
+                    <div class="form-group">
+                        <label for="articleTitle">כותרת</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="articleContent">תקציר</label>
+                        <textarea id="summary" name="summary" required></textarea>
+                    </div>
+                    <div class="form-group">
+
+                        <label for="text">טקסט:</label>
+                        <p>בין פסקה לפסקה יש להוסיף " / "</p>
+                        <textarea id="text" name="text" required></textarea><br><br>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="image">תמונה:</label>
+                        <input type="file" name="image" accept="image/*">        
+                    </div>
+                    <button type="submit" class="submit-btn">פרסם מאמר</button>
+                </form>
+            </div>
+        </section>
+    </main>
+</div>
+
+
+<script>
+    
+    // Navigation
+    const navButtons = document.querySelectorAll('.nav-button');
+    const sections = document.querySelectorAll('.section');
+
+    navButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            if (button.classList.contains('download-data')) {
+                // Handle download data
+                alert('מוריד נתונים...');
+                return;
+            }
+
+            // Remove active class from all buttons and sections
+            navButtons.forEach(btn => btn.classList.remove('active'));
+            sections.forEach(section => section.classList.remove('active'));
+
+            // Add active class to clicked button and corresponding section
+            button.classList.add('active');
+            const sectionId = button.dataset.section;
+            document.getElementById(sectionId).classList.add('active');
+        });
+    });
+
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const deleteButtons = document.querySelectorAll('.delete');
+
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', (event) => {
+                const productId = button.getAttribute('data-id');
+                if (confirm('האם אתה בטוח שברצונך למחוק?')) {
+                    fetch('/remove_product', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: new URLSearchParams({
+                            product_id: productId
+                        })
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            alert('המוצר נמחק בהצלחה');
+                            button.closest('tr').remove(); // Remove the row from the table
+                        } else {
+                            alert('שגיאה במחיקת המוצר');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('שגיאה במחיקת המוצר');
+                    });
+                }
+            });
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const statusSelects = document.querySelectorAll(".status-select");
+        
+        statusSelects.forEach(select => {
+            select.addEventListener("change", () => {
+                const row = select.closest("tr");
+                row.classList.add("modified");
+            });
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const statusSelects = document.querySelectorAll(".status-select");
+    
+        statusSelects.forEach(select => {
+            select.addEventListener("change", () => {
+                const row = select.closest("tr");
+                row.classList.add("modified");
+            });
+        });
+    });
+
+    
+
+    document.addEventListener("DOMContentLoaded", () => {
+        // Select all input and select elements in the stock table
+        const stockInputs = document.querySelectorAll("#stock-form input, #stock-form select");
+    
+        stockInputs.forEach(input => {
+            // Add an event listener for the change event
+            input.addEventListener("change", () => {
+                const row = input.closest("tr"); // Find the closest row
+                row.classList.add("modified"); // Add the modified class to the row
+            });
+        });
+    });
+
+
+</script>
+{% endblock %}
