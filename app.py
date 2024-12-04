@@ -356,7 +356,7 @@ def submit_order():
         מוצרים: {products_in_cart_str}
         מספר הזמנה: {order_num}
         """
-        whatsapp_url = f"https://wa.me/pet4me?text={urllib.parse.quote(whatsapp_message)}"
+        whatsapp_url = f"https://wa.me/972509936660?text={urllib.parse.quote(whatsapp_message)}"
 
         # Flash success message and redirect
         # flash(f"""
