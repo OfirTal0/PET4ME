@@ -6,8 +6,9 @@
 <div class="admin-container">
     <!-- Sidebar -->
     <aside class="sidebar">
-        <div class="logo">Pet4me ניהול</div>
+        <div class="logoadmin">Pet4me ניהול</div>
         <nav class="admin-nav">
+            <button class="nav-button" data-section="message">הודעה</button>
             <button class="nav-button active" data-section="leads">לידים</button>
             <button class="nav-button" data-section="orders">הזמנות</button>
             <button class="nav-button" data-section="club">מועדון לקוחות</button>
@@ -303,7 +304,7 @@
                     </div>
                 <div class="form-group">
                     <label for="petAge">גיל</label>
-                    <input type="number" name="age" id="age" step="0.1" required min="0" required>
+                    <input type="float" name="age" id="age" step="0.1" required min="0" required>
                 </div>
                 <div class="form-group">
                     <label for="petDesc">תיאור</label>
@@ -380,6 +381,18 @@
                 </form>
             </div>
         </section>
+
+        <section id="message" class="section">
+            <h2>ניהול הודעה</h2>
+            <form action="/update_message" method="POST">
+                <div class="form-group">
+                    <label for="message">הודעה נוכחית:</label>
+                    <textarea id="message" name="message" placeholder="הוסף הודעה חדשה...">{{ message }}</textarea>
+                </div>
+                <button type="submit" class="submit-btn">עדכן הודעה</button>
+            </form>
+        </section>
+
     </main>
 </div>
 

@@ -13,6 +13,7 @@ from flask import send_from_directory
 from flask import send_file
 import uuid
 from zoneinfo import ZoneInfo 
+import urllib.parse
 
 israel_timezone = ZoneInfo("Asia/Jerusalem")
 
@@ -131,8 +132,9 @@ def index():
     popular_products = [product for product in products if product[8] == "כן"]
     product_of_month = query("SELECT * FROM products WHERE monthly_sale = 'כן' LIMIT 1")
     articles = query(f"SELECT * FROM blog")
+    message = query("SELECT message FROM messages WHERE id = 1")[0][0]
 
-    return render_template('index.html', articles =articles, popular_products=popular_products, adopt=adopt, first_product_on_sale=first_product_on_sale,product_of_month=product_of_month[0] if product_of_month else None)
+    return render_template('index.html', message=message,articles =articles, popular_products=popular_products, adopt=adopt, first_product_on_sale=first_product_on_sale,product_of_month=product_of_month[0] if product_of_month else None)
 
 
 @app.route('/about')
@@ -345,14 +347,24 @@ def submit_order():
 
         # Clear the cart after submission
         session.pop('products_in_cart', None)
+        whatsapp_message = f"""
+        שלום, אני רוצה להכניס הזמנה. להלן הפרטים:
+        שם: {name}
+        טלפון: {phone}
+        כתובת: {address}
+        הערות: {note or 'אין הערות'}
+        מוצרים: {products_in_cart_str}
+        מספר הזמנה: {order_num}
+        """
+        whatsapp_url = f"https://wa.me/pet4me?text={urllib.parse.quote(whatsapp_message)}"
 
         # Flash success message and redirect
-        flash(f"""
-            הזמנה התקבלה!
-            מספר הזמנה: {order_num}.
-            אנו נעבד את ההזמנה בקרוב ונתקשר. מוזמנים ליצור קשר לכל שאלה נוספת. 
-        """, category="success")       
-        return redirect('/new_cart')  # Redirect to the cart page
+        # flash(f"""
+        #     הזמנה התקבלה!
+        #     מספר הזמנה: {order_num}.
+        #     אנו נעבד את ההזמנה בקרוב ונתקשר. מוזמנים ליצור קשר לכל שאלה נוספת. 
+        # """, category="success")       
+        return redirect(whatsapp_url)
 
     except Exception as e:
         # In case of any error, log the error and show an error message
@@ -387,6 +399,7 @@ def login():
 
 @app.route('/admin_new', methods=['GET','POST'])
 def admin_new(): 
+    message = query("SELECT message FROM messages WHERE id = 1")[0][0]
     leads = query("SELECT * FROM leads")
     product_orders = query("SELECT * FROM products_order")
     # Fetch products without sorting
@@ -395,7 +408,7 @@ def admin_new():
     products_sorted = sorted(products, key=lambda x: x[1])
     costumers = query("SELECT * FROM costumer_club")
     articles = query("SELECT * FROM blog")    
-    return render_template('admin_new.html', leads=leads, product_orders=product_orders, products=products_sorted, costumers=costumers, articles=articles)
+    return render_template('admin_new.html', message=message,leads=leads, product_orders=product_orders, products=products_sorted, costumers=costumers, articles=articles)
 
 @app.route('/update_lead_status_new', methods=['POST'])
 def update_lead_status_new():
@@ -415,29 +428,6 @@ def update_lead_status_new():
 
     return redirect('/admin_new')
 
-# @app.route('/admin')
-# def admin():
-#     leads = query("SELECT * FROM leads")
-#     product_orders = query("SELECT * FROM products_order")
-#     # Fetch products without sorting
-#     products = query("SELECT * FROM products")
-#     # Sort products by name in Python (assuming product_name is in index 1)
-#     products_sorted = sorted(products, key=lambda x: x[1])
-#     costumers = query("SELECT * FROM costumer_club")
-#     articles = query("SELECT * FROM blog")    
-#     return render_template('admin.html', leads=leads, product_orders=product_orders, products=products_sorted, costumers=costumers, articles=articles)
-
-# @app.route('/update_lead_status', methods=['POST'])
-# def update_lead_status():
-#     lead_id = request.form.get('lead_id')  # Get the lead ID from the form
-#     status = request.form.get('status')    # Get the new status from the dropdown
-
-#     # Update the lead's status in the database
-#     query(f"UPDATE leads SET status = '{status}' WHERE id = '{lead_id}'")
-
-#     # Redirect back to the admin page
-#     return redirect('/admin')
-
 @app.route('/update_order_status_new', methods=['POST'])
 def update_order_status_new():
     data = request.form  # Get all form data
@@ -452,16 +442,6 @@ def update_order_status_new():
 
     return redirect('/admin_new')
 
-# @app.route('/update_order_status', methods=['POST'])
-# def update_order_status():
-#     order_id = request.form.get('order_id')  # Get the order ID from the form
-#     status = request.form.get('status')      # Get the new status from the dropdown
-
-#     # Update the order's status in the database
-#     query(f"UPDATE products_order SET status = ? WHERE id = ?", (status, order_id))
-
-#     # Redirect back to the admin page
-#     return redirect('/admin')
 
 @app.route('/update_stock_new', methods=['POST'])
 def update_stock_new():
@@ -504,50 +484,6 @@ def update_stock_new():
 
     return redirect('/admin_new')
 
-# @app.route('/update_stock', methods=['POST'])
-# def update_stock():
-#     # Get the form data
-#     product_id = request.form.get('product_id')
-#     name = request.form.get('name')
-#     category = request.form.get('category')
-#     float_price = float(request.form.get('price'))  
-#     price = round(float_price, 2)  # Round to two decimal places
-#     description = request.form.get('description')
-#     components = request.form.get('components')
-#     popular = request.form.get('popular')
-#     animal = request.form.get('animal')
-#     stock = int(request.form.get('stock')) 
-#     weight = request.form.get('weight')
-#     monthly_sale = request.form.get('monthly_sale')
-#     sale = request.form.get('sale')
-#     discount = request.form.get('discount')
-
-#     # Check if a new image was uploaded
-#     image = request.files.get('image')
-#     image_filename = None
-
-#     if image and allowed_file(image.filename):
-#         image_filename = generate_unique_filename(image.filename)
-#         image.save(os.path.join(app.config['UPLOAD_FOLDER'], image_filename))
-        
-#         query(f"""
-#         UPDATE products 
-#         SET product_name = ?, category = ?, price = ?, description = ?, image = ?, popular = ?, animal = ?, stock = ?, weight = ?, 
-#         monthly_sale = ?, sale = ?, discount = ?, components = ?
-#         WHERE id = ?
-#     """, (name, category, price, description, image_filename, popular, animal, stock, weight, monthly_sale, sale, discount,components, product_id))
-
-#     else:
-#         query(f"""
-#         UPDATE products 
-#         SET product_name = ?, category = ?, price = ?, description = ?, popular = ?, animal = ?, stock = ?, weight = ?, 
-#         monthly_sale = ?, sale = ?, discount = ?, components = ?
-#         WHERE id = ?
-#     """, (name, category, price, description, popular, animal, stock, weight, monthly_sale, sale, discount,components, product_id))
-
-#     return redirect('/admin')
-
-
 @app.route('/add_product_new', methods=['POST'])
 def add_product_new():
     name = request.form['name']
@@ -576,33 +512,6 @@ def add_product_new():
           (name, category, price, description, image_filename, stock, weight, popular, animal, monthly_sale, sale, discount, components))
     return redirect('/admin_new')
 
-# @app.route('/add_product', methods=['POST'])
-# def add_product():
-#     name = request.form['name']
-#     description = request.form['description']
-#     components = request.form['components']
-#     category = request.form['category']
-#     float_price = float(request.form.get('price'))  
-#     popular = request.form['popular']
-#     price = round(float_price, 2)
-#     stock = int(request.form['stock'])
-#     animal = request.form['animal']
-#     weight = request.form.get('weight')
-#     monthly_sale = 'לא'
-#     sale = 'לא'
-#     discount = 0
-
-#     image = request.files['image']
-#     image_filename = 'no-image.png'  # Default image filename
-
-#     if image and allowed_file(image.filename):
-#         image_filename = generate_unique_filename(image.filename)
-#         image.save(os.path.join(app.config['UPLOAD_FOLDER'], image_filename))
-
-#     # Insert into products table
-#     query(f"INSERT INTO products (product_name, category, price, description, image, stock, weight, popular, animal, monthly_sale, sale, discount, components) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-#           (name, category, price, description, image_filename, stock, weight, popular, animal, monthly_sale, sale, discount, components))
-#     return redirect('/admin')
 
 @app.route('/remove_product', methods=['POST'])
 def remove_product():
@@ -611,12 +520,6 @@ def remove_product():
         query("DELETE FROM products WHERE id = ?", (product_id,))
         return '', 200  # Respond with a 200 OK status
     return 'Invalid product ID', 400  # Respond with a 400 Bad Request if ID is missing
-
-# @app.route('/remove_product', methods=['POST'])
-# def remove_product():
-#     product_id = request.form.get('product_id')
-#     query(f"DELETE FROM products WHERE id = {product_id}")
-#     return redirect('/admin_new')
 
 @app.route('/add_adopt', methods=['POST'])
 def add_adopt():
@@ -683,6 +586,20 @@ def add_article():
 def remove_article():
     article_id = request.form['article_id']
     query("DELETE FROM blog WHERE id = ?", (article_id,))  # Add a trailing comma to make it a tuple
+    return redirect('/admin_new')
+
+@app.route('/update_message', methods=['POST'])
+def update_message():
+    # Get the message from the form
+    new_message = request.form.get('message')
+
+    # Update the message in the database
+    if new_message:
+        query("UPDATE messages SET message = ? WHERE id = 1", (new_message,))
+    else:
+        # If the message is empty, set it to NULL
+        query("UPDATE messages SET message = NULL WHERE id = 1")
+
     return redirect('/admin_new')
 
 @app.route('/customer-club-signup', methods=['POST'])

@@ -17,6 +17,17 @@
         זכייני מזון סקנדינבי בריא ואיכותי
     </p>
 </div>
+
+{% if message %}
+<div class="user-message">
+    {{ message }}
+    <button onclick="this.parentElement.style.display='none';" class="close-message">X</button>
+
+</div>
+{% endif %}
+
+
+
     <!-- Categories -->
     <section>
         <form action="/new_catalog" method="GET"  class="categories">

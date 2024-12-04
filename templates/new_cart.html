@@ -76,7 +76,7 @@
                             <span>המחיר כולל מע"מ</span>
                         </div>
                     </div>
-                    {% with messages = get_flashed_messages(with_categories=true) %}
+                    <!-- {% with messages = get_flashed_messages(with_categories=true) %}
                     {% if messages %}
                         <div class="flash-messages">
                             {% for category, message in messages %}
@@ -85,7 +85,7 @@
                                 </div>
                             {% endfor %}
                         </div>
-                    {%else%}
+                    {%else%} -->
 
                     <form action="/submit_order" method="POST" class="order-form">
                         <div class="form-group">
@@ -105,18 +105,18 @@
                             <label for="notes">הערות להזמנה</label>
                             <textarea type="text" name="note" id="note" rows="3"></textarea>
                         </div>
-                        <button type="submit" class="checkout-btn" onclick="return validatePhone()">שלח בקשת הזמנה</button>
+                        <button type="submit" class="checkout-btn"  target="_blank" onclick="return validatePhone()">שלח בקשת הזמנה בוואטספ</button>
 
                     </form>
-                    {% endif %}
-                    {% endwith %}
+                    <!-- {% endif %}
+                    {% endwith %} -->
                 </div>
             </section>
         </div>
     </main>
 
     <!-- Float WhatsApp -->
-    <a href="https://wa.me/1234567890" class="float-whatsapp">
+    <a href="https://wa.me/pet4me" class="float-whatsapp">
         <i class="fab fa-whatsapp"></i>
     </a>
 
@@ -138,6 +138,7 @@
             return true; // Allow form submission
         }
 
+        
 
     </script>
 {% endblock %}
