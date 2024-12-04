@@ -13,7 +13,7 @@
             {% elif 'חתול' in request.args.getlist('animal[]') %}
                 מוצרים לחתול
             {% elif 'כנף' in request.args.getlist('animal[]') %}
-                מוצרים לבעלי כנף
+                מוצרים לבעלי כנף ועוד
             {% endif %}
         {% else %}
             כל המוצרים
@@ -65,7 +65,7 @@
                 <div class="filter-options">
                     <label><input type="checkbox" name="animal[]" value="כלב"> כלב</label>
                     <label><input type="checkbox" name="animal[]" value="חתול"> חתול</label>
-                    <label><input type="checkbox" name="animal[]" value="כנף">בעלי כנף</label>
+                    <label><input type="checkbox" name="animal[]" value="כנף">בעלי כנף ועוד</label>
                 </div>
             </div>
 
