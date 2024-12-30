@@ -897,4 +897,10 @@ button:hover {
         height: 200px;
     }
 
+    .user-message {
+        display: flex;
+        flex-direction: column;
+    }
+    
+
 }
