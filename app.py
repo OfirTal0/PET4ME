@@ -15,8 +15,8 @@ import uuid
 from zoneinfo import ZoneInfo 
 import urllib.parse
 
-israel_timezone = ZoneInfo("Asia/Jerusalem")
 
+israel_timezone = ZoneInfo("Asia/Jerusalem")
 
 app = Flask(__name__, static_folder='static', template_folder='templates')
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
@@ -181,7 +181,8 @@ def new_catalog():
         products = query(query_string, params)
     else:
         products = query(query_string, params)
-
+        products = sorted(products, key=lambda x: x[1])  # מניחים שהשם נמצא בעמודה 1
+        
     product_in_cart = products_in_cart()[0]
     total_price = products_in_cart()[1]
     return render_template('new_catalog.html', product_of_month=product_of_month[0] if product_of_month else None,products=products, animal_selected=animal_selected, product_in_cart=product_in_cart, total_price=total_price)
