@@ -182,7 +182,7 @@ def new_catalog():
     else:
         products = query(query_string, params)
         products = sorted(products, key=lambda x: x[1])  # מניחים שהשם נמצא בעמודה 1
-        
+
     product_in_cart = products_in_cart()[0]
     total_price = products_in_cart()[1]
     return render_template('new_catalog.html', product_of_month=product_of_month[0] if product_of_month else None,products=products, animal_selected=animal_selected, product_in_cart=product_in_cart, total_price=total_price)
@@ -527,8 +527,12 @@ def add_adopt():
     name = request.form['name']
     description = request.form['description']
     type = request.form['type']
-    age = round(float(request.form['age']), 1)
-    
+    age = request.form['age']
+
+    # אם הגיל ריק, שים את הערך "לא ידוע"
+    if not age:
+        age = "לא ידוע"
+
     image = request.files['image']
     image_filename = 'none'  # Default image filename
 
