@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, session, flash, send_file, jsonify
 import sqlite3
 from werkzeug.utils import secure_filename
+
 from datetime import datetime,timedelta
 import smtplib
 from email.mime.text import MIMEText
@@ -20,11 +21,12 @@ israel_timezone = ZoneInfo("Asia/Jerusalem")
 
 app = Flask(__name__, static_folder='static', template_folder='templates')
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
-app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024  # Limit image size to 16 MB
+app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024  # 100 MB limit
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # Get the directory where app.py is located
 DATABASE_PATH = os.path.join(BASE_DIR, 'petforme.db')  # Make sure 'petforme.db' matches your SQLite database file name
+
 
 app.secret_key = os.getenv('SECRET_KEY','default_secret_key')
 
@@ -443,7 +445,6 @@ def update_order_status_new():
 
     return redirect('/admin_new')
 
-
 @app.route('/update_stock_new', methods=['POST'])
 def update_stock_new():
     data = request.form
@@ -454,7 +455,9 @@ def update_stock_new():
         if key.startswith("product_id_"):
             product_id = value
             prefix = f"_{product_id}"
-            queries.append({
+
+            # Prepare a dictionary for updating product data
+            update_data = {
                 'id': product_id,
                 'name': data.get(f"name{prefix}"),
                 'category': data.get(f"category{prefix}"),
@@ -468,10 +471,13 @@ def update_stock_new():
                 'monthly_sale': data.get(f"monthly_sale{prefix}"),
                 'sale': data.get(f"sale{prefix}"),
                 'discount': data.get(f"discount{prefix}")
-            })
+            }
 
-    # Execute all updates in one transaction
-    for update_data in queries:  # Renamed 'query' to 'update_data'
+            # If any field has been updated (not None or not equal to the original value), append to queries
+            queries.append(update_data)
+
+    # Execute all updates in one transaction only for the products that have changed
+    for update_data in queries:
         query("""
             UPDATE products
             SET product_name = ?, category = ?, price = ?, description = ?, components = ?, popular = ?, animal = ?, 
@@ -872,5 +878,3 @@ def download_data():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.getenv("PORT", 5000)))    
-
-

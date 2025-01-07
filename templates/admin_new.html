@@ -169,51 +169,42 @@
                         <tbody>
                             {% for product in products %}
                             <tr>
-                                <!-- Update Fields -->
+                                <!-- Only include input fields for products that are being updated -->
                                 <input type="hidden" name="product_id_{{ product[0] }}" value="{{ product[0] }}">
-                                <td><input type="text" name="name_{{ product[0] }}" value="{{ product[1] }}" style="width: 200px;" required></td>
+                                <td><input type="text" name="name_{{ product[0] }}" value="{{ product[1] }}" style="width: 200px;"></td>
                                 <td>
-                                    <select name="category_{{ product[0] }}" required style="width: 100px;">
+                                    <select name="category_{{ product[0] }}" style="width: 100px;">
                                         <option value="מזון" {% if product[2] == 'מזון' %} selected {% endif %}>מזון</option>
                                         <option value="אביזרים" {% if product[2] == 'אביזרים' %} selected {% endif %}>אביזרים</option>
                                     </select>
                                 </td>
-                                <td><input type="text" name="price_{{ product[0] }}" value="{{ '%.2f' % product[3] }}" style="width: 100px;" required></td>
-                                <td><input type="text" name="description_{{ product[0] }}" value="{{ product[4] }}" required style="width: 400px;"></td>
-                                <td><input type="text" name="components_{{ product[0] }}" value="{{ product[13] }}" required style="width: 400px;"></td>
+                                <td><input type="text" name="price_{{ product[0] }}" value="{{ '%.2f' % product[3] }}" style="width: 100px;"></td>
+                                <td><input type="text" name="description_{{ product[0] }}" value="{{ product[4] }}" style="width: 400px;"></td>
+                                <td><input type="text" name="components_{{ product[0] }}" value="{{ product[13] }}" style="width: 400px;"></td>
                                 <td>
-                                    <select name="popular_{{ product[0] }}" required style="width: 100px;">
+                                    <select name="popular_{{ product[0] }}" style="width: 100px;">
                                         <option value="כן" {% if product[8] == 'כן' %} selected {% endif %}>כן</option>
                                         <option value="לא" {% if product[8] == 'לא' %} selected {% endif %}>לא</option>
                                     </select>
                                 </td>
-                                <td>
-                                    <select name="animal_{{ product[0] }}" required style="width: 100px;">
-                                        <option value="כלב" {% if product[9] == 'כלב' %} selected {% endif %}>כלב</option>
-                                        <option value="חתול" {% if product[9] == 'חתול' %} selected {% endif %}>חתול</option>
-                                        <option value="כנף" {% if product[9] == 'כנף' %} selected {% endif %}>בעלי כנף ועוד</option>
-                                    </select>
-                                </td>
-                                <td><input type="number" name="stock_{{ product[0] }}" value="{{ product[6] }}" required style="width: 100px;"></td>
+                                <td><input type="number" name="stock_{{ product[0] }}" value="{{ product[6] }}" style="width: 100px;"></td>
                                 <td><input type="text" name="weight_{{ product[0] }}" value="{{ product[7] }}" style="width: 100px;"></td>
                                 <td>
-                                    <select name="monthly_sale_{{ product[0] }}" required style="width: 100px;">
+                                    <select name="monthly_sale_{{ product[0] }}" style="width: 100px;">
                                         <option value="כן" {% if product[10] == 'כן' %} selected {% endif %}>כן</option>
                                         <option value="לא" {% if product[10] == 'לא' %} selected {% endif %}>לא</option>
                                     </select>
                                 </td>
                                 <td>
-                                    <select name="sale_{{ product[0] }}" required style="width: 100px;">
+                                    <select name="sale_{{ product[0] }}" style="width: 100px;">
                                         <option value="כן" {% if product[11] == 'כן' %} selected {% endif %}>כן</option>
                                         <option value="לא" {% if product[11] == 'לא' %} selected {% endif %}>לא</option>
                                     </select>
                                 </td>
-                                <td><input type="number" name="discount_{{ product[0] }}" value="{{ product[12] }}" style="width: 100px;" required></td>
+                                <td><input type="number" name="discount_{{ product[0] }}" value="{{ product[12] }}" style="width: 100px;"></td>
                                 <td>
-                                    <input type="file" name="image" accept="image/*" style="width: 300px;">
+                                    <input type="file" name="image_{{ product[0] }}" accept="image/*" style="width: 300px;">
                                 </td>
-            
-                                <!-- Remove Product Form -->
                                 <td>
                                     <button type="button" class="action-btn delete" data-id="{{ product[0] }}">הסר</button>
                                 </td>
@@ -222,7 +213,6 @@
                         </tbody>
                     </table>
                 </div>
-                <!-- Update All Button -->
                 <button type="submit" class="submit-button">עדכן שינויים</button>
             </form>
 
@@ -237,9 +227,9 @@
                     <div class="form-group">
                         <label for="animalType">סוג חיה</label>
                         <select name="animal" id="animal" required>
-                            <option value="dog">כלב</option>
-                            <option value="cat">חתול</option>
-                            <option value="bird">בעלי כנף ועוד</option>
+                            <option value="כלב">כלב</option>
+                            <option value="חתול">חתול</option>
+                            <option value="כנף">בעלי כנף ועוד</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -253,8 +243,8 @@
                     <div class="form-group">
                         <label for="category">קטגוריה</label>
                         <select  name="category" id="category"  required>
-                            <option value="food">מזון</option>
-                            <option value="toys">אביזרים</option>
+                            <option value="מזון">מזון</option>
+                            <option value="אביזרים">אביזרים</option>
                         </select>
                     </div>
                     <div class="form-group">
