@@ -132,7 +132,7 @@ def index():
     products_on_sale = [product for product in products if product[10] == "כן"]
     first_product_on_sale = products_on_sale[0] if products_on_sale else None
     popular_products = [product for product in products if product[8] == "כן"]
-    product_of_month = query("SELECT * FROM products WHERE monthly_sale = 'כן' LIMIT 1")
+    product_of_month = query("SELECT * FROM products WHERE monthlysale = 'כן' LIMIT 1")
     articles = query(f"SELECT * FROM blog")
     message = query("SELECT message FROM messages WHERE id = 1")[0][0]
 
@@ -141,7 +141,7 @@ def index():
 
 @app.route('/about')
 def about(): 
-    product_of_month = query("SELECT * FROM products WHERE monthly_sale = 'כן' LIMIT 1")
+    product_of_month = query("SELECT * FROM products WHERE monthlysale = 'כן' LIMIT 1")
     return render_template('about.html', product_of_month=product_of_month[0] if product_of_month else None )
 
 
@@ -151,7 +151,7 @@ def new_catalog():
     animal_types = request.args.getlist('animal[]')  # Get a list of selected animal types
     categories = request.args.getlist('category[]')  # Get a list of selected categories
     sort_option = request.args.get('sort')  # Get the selected sorting option
-    product_of_month = query("SELECT * FROM products WHERE monthly_sale = 'כן' LIMIT 1")
+    product_of_month = query("SELECT * FROM products WHERE monthlysale = 'כן' LIMIT 1")
 
     # Check if we have selected animals to display in the title
     animal_selected = None
@@ -198,7 +198,7 @@ def show_product():
 
     product_in_cart = products_in_cart ()[0]
     total_price = products_in_cart ()[1]
-    product_of_month = query("SELECT * FROM products WHERE monthly_sale = 'כן' LIMIT 1")
+    product_of_month = query("SELECT * FROM products WHERE monthlysale = 'כן' LIMIT 1")
 
     if product:
         return render_template('show_product.html',product_of_month=product_of_month[0] if product_of_month else None, product=product[0],product_in_cart=product_in_cart,total_price=total_price)  # Pass the first item in the list
@@ -210,7 +210,7 @@ def show_product():
 def search():
     text = request.args.get('text')  # Use 'GET' since it's a form with GET method
     if text:
-        sql = f"SELECT * FROM products WHERE category LIKE '%{text}%' OR product_name LIKE '%{text}%' OR animal LIKE '%{text}%' OR description LIKE '%{text}%'"
+        sql = f"SELECT * FROM products WHERE category LIKE '%{text}%' OR name LIKE '%{text}%' OR animal LIKE '%{text}%' OR description LIKE '%{text}%'"
         products = query(sql)
         return render_template('new_catalog.html', products=products)
     else:
@@ -234,7 +234,7 @@ def contact():
 
 @app.route('/new_cart', methods=['GET', 'POST'])
 def new_cart():
-    product_of_month = query("SELECT * FROM products WHERE monthly_sale = 'כן' LIMIT 1")
+    product_of_month = query("SELECT * FROM products WHERE monthlysale = 'כן' LIMIT 1")
     product_details_in_cart = products_in_cart ()[0]
     total_price = products_in_cart ()[1]
     return render_template('new_cart.html',product_of_month=product_of_month[0] if product_of_month else None, products=product_details_in_cart, total_price=total_price)
@@ -318,7 +318,7 @@ def submit_order():
         product_ids = list(products_in_cart.keys())
         quantities = list(products_in_cart.values())
 
-        product_names_query = f"SELECT id, product_name FROM products WHERE id IN ({', '.join('?' for _ in product_ids)})"
+        product_names_query = f"SELECT id, name FROM products WHERE id IN ({', '.join('?' for _ in product_ids)})"
         
         product_names = query(product_names_query, tuple(product_ids))
 
@@ -377,13 +377,13 @@ def submit_order():
 
 @app.route('/blog', methods=['GET', 'POST'])
 def blog():
-    product_of_month = query("SELECT * FROM products WHERE monthly_sale = 'כן' LIMIT 1")
+    product_of_month = query("SELECT * FROM products WHERE monthlysale = 'כן' LIMIT 1")
     articles = query(f"SELECT * FROM blog")
     return render_template('blog.html', product_of_month=product_of_month[0] if product_of_month else None,articles= articles)
 
 @app.route('/article/<int:id>', methods=['GET'])
 def article(id):
-    product_of_month = query("SELECT * FROM products WHERE monthly_sale = 'כן' LIMIT 1")
+    product_of_month = query("SELECT * FROM products WHERE monthlysale = 'כן' LIMIT 1")
     # You should query for the article by the given id and pass the data to the template
     article = query(f"SELECT * FROM blog WHERE id = {id}")
     return render_template('article.html', product_of_month=product_of_month[0] if product_of_month else None,article= article[0])
@@ -447,49 +447,28 @@ def update_order_status_new():
 
 @app.route('/update_stock_new', methods=['POST'])
 def update_stock_new():
-    data = request.form
-    queries = []
+    try:
+        updates = []
+        for key, value in request.form.items():
+            # Key format: field_productID (e.g., "animal_90")
+            if "_" in key:
+                field, product_id = key.split("_", 1)  # Split into field and product ID
+                updates.append((field, value, product_id))
 
-    # Iterate over the form data to prepare the update queries
-    for key, value in data.items():
-        if key.startswith("product_id_"):
-            product_id = value
-            prefix = f"_{product_id}"
+        # Apply updates to the database using the query function
+        for field, value, product_id in updates:
+            if not isinstance(value, str):
+                value = str(value)
+                value = value.strip()
+            sql = f"UPDATE products SET {field} = ? WHERE id = ?"
+            params = (value, product_id)
+            query(sql, params)
 
-            # Prepare a dictionary for updating product data
-            update_data = {
-                'id': product_id,
-                'name': data.get(f"name{prefix}"),
-                'category': data.get(f"category{prefix}"),
-                'price': round(float(data.get(f"price{prefix}")), 2),
-                'description': data.get(f"description{prefix}"),
-                'components': data.get(f"components{prefix}"),
-                'popular': data.get(f"popular{prefix}"),
-                'animal': data.get(f"animal{prefix}"),
-                'stock': int(data.get(f"stock{prefix}")),
-                'weight': data.get(f"weight{prefix}"),
-                'monthly_sale': data.get(f"monthly_sale{prefix}"),
-                'sale': data.get(f"sale{prefix}"),
-                'discount': data.get(f"discount{prefix}")
-            }
-
-            # If any field has been updated (not None or not equal to the original value), append to queries
-            queries.append(update_data)
-
-    # Execute all updates in one transaction only for the products that have changed
-    for update_data in queries:
-        query("""
-            UPDATE products
-            SET product_name = ?, category = ?, price = ?, description = ?, components = ?, popular = ?, animal = ?, 
-                stock = ?, weight = ?, monthly_sale = ?, sale = ?, discount = ?
-            WHERE id = ?
-        """, (
-            update_data['name'], update_data['category'], update_data['price'], update_data['description'], update_data['components'],
-            update_data['popular'], update_data['animal'], update_data['stock'], update_data['weight'], update_data['monthly_sale'],
-            update_data['sale'], update_data['discount'], update_data['id']
-        ))
-
-    return redirect('/admin_new')
+        return redirect('/admin_new')
+    
+    except Exception as e:
+        # Handle errors
+        return jsonify({"status": "error", "message": str(e)})
 
 @app.route('/add_product_new', methods=['POST'])
 def add_product_new():
@@ -515,7 +494,7 @@ def add_product_new():
         image.save(os.path.join(app.config['UPLOAD_FOLDER'], image_filename))
 
     # Insert into products table
-    query(f"INSERT INTO products (product_name, category, price, description, image, stock, weight, popular, animal, monthly_sale, sale, discount, components) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+    query(f"INSERT INTO products (name, category, price, description, image, stock, weight, popular, animal, monthlysale, sale, discount, components) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
           (name, category, price, description, image_filename, stock, weight, popular, animal, monthly_sale, sale, discount, components))
     return redirect('/admin_new')
 
@@ -644,7 +623,7 @@ def customer_club_signup():
         return "<script>alert('שגיאה בהרשמה, אנא נסה שנית.'); window.location.href='/';</script>"
 
 def create_table_products(table="products"):
-    sql = f"CREATE TABLE IF NOT EXISTS {table} (class_id NT AUTO_INCREMENT PRIMARY KEY, product_name TEXT, category TEXT)"
+    sql = f"CREATE TABLE IF NOT EXISTS {table} (class_id NT AUTO_INCREMENT PRIMARY KEY, name TEXT, category TEXT)"
     query(sql)
 
 sender_email = os.environ.get("SENDER_EMAIL")
