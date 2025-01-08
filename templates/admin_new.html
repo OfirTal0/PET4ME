@@ -152,11 +152,11 @@
                             <tr>
                                 <th>שם המוצר</th>
                                 <th>קטגוריה</th>
+                                <th>סוג חיה</th>
                                 <th>מחיר</th>
                                 <th>תיאור</th>
                                 <th>רכיבים</th>
                                 <th>פופולרי</th>
-                                <th>סוג חיה</th>
                                 <th>כמות במלאי</th>
                                 <th>משקל</th>
                                 <th>מבצע חודשי?</th>
@@ -176,6 +176,13 @@
                                     <select name="category_{{ product[0] }}" style="width: 100px;">
                                         <option value="מזון" {% if product[2] == 'מזון' %} selected {% endif %}>מזון</option>
                                         <option value="אביזרים" {% if product[2] == 'אביזרים' %} selected {% endif %}>אביזרים</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select name="animal_{{ product[0] }}" required style="width: 100px;">
+                                        <option value="כלב" {% if product[9] == 'כלב' %} selected {% endif %}>כלב</option>
+                                        <option value="חתול" {% if product[9] == 'חתול' %} selected {% endif %}>חתול</option>
+                                        <option value="כנף" {% if product[9] == 'כנף' %} selected {% endif %}>בעלי כנף ועוד</option>
                                     </select>
                                 </td>
                                 <td><input type="text" name="price_{{ product[0] }}" value="{{ '%.2f' % product[3] }}" style="width: 100px;"></td>
