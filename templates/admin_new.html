@@ -176,6 +176,8 @@
                                     <select name="category_{{ product[0] }}" style="width: 100px;" data-changed="false">
                                         <option value="מזון" {% if product[2] == 'מזון' %} selected {% endif %}>מזון</option>
                                         <option value="אביזרים" {% if product[2] == 'אביזרים' %} selected {% endif %}>אביזרים</option>
+                                        <option value="טבעיים" {% if product[2] == 'טבעיים' %} selected {% endif %}>מוצרים טבעיים</option>
+
                                     </select>
                                 </td>
                                 <td>
@@ -252,6 +254,8 @@
                         <select  name="category" id="category"  required>
                             <option value="מזון">מזון</option>
                             <option value="אביזרים">אביזרים</option>
+                            <option value="טבעיים">מוצרים טבעיים</option>
+
                         </select>
                     </div>
                     <div class="form-group">
