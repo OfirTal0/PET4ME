@@ -93,7 +93,7 @@
                 <img src="/static/uploads/{{ product[5] }}" alt="Dog Food">
                 <h3>{{ product[1] }}</h3>
                 <p>משקל : {{ product[7] }}</p>
-                <form action="/show_product" method="POST">
+                <form action="/show_product/{{ product[0] }}" method="GET">
                     <input  type="hidden" name="product_id" value="{{ product[0] }}">
                     <input type="submit" class="show-product-button" value="עוד פרטים">
                 </form>

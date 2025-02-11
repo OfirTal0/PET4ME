@@ -97,6 +97,10 @@
                             <input type="tel" name="phone" id="contactPhone" required  pattern="\d*" title="אנא הכנס מספרים בלבד" required>
                         </div>
                         <div class="form-group">
+                            <label for="email">אימייל</label>
+                            <input type="email" name="email" id="email" required>
+                        </div>
+                        <div class="form-group">
                             <label for="address">כתובת למשלוח</label>
                             <div>אנא שים לב שמשלוחים מתבצעים לאזור הערבה בלבד</div>
                             <input type="text" name="address" id="address" required>
@@ -107,7 +111,7 @@
                         </div>
                         <div>כל הפרטים יעברו בלחיצה על הזמנה לוואטספ של Pet4me </div>
                         <div>תשלום יתבצע לאחר מכן מול החנות </div>
-                        <button type="submit" class="checkout-btn"  target="_blank" onclick="return validatePhone()">שלח בקשת הזמנה בוואטספ</button>
+                        <button type="submit" class="checkout-btn"  target="_blank" onclick="return validateForm()">שלח בקשת הזמנה בוואטספ</button>
 
                     </form>
                     <!-- {% endif %}
@@ -128,15 +132,24 @@
             document.querySelector('.nav-links').classList.toggle('active');
         });
 
-        function validatePhone() {
+        function validateForm() {
             const phoneInput = document.getElementById('contactPhone').value;
             const phonePattern = /^05\d{8}$/; // Israeli mobile numbers starting with 05 and containing 10 digits
-        
+            const emailInput = document.getElementById('email').value;
+            const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/; // Basic email validation pattern
+
+            // Validate phone number
             if (!phonePattern.test(phoneInput)) {
                 alert("מספר הטלפון חייב להיות בן 10 ספרות ולהתחיל ב-05.");
                 return false; // Prevent form submission
             }
-        
+
+            // Validate email
+            if (!emailPattern.test(emailInput)) {
+                alert("אנא הזן אימייל תקני.");
+                return false; // Prevent form submission
+            }
+
             return true; // Allow form submission
         }
 

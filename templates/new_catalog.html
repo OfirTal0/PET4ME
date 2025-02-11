@@ -29,12 +29,10 @@
     <section class="catalog-filters">
         <div class="search-sort">
  
-            <form action="/search" method="GET">
-                <div class="search-box">
-                    <input type="text" name="text" placeholder="חפש מוצר..." class="search-input">
-                    <i class="fas fa-search"></i>
-                </div>
-            </form>
+            <div class="search-box">
+                <input type="text" placeholder="חפש מוצר..." class="search-input">
+                <i class="fas fa-search"></i>
+            </div>
 
             <div class="sort-box">
                 <form action="/new_catalog" method="GET">
@@ -112,8 +110,7 @@
                            {% if product[6] == 0 %} disabled title="אזל מהמלאי" {% endif %}>
                 </form>
                 
-                <form action="/show_product" method="POST">
-                    <input type="hidden" name="product_id" value="{{ product[0] }}">
+                <form action="/show_product/{{ product[0] }}" method="GET">
                     <input type="submit" class="show-more" value="ראה עוד">
                 </form>
 
@@ -176,7 +173,26 @@
     </a>
 
     <script>
-
+        
+        document.addEventListener("DOMContentLoaded", function () {
+            const searchInput = document.querySelector(".search-input");
+            const productCards = document.querySelectorAll(".product-card");
+            
+            searchInput.addEventListener("input", function () {
+                const searchText = searchInput.value.toLowerCase();
+                
+                productCards.forEach(product => {
+                    const productName = product.querySelector("h3").textContent.toLowerCase();
+                    
+                    if (productName.includes(searchText)) {
+                        product.style.display = "block";
+                    } else {
+                        product.style.display = "none";
+                    }
+                });
+            });
+        });
+        
         document.querySelector('.hamburger').addEventListener('click', () => {
             document.querySelector('.nav-links').classList.toggle('active');
         });

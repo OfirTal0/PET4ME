@@ -65,7 +65,7 @@
                         <input type="hidden" name="product_id" value="{{ product_of_month[0] }}">
                         <input type="submit" class="popup-add-cart" value="הוסף לעגלה">
                     </form>
-                    <form action="/show_product" method="POST">
+                    <form action="/show_product/{{ product_of_month[0] }}" method="POST">
                         <input type="hidden" name="product_id" value="{{ product_of_month[0] }}">
                         <input type="submit" class="popup-show-more" value="ראה עוד">
                     </form>

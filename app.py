@@ -191,30 +191,34 @@ def new_catalog():
 
 
 
-@app.route('/show_product', methods=['POST', 'GET'])
-def show_product():
-    product_id = request.form.get('product_id')
+@app.route('/show_product/<int:product_id>')
+def show_product(product_id):
     product = query(sql=f"SELECT * FROM products WHERE id={product_id}")
 
-    product_in_cart = products_in_cart ()[0]
-    total_price = products_in_cart ()[1]
+    product_in_cart = products_in_cart()[0]
+    total_price = products_in_cart()[1]
     product_of_month = query("SELECT * FROM products WHERE monthlysale = 'כן' LIMIT 1")
 
     if product:
-        return render_template('show_product.html',product_of_month=product_of_month[0] if product_of_month else None, product=product[0],product_in_cart=product_in_cart,total_price=total_price)  # Pass the first item in the list
+        return render_template('show_product.html', 
+                               product_of_month=product_of_month[0] if product_of_month else None, 
+                               product=product[0], 
+                               product_in_cart=product_in_cart, 
+                               total_price=total_price)
     else:
-        return render_template('show_product.html', product_of_month=product_of_month[0] if product_of_month else None,error="Product not found")
+        return render_template('show_product.html', 
+                               product_of_month=product_of_month[0] if product_of_month else None, 
+                               error="Product not found")
 
-
-@app.route('/search', methods=['GET', 'POST'])
-def search():
-    text = request.args.get('text')  # Use 'GET' since it's a form with GET method
-    if text:
-        sql = f"SELECT * FROM products WHERE category LIKE '%{text}%' OR name LIKE '%{text}%' OR animal LIKE '%{text}%' OR description LIKE '%{text}%'"
-        products = query(sql)
-        return render_template('new_catalog.html', products=products)
-    else:
-        return redirect('/new_catalog')
+# @app.route('/search', methods=['GET', 'POST'])
+# def search():
+#     text = request.args.get('text')  # Use 'GET' since it's a form with GET method
+#     if text:
+#         sql = f"SELECT * FROM products WHERE category LIKE '%{text}%' OR name LIKE '%{text}%' OR animal LIKE '%{text}%' OR description LIKE '%{text}%'"
+#         products = query(sql)
+#         return render_template('new_catalog.html', products=products)
+#     else:
+#         return redirect('/new_catalog')
 
 @app.route('/contact', methods=['GET','POST'])
 def contact():
@@ -310,6 +314,8 @@ def submit_order():
         status = "new"
         address = request.form.get('address')
         note = request.form.get('note')
+        customer_email = request.form.get('email')  # תוודא שהוספת שדה של אימייל בטופס
+
 
         if not products_in_cart:
             flash("העגלה ריקה, לא ניתן לשלוח הזמנה", category="error")
@@ -348,6 +354,8 @@ def submit_order():
         # Send the order email
         send_order_email(name, phone, products_in_cart_str, date, address, order_num,note)
 
+        send_confirmation_email(customer_email, order_num, name, phone, address, note, products_in_cart_str)
+
         # Clear the cart after submission
         session.pop('products_in_cart', None)
         whatsapp_message = f"""
@@ -361,12 +369,7 @@ def submit_order():
         """
         whatsapp_url = f"https://wa.me/972509936660?text={urllib.parse.quote(whatsapp_message)}"
 
-        # Flash success message and redirect
-        # flash(f"""
-        #     הזמנה התקבלה!
-        #     מספר הזמנה: {order_num}.
-        #     אנו נעבד את ההזמנה בקרוב ונתקשר. מוזמנים ליצור קשר לכל שאלה נוספת. 
-        # """, category="success")       
+    
         return redirect(whatsapp_url)
 
     except Exception as e:
@@ -628,6 +631,79 @@ def create_table_products(table="products"):
 
 sender_email = os.environ.get("SENDER_EMAIL")
 sender_password = os.environ.get("SENDER_PASSWORD")
+
+
+def send_confirmation_email(customer_email, order_num, name, phone, address, note, products):
+    
+    sender_email = "Pets4me2024@gmail.com"
+    password = "gpsq osxk onuj ghbm"    
+    receiver_email = customer_email
+    product_items = [item.split(':') for item in products.split(', ')]
+    
+    order_details = []
+    for product_name, quantity in product_items:
+        order_details.append((product_name, quantity))
+
+    # Build the HTML content for the email
+    order_details_html = ''.join(
+        f"<tr><td>{product_name}</td><td>{quantity}</td></tr>" for product_name, quantity in order_details
+    )
+    
+    subject = "אישור הזמנה - מספר הזמנה: " + order_num
+ 
+    
+    html_body = f"""
+    <html>
+    <body>
+
+        <h2>
+        שלום {name}, <br>
+        תודה על הזמנתך ב-Pet4me!
+        </h2>
+        <p>מספר הזמנה: {order_num}</p>
+        <p>טלפון: {phone}</p>
+        <p>כתובת: {address}</p>
+        <p>הערות: {note if note else "אין הערות"}</p>
+        <p>
+        אנו ניצור איתך קשר בהקדם לעדכון על מצב ההזמנה. <br>
+    
+        בברכה,<br>
+        צוות Pet4me
+    
+        </p>
+
+        <table style="border-collapse: collapse; width: 100%; margin-top:10vh;">
+            <thead>
+                <tr>
+                    <th style="border: 1px solid #ddd; padding: 8px;">שם המוצר</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">כמות</th>
+                </tr>
+            </thead>
+            <tbody>
+                {order_details_html}
+            </tbody>
+        </table>
+    </body>
+    </html>
+    """
+    
+    # Create message
+    msg = MIMEMultipart()
+    msg['From'] = sender_email
+    msg['To'] = receiver_email
+    msg['Subject'] = subject
+
+    msg.attach(MIMEText(html_body, 'html'))  # HTML version
+
+    try:
+        # Connect to the SMTP server
+        with smtplib.SMTP('smtp.gmail.com', 587) as server:
+            server.starttls()
+            server.login(sender_email, password)
+            server.send_message(msg)
+            print("customer confirmation email sent successfully.")
+    except Exception as e:
+        print(f"Failed to send email: {e}")
 
 def send_order_email(name, phone, products, order_date, address,order_num,note):
     # Email configuration
