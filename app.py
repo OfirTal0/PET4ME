@@ -139,13 +139,13 @@ def index():
     return render_template('index.html', message=message,articles =articles, popular_products=popular_products, adopt=adopt, first_product_on_sale=first_product_on_sale,product_of_month=product_of_month[0] if product_of_month else None)
 
 
-@app.route('/about')
+@app.route('/about', methods=['GET','POST'])
 def about(): 
     product_of_month = query("SELECT * FROM products WHERE monthlysale = 'כן' LIMIT 1")
     return render_template('about.html', product_of_month=product_of_month[0] if product_of_month else None )
 
 
-@app.route('/new_catalog')
+@app.route('/new_catalog', methods=['GET','POST'])
 def new_catalog(): 
     # Get selected animals and categories from the request
     animal_types = request.args.getlist('animal[]')  # Get a list of selected animal types
@@ -191,7 +191,7 @@ def new_catalog():
 
 
 
-@app.route('/show_product/<int:product_id>')
+@app.route('/show_product/<int:product_id>', methods=['GET','POST'])
 def show_product(product_id):
     product = query(sql=f"SELECT * FROM products WHERE id={product_id}")
 
