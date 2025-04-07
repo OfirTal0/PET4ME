@@ -58,7 +58,8 @@
                 <span class="popup-sale">מבצע החודש!</span>
                 <div class="popup-prices">
                     <span class="popup-old-price">₪{{ product_of_month[3] | round(2) }}</span>
-                    <span class="popup-new-price">₪{{ (product_of_month[3] - (product_of_month[3] * product_of_month[12] / 100)) | round(2) }}</span>
+                    <span class="popup-new-price">₪{{ (product_of_month[3] - (product_of_month[3] * product_of_month[12] / 100)) | ceil | int }}</span>
+
                 </div>
                 <div class="popup-buttons">
                     <form action="/add_to_cart" method="POST" >

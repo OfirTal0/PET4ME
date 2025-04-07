@@ -15,11 +15,13 @@ from flask import send_file
 import uuid
 from zoneinfo import ZoneInfo 
 import urllib.parse
-
+import math
 
 israel_timezone = ZoneInfo("Asia/Jerusalem")
 
 app = Flask(__name__, static_folder='static', template_folder='templates')
+app.jinja_env.filters['ceil'] = lambda x: math.ceil(x)
+
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024  # 100 MB limit
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
